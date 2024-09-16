@@ -18,6 +18,7 @@ const home = () => {
                        {/***/}
                       <TouchableOpacity onPress={()=> router.push('../screens/FAQs')}>
                             <Image className="w-[22] h-[22]"
+                            tintColor={'#F42F47'}
                                     source={homeIcons.FAQs}
                                 />
                         </TouchableOpacity>

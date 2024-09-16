@@ -33,8 +33,8 @@ const _layout = ({ icon, color, name, focused }) => {
           },
         }}
       >
-        {
-            tab.map((tab)=>{
+        {/*
+            {tab.map((tab)=>{
               <Tabs.Screen
                   name={tab}
                   options={{
@@ -51,7 +51,7 @@ const _layout = ({ icon, color, name, focused }) => {
                   }}
             />
             })
-        }
+        }*/}
         <Tabs.Screen
             name="home"
             options={{

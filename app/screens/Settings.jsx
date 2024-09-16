@@ -2,6 +2,7 @@ import { StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-nativ
 import React from 'react'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from 'expo-router';
+import ToggleButton from '../../components/toggleBtn'
 const Settings = () => {
   return (
     <View className="w-full h-full bg-white">
@@ -10,6 +11,8 @@ const Settings = () => {
       <TouchableOpacity onPress={()=> router.push('../(tabs)/home')}>
          <Text className="h-5 w-5 border bg-gray-500 text-white">BACK</Text>
       </TouchableOpacity>
+      <ToggleButton
+      />
       </SafeAreaView>
     </View>
   )
