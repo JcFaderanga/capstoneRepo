@@ -7,9 +7,10 @@ import { useState } from 'react';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { useRouter, useLocalSearchParams } from 'expo-router';
-import CustomBtn from '../../../components/button';
-import InputBox from '../../../components/inputBox';
+import { useRouter } from 'expo-router';
+import CustomBtn from '../../components/button';
+import InputBox from '../../components/inputBox';
+import SignUpHeader from '../../components/signUpHeader';
 
 const Email = () => {
     const [email, setEmail] = useState('');
@@ -17,7 +18,6 @@ const Email = () => {
     const [borderWidth, setBorderWidth] = useState(1);
 
     const router = useRouter();
-    const params = useLocalSearchParams();
 
     const handleEmail = () => {
         if (email.trim() === '' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -27,9 +27,8 @@ const Email = () => {
             setBorderColor('#E6E6E6');
             setBorderWidth(1);
             router.push({
-                pathname: './Profile',
-                params: {...params,email },
-              });
+                pathname: '../sign_up/PhoneNumber',
+                params: { email }});
             console.log('Sign In button pressed Email',email);
             // Handle sign-in logic here
         }
@@ -38,9 +37,9 @@ const Email = () => {
     return (
         <View>
             <SafeAreaView className="bg-white h-full">
-                <View className="w-full h-[100] flex items-center flex justify-end">
-                    <Text className="text-customgray text-xl font-interRegularBold">What's your Email?</Text>
-                </View>
+            <SignUpHeader
+                text={`What's your Email`}
+            />
                 <InputBox
                         keyboardType={"email-address"}
                         value={email}

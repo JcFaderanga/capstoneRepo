@@ -5,7 +5,7 @@ import { Stack } from "expo-router";
 const _layout = () => {
   return (
     <Stack>
-         <Stack.Screen name="Email" options={{
+         <Stack.Screen name="PhoneNumber" options={{
             title: 'Sign Up',
             headerStyle: {
               backgroundColor: '#F42F47',
@@ -29,6 +29,42 @@ const _layout = () => {
             },
           }}
         />  
+        <Stack.Screen name="bloodType" options={{
+            title: 'Sign Up',
+            headerStyle: {
+              backgroundColor: '#F42F47',
+            },
+            headerTintColor: '#fff',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        /> 
+        <Stack.Screen name="Create" options={{
+            title: 'Sign Up',
+            headerStyle: {
+              backgroundColor: '#F42F47',
+            },
+            headerTintColor: '#fff',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        /> 
+        <Stack.Screen name="gender" options={{
+            title: 'Sign Up',
+            headerStyle: {
+              backgroundColor: '#F42F47',
+            },
+            headerTintColor: '#fff',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        /> 
     </Stack>
   )
 }

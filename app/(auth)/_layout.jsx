@@ -5,7 +5,7 @@ import Create from './sign_up/Create';
 const _layout = () => {
   return (
     <Stack>
-        <Stack.Screen name="Sign Up"options={{
+        <Stack.Screen name="Email"options={{
         title: 'Sign Up',
         headerStyle: {
           backgroundColor: '#F42F47',

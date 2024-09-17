@@ -29,6 +29,8 @@ const _layout = () => {
         },
       }}
        />  
+
+    <Stack.Screen name="FAQsPages" options={{ headerShown: false }} />
     </Stack>
   
   )

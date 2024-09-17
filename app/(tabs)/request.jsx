@@ -3,7 +3,7 @@ import React from 'react'
 
 const request = () => {
   return (
-    <View>
+    <View className="w-full h-full bg-white">
       <Text>request</Text>
     </View>
   )

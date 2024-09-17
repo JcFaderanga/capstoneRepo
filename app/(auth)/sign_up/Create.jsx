@@ -1,7 +1,7 @@
 import { ScrollView, Text, View } from 'react-native';
 import { useState } from 'react';
 import React from 'react';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useRouter, useLocalSearchParams, router } from 'expo-router';
 import CustomBtn from '../../../components/button';
 import InputBox from '../../../components/inputBox';
 import InputBoxNum from '../../../components/inputBoxNum';
@@ -17,6 +17,8 @@ const Create = () => {
     const [middleName, setMiddleName] = useState(params.middleName || '');
     const [lastName, setLastName] = useState(params.lastName || '');
     const [birthDate, setBirthDate] = useState(params.birthDate || '');
+    const [gender, setGender] = useState(params.gender || '');
+    const [bloodType, setBloodType] = useState(params.bloodType || '');
     const [borderColor, setBorderColor] = useState('gray');
     const [borderWidth, setBorderWidth] = useState(2);
 
@@ -28,6 +30,8 @@ const Create = () => {
         console.log('Middle Name:', middleName);
         console.log('Last Name:', lastName);
         console.log('Birth Date:', birthDate);
+        console.log('Blood Type:', bloodType);
+        //router.push('./gender')
     };
 
     return (
@@ -88,6 +92,24 @@ const Create = () => {
                         detail="Birth Date"
                         value={birthDate}
                         onChangeText={(val) => setBirthDate(val)}
+                        keyboardType="default"
+                        title="Enter your birth date here"
+                        borderWidth={borderWidth}
+                        borderColor={borderColor}
+                    />
+                    <InputBox
+                        detail="Gender"
+                        value={gender}
+                        onChangeText={(val) => setGender(val)}
+                        keyboardType="default"
+                        title="Enter your birth date here"
+                        borderWidth={borderWidth}
+                        borderColor={borderColor}
+                    />
+                    <InputBox
+                        detail="Blood Type"
+                        value={bloodType}
+                        onChangeText={(val) => setBloodType(val)}
                         keyboardType="default"
                         title="Enter your birth date here"
                         borderWidth={borderWidth}

@@ -3,7 +3,8 @@ import React from 'react'
 
 const ContentTitleButton = ({title, icon,backIcon, onPress, size}) => {
   return (
-    <TouchableOpacity className=" flex-row justify-between items-center w-full h-20 border-b-2 border-[#F2F2F2]">      
+    <TouchableOpacity className=" flex-row justify-between items-center w-full h-20 border-b-2 border-[#F2F2F2]"
+            onPress={onPress}>      
             <View className="flex-row justify-between items-center">
                 <View className="w-[50px] h-20 flex justify-center items-end">
                     <Image source={icon} resizeMode='contain' style={size}/>

@@ -11,7 +11,7 @@ import CustomBtn from '../../../components/button';
 import InputBox from '../../../components/inputBox';
 import InputBoxDate from '../../../components/inputBoxDate';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-
+import SignUpHeader from '../../../components/signUpHeader';
 const Profile = () => {
     const [firstName, setFirstName] = useState('');
     const [middleName, setMiddleName] = useState('');
@@ -55,7 +55,7 @@ const Profile = () => {
 
         if (allFieldsFilled) {
             router.push({
-                pathname: './Create',
+                pathname: './gender',
                 params: { 
                     ...params, 
                     firstName,
@@ -72,11 +72,9 @@ const Profile = () => {
             <SafeAreaView className="bg-white h-full">
                 <ScrollView>
                     <View>
-                        <View className="w-full h-[100] flex justify-center items-center">
-                            <Text className="text-customgray text-xl font-interRegularBold">
-                                What's your profile information?
-                            </Text>
-                        </View>
+                         <SignUpHeader
+                            text={`What's your Profile Information?`}
+                        />
                         <InputBox
                             detail="FirstName:"
                             value={firstName}
