@@ -33,7 +33,7 @@ const SignIn = () => {
       router.push('../(tabs)/home');
       // Handle sign-in logic here
     }
-   // router.push('../(tabs)/home');
+    router.push('../(tabs)/home');
    //router.push('./sign_up/gender');
   };
   return (

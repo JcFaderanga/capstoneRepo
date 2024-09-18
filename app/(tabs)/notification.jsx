@@ -1,14 +1,16 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar"
 import React from 'react'
 import {homeIcons} from '../../constant'
 import { Link, router } from 'expo-router';
-
+import ContentTitleButton from '../../components/contentTitle';
+import FAQsIcons from '../../constant';
 const FAQs = () => {
   return (
     <View className="w-full h-full bg-white">
         <SafeAreaView>
+          <ScrollView>
             <View className="w-full h-[75px] flex-row justify-between items-center">
                   <View className=" ml-5 ">
                       <Text className="text-2xl font-bold text-primaryRed">Inbox</Text>
@@ -22,6 +24,22 @@ const FAQs = () => {
                         </TouchableOpacity>
                   </View>
               </View>
+              <ContentTitleButton
+                title={"Am I Eligible?"}
+                size= {{width: 27, hieght:25}}
+                icon = {homeIcons.mailUnseen}
+                backIcon={homeIcons.arrowNoCircle}
+                onPress={() => router.push('')}
+              />
+              <ContentTitleButton
+                title={"Hi There JC!"}
+                size= {{width: 27, hieght:25}}
+                icon = {homeIcons.mailUnseen}
+                backIcon={homeIcons.arrowNoCircle}
+                onPress={() => router.push('')}
+              />
+              
+            </ScrollView>
         </SafeAreaView>     
     </View>
   )

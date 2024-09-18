@@ -11,7 +11,7 @@ const Settings = () => {
     <View className="w-full h-full bg-white">
       <SafeAreaView>
       <Text>Settings</Text>
-      <TouchableOpacity onPress={()=> router.push('.././(auth)/sign_up/gender')}>
+      <TouchableOpacity onPress={()=> router.push('.././')}>
          <Text className=" border bg-gray-500 text-white">BACK</Text>
       </TouchableOpacity>
       <ContentTitleButton

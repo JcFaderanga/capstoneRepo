@@ -14,7 +14,7 @@ const ContentTitleButton = ({title, icon,backIcon, onPress, size}) => {
                 </Text>
             </View>  
             <View className="w-20 h-full flex justify-center items-center">
-                <Image source={backIcon} className="h-5 w-5"/>
+                <Image source={backIcon} className="h-5 w-8" resizeMode='contain'/>
             </View>
     </TouchableOpacity>
   )

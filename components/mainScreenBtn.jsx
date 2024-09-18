@@ -15,13 +15,13 @@ import React from 'react'
 const CustomButtonWithIconOnHome = ({title, imgUrl, color, imgSize, onPress}) => {
   return (
     <>
-    <TouchableOpacity className="mb-4 h-28 w-28 bg-white rounded-[10px] flex justify-center items-center"
+    <TouchableOpacity className="mb-4 h-[105] w-[105] bg-white rounded-[10px] flex justify-center items-center"
         onPress={onPress}
           style={{
               elevation: 5,
           }}>
         <View>
-            <View className="flex justify-center items-center h-[70] ">
+            <View className="flex justify-center items-center h-[65] ">
                 <Image
                 source={imgUrl}
                 style={imgSize}
@@ -29,7 +29,7 @@ const CustomButtonWithIconOnHome = ({title, imgUrl, color, imgSize, onPress}) =>
                 />                
             </View> 
           </View>
-          <Text className={`text-white text-base text-[#666666]`}>{title}</Text>
+          <Text className={`text-white text-[15px] text-[#666666]`}>{title}</Text>
     </TouchableOpacity>
     </>
   )
