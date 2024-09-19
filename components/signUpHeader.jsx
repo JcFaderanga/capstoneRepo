@@ -4,7 +4,7 @@ import React from 'react'
 const SignUpHeader = ({text}) => {
   return (
     <View>
-      <View className="w-full h-[100] flex items-center flex justify-end">
+      <View className="w-full h-[100] items-center flex justify-end">
             <Text className="text-customgray text-xl font-interRegularBold">{text}</Text>
         </View>
     </View>
