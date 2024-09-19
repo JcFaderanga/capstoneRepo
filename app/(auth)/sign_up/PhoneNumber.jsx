@@ -13,19 +13,18 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import SignUpHeader from '../../../components/signUpHeader'
 const sign_up = () => {
   const [number, setPhoneNumber] = useState('');
-  const [borderColor, setBorderColor] = useState('#EAEAEA');
-  const [borderWidth, setBorderWidth] = useState(1);
-  
+  const [PhoneNumberError, SetPhoneNumberError] = useState({condition: false, message:''});
+
   const router = useRouter();
   const params = useLocalSearchParams();
  
+
     const handleSignIn = () => {
-    if (number.trim() === '' || number.length !== 10) {
-      setBorderColor('red');
-      setBorderWidth(2);
+
+      if ( number.trim()==='' || number.length !== 10) {
+        SetPhoneNumberError({condition: true,message:'Invalid Number'});
     } else {
-      setBorderColor('#EAEAEA');
-      setBorderWidth(1);
+      SetPhoneNumberError({condition: false,message:''});
           router.push({pathname:'./Profile',
             params: {...params, number }});
       console.log('Sign In button pressed Phone number:', number);
@@ -42,13 +41,13 @@ const sign_up = () => {
       <InputBoxNum
           value={number}
           onChangeText={(numVal) => {
-            setBorderColor('#EAEAEA');
-            setBorderWidth(2);
+            SetPhoneNumberError({ condition: false, message: '' });
             setPhoneNumber(numVal);
           }}
-          borderWidth={borderWidth}
+          borderWidth={PhoneNumberError.condition? 2 : 1}
           placeholder="Enter your number"
-          borderColor={borderColor}
+          borderColor={PhoneNumberError.condition? "red" : "#D9D9D9"}
+          message={PhoneNumberError}
       />
       <CustomBtn
           title={'Continue'}

@@ -17,6 +17,7 @@ export default StyleSheet.create({
     height: 50,
     backgroundColor: '#F42F47', // Button background color
     borderRadius: 15,
+    color:"white",
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',

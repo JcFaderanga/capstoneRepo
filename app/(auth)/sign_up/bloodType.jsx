@@ -39,7 +39,7 @@ const BloodGroup = () => {
   return (
     <View className="bg-white h-full">
         <SignUpHeader
-                text={`what's your Blood Type`}
+                text={`What's your Blood Type?`}
             />
             <View className="w-[90%] mx-auto my-2">
               <Text  className="text-base text-[#B8B8B8] text-center">

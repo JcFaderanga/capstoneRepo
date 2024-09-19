@@ -5,7 +5,7 @@ import React from 'react'
 const finish = () => {
   return (
     <View>
-      <Text>finish</Text>
+      <Text className="">finish</Text>
     </View>
   )
 }
