@@ -59,7 +59,7 @@ const SignIn = () => {
                   <View className="w-auto h-auto">{/**form-group container */}
 
                     <InputBox
-                          keyboardType={"email-address"}
+                keyboardType="email-address"
                           value={email}
                           detail="Email:"
                           onChangeText={(EmailVal) => setEmail(EmailVal)}
