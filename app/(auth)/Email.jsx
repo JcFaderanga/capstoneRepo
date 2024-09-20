@@ -27,7 +27,7 @@ const Email = () => {
             // If email is valid, reset error and navigate to PhoneNumber screen
             setEmailError({ condition: false, message: '' });
             router.push({
-                pathname: '../sign_up/PhoneNumber',
+                pathname: '../sign_up/password',
                 params: { email },
             });
             console.log('Navigating to PhoneNumber with Email:', email);

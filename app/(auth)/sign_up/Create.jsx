@@ -1,4 +1,4 @@
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View,Alert } from 'react-native';
 import { useState } from 'react';
 import React from 'react';
 import { useRouter, useLocalSearchParams, router } from 'expo-router';
@@ -6,6 +6,7 @@ import CustomBtn from '../../../components/button';
 import InputBox from '../../../components/inputBox';
 import InputBoxNum from '../../../components/inputBoxNum';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { supabase } from '../../../lib/supabase';
 
 const Create = () => {
     const params = useLocalSearchParams();
@@ -13,6 +14,7 @@ const Create = () => {
     // Initialize state with params values
     const [number, setPhoneNumber] = useState(params.number || '');
     const [email, setEmail] = useState(params.email || '');
+    const [password, setPassword] = useState(params.password || '');
     const [firstName, setFirstName] = useState(params.firstName || '');
     const [middleName, setMiddleName] = useState(params.middleName || '');
     const [lastName, setLastName] = useState(params.lastName || '');
@@ -21,19 +23,51 @@ const Create = () => {
     const [bloodType, setBloodType] = useState(params.bloodType || '');
     const [borderColor, setBorderColor] = useState('gray');
     const [borderWidth, setBorderWidth] = useState(2);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubmit = () => {
-        // You can handle the submission logic here
+    async function signUpWithEmail() {
         console.log('Phone Number:', number);
         console.log('Email:', email);
+        console.log('Password:', password);
         console.log('First Name:', firstName);
         console.log('Middle Name:', middleName);
         console.log('Last Name:', lastName);
         console.log('Birth Date:', birthDate);
         console.log('Blood Type:', bloodType);
-        //router.push('./gender')
-    };
-
+        setLoading(true); 
+        const { data: { session, user }, error } = await supabase.auth.signUp({
+          email: email,
+          password: password,
+        });
+      
+        if (error) {
+          Alert.alert(error.message);
+          return;
+        }
+ 
+        const { error: profileError } = await supabase
+          .from('profile')
+          .insert([
+            { 
+                user_id: user.id,  
+                first_name: firstName,
+                middle_name: middleName,
+                last_name: lastName,
+                birth_date: birthDate, 
+                gender: gender,
+                blood_type: bloodType,
+                phone_number: number
+            }
+          ]);
+      
+        if (profileError) {
+          Alert.alert(profileError.message);
+        } else {
+          router.push('../sign_in');
+        }
+        setLoading(false); 
+      }
+      
     return (
             <ScrollView>
                 <View className="w-full h-full p-4 bg-white">
@@ -56,6 +90,15 @@ const Create = () => {
                         detail="Email"
                         value={email}
                         onChangeText={(val) => setEmail(val)}
+                        keyboardType="email-address"
+                        title="Enter your email here"
+                        borderWidth={borderWidth}
+                        borderColor={borderColor}
+                    />
+                    <InputBox
+                        detail="Password"
+                        value={password}
+                        onChangeText={(val) => setPassword(val)}
                         keyboardType="email-address"
                         title="Enter your email here"
                         borderWidth={borderWidth}
@@ -117,7 +160,8 @@ const Create = () => {
                     />
                     <CustomBtn
                         title="Submit"
-                        onPress={handleSubmit}
+                        onPress={signUpWithEmail}
+                        isLoading={isLoading}
                     />
                 </View>
             </ScrollView>

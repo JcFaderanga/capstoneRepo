@@ -29,7 +29,7 @@ const CustomButtonWithIconOnHome = ({title, imgUrl, color, imgSize, onPress}) =>
                 />                
             </View> 
           </View>
-          <Text className={`text-white text-[15px] text-[#666666]`}>{title}</Text>
+          <Text className={` text-[15px] text-[#666666]`}>{title}</Text>
     </TouchableOpacity>
     </>
   )

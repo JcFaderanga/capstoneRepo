@@ -43,6 +43,7 @@ const SignIn = () => {
     }
 
     setIsLoading(true);
+    //supabase sign in request
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -99,7 +100,7 @@ const SignIn = () => {
                 title="Enter Password here"
                 borderWidth={passwordError.condition ? 2 : 1}
                 borderColor={passwordError.condition ? 'red' : '#D9D9D9'}
-                secureTextEntry
+                secureTextEntry 
                 autoCapitalize="none"
                 message={passwordError}
                 customize={{ display: "none" }}
