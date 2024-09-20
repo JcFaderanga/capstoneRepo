@@ -23,7 +23,7 @@ const Create = () => {
     const [bloodType, setBloodType] = useState(params.bloodType || '');
     const [borderColor, setBorderColor] = useState('gray');
     const [borderWidth, setBorderWidth] = useState(2);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setLoading] = useState(false);
 
     async function signUpWithEmail() {
         console.log('Phone Number:', number);

@@ -1,12 +1,14 @@
 import { Image, ScrollView, Text, TouchableOpacity, View,StyleSheet } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar"
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import {homeIcons} from '../../constant'
-import { Link, router } from 'expo-router';
+import { Link, router,useLocalSearchParams } from 'expo-router';
 import ContentTitleButton from '../../components/contentTitle';
 import FAQsIcons from '../../constant';
+import { supabase } from '../../lib/supabase';
 const Profile = () => {
+  
   return (
     <View className="w-full h-full bg-white">
         <SafeAreaView>
@@ -31,7 +33,7 @@ const Profile = () => {
                               resizeMethod='retain'/>
                 </View>  
                 <View className="float-left  h-full flex-1 ml-5 justify-center">
-                  <Text className="float-left text-2xl font-bold">JC Faderanga</Text>
+                  <Text className="float-left text-2xl font-bold">Jc Faderanga</Text>
                   <Text className="float-left text-base font-bold text-primaryRed">ID: 813571833</Text>
                 </View>
             </View>

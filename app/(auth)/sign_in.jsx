@@ -5,8 +5,9 @@ import {
   SafeAreaView,
   Image,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { router, Link } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import InputBox from '../../components/inputBox';
 import CustomBtn from '../../components/button';
 import { supabase } from '../../lib/supabase';
@@ -37,13 +38,13 @@ const SignIn = () => {
   const signInWithEmail = async () => {
     validateEmail(email);
     validatePassword(password);
-
+    
     if (emailError.condition || passwordError.condition) {
       return; // Stop if there are validation errors
     }
 
     setIsLoading(true);
-    //supabase sign in request
+    // Supabase sign in request
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -51,14 +52,17 @@ const SignIn = () => {
       });
       if (error) {
         console.log('Sign In failed:', error.message);
-        setEmailError({ condition: true, message: "Email or Password is Incorrect"});
+        setEmailError({ condition: true, message: "Email or Password is Incorrect" });
       } else {
-        console.log("Sign in Successful");
-        router.push('../(tabs)/home');
+       // const { data } = await supabase.auth.getSession();
+       // console.log("Sign in Successful", data.session);
+       console.log("Sign in Successful");
+        // This redirect will happen in the useEffect based on session
       }
     } catch (e) {
       console.log("Sign in failed due to:", e.message);
       setEmailError({ condition: true, message: e.message });
+      
     } finally {
       setIsLoading(false);
     }
@@ -100,7 +104,7 @@ const SignIn = () => {
                 title="Enter Password here"
                 borderWidth={passwordError.condition ? 2 : 1}
                 borderColor={passwordError.condition ? 'red' : '#D9D9D9'}
-                secureTextEntry 
+                secureTextEntry
                 autoCapitalize="none"
                 message={passwordError}
                 customize={{ display: "none" }}
@@ -122,6 +126,7 @@ const SignIn = () => {
           </View>
         </ScrollView>
       </SafeAreaView>
+      <StatusBar backgroundColor="#F42F47" style="light" />
     </View>
   );
 };

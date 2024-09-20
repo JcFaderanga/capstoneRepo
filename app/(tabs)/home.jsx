@@ -1,12 +1,40 @@
 import { FlatList, Image, ScrollView, Text, TouchableOpacity, View,Dimensions  } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar"
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {homeIcons} from '../../constant'
-import { Link, router } from 'expo-router';
+import { Link, router,useLocalSearchParams } from 'expo-router';
 import CustomButtonWithIconOnHome from '../../components/mainScreenBtn'
 import DonationDrive from '../../components/donationDrive'
+import { Alert } from 'react-native';
+import { supabase } from '../../lib/supabase';
+
 const home = () => {
+  const params = useLocalSearchParams();
+ const [authId, setId] = useState(params.userId || '');
+ const [firstName, setLastName] = useState('');
+ //Alert.alert(authId);
+
+ useEffect(() => {
+  const fetchUser = async () => {
+    const { data ,error } = await supabase
+      .from('profile')
+      .select('first_name')
+      .eq('user_id', params.userId); 
+
+    if (error) {
+      console.error('Error fetching profile:', error);
+    } else if (data && data.length > 0) {
+      const firstName = data[0].first_name;
+      setLastName(firstName); // Set the last name in state
+    } else {
+      console.log('No profile found for this user.');
+    }
+  };
+
+  fetchUser(); // Call the async function
+}, [authId]); 
+
   const { width } = Dimensions.get('window');
   return (
     <View className="w-full h-full bg-white">
@@ -14,7 +42,7 @@ const home = () => {
           {/** nav bar */}
             <View className="w-full h-[75px] flex-row justify-between items-center">
                   <View className=" ml-5 ">
-                      <Text className="text-2xl font-bold text-primaryRed">Hello Jc!</Text>
+                      <Text className="text-2xl font-bold text-primaryRed">Hi {firstName}!</Text>
                   </View>
                   <View className=" w-auto h-5 mr-5 flex-row">
                        {/***/}

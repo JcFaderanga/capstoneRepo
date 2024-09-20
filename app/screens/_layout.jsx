@@ -14,7 +14,7 @@ const _layout = () => {
           color: '#F42F47',
         },
       }}
-       />  
+       />   
        <Stack.Screen name="FAQs"
        options={{
         title: 'FAQs',
