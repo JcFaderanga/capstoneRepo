@@ -1,9 +1,9 @@
 import { Text, View } from 'react-native';
 import React, { useState } from 'react';
-import Require from '../../../components/require';
-import CustomBtn from '../../../components/button';
-import InputBox from '../../../components/inputBox';
-import SignUpHeader from '../../../components/signUpHeader';
+import Require from '../../components/require';
+import CustomBtn from '../../components/button';
+import InputBox from '../../components/inputBox';
+import SignUpHeader from '../../components/signUpHeader';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 const Password = () => {
   const [password, setPassword] = useState('');

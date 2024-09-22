@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from "expo-status-bar";
 import React, {useEffect} from 'react';
-import SignIn from './(auth)/sign_in';
 import CustomBtn from '../components/button';
 import { router } from 'expo-router';
 import { Image } from 'react-native';
@@ -10,13 +9,11 @@ import { Image } from 'react-native';
 const Index = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
-        router.push('./(auth)/sign_in')
+        router.push('./sign_in')
     }, 2000); 
 },[]);
 
-  const login = ()=>{
-    router.push('./(auth)/sign_in')
-  }
+
   return (
       <View className="w-full h-full flex justify-center items-center bg-primaryRed">
          <Image source={require('../assets/icon/bloodlink.png')} className="w-[290px]" resizeMode='contain'/>

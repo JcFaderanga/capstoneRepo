@@ -15,7 +15,7 @@ const TabIcon = ({ icon, color}) => {
       </View>
     );
   };
-const _layout = ({ icon, color, name, focused }) => {
+const _layout = () => {
 
   const tab = ['home','request', 'notification','profile'];
   return (
@@ -33,25 +33,6 @@ const _layout = ({ icon, color, name, focused }) => {
           },
         }}
       >
-        {/*
-            {tab.map((tab)=>{
-              <Tabs.Screen
-                  name={tab}
-                  options={{
-                      title: tab,
-                      headerShown: false,
-                      tabBarIcon: ({ color, focused }) => (
-                          <TabIcon
-                            icon={tabsIcon.tab}
-                            color={color}
-                            name="Home"
-                            focused={focused}
-                          />
-                        ),
-                  }}
-            />
-            })
-        }*/}
         <Tabs.Screen
             name="home"
             options={{

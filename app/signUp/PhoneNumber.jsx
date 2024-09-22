@@ -7,10 +7,10 @@ import {useState} from 'react'
 import {router } from 'expo-router'
 import { StatusBar } from "expo-status-bar"
 import React from 'react'
-import InputBoxNum from '../../../components/inputBoxNum' 
-import CustomBtn from '../../../components/button'
+import InputBoxNum from '../../components/inputBoxNum' 
+import CustomBtn from '../../components/button'
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import SignUpHeader from '../../../components/signUpHeader'
+import SignUpHeader from '../../components/signUpHeader'
 const sign_up = () => {
   const [number, setPhoneNumber] = useState('');
   const [PhoneNumberError, SetPhoneNumberError] = useState({condition: false, message:''});

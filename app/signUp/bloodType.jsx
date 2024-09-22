@@ -1,8 +1,8 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
-import CustomBtn from '../../../components/button'
+import CustomBtn from '../../components/button'
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import SignUpHeader from '../../../components/signUpHeader';
+import SignUpHeader from '../../components/signUpHeader';
 const BloodType = ({type, onPress, isSelected }) => {
     return (
       <View>

@@ -1,12 +1,13 @@
-import { useEffect } from "react";
+import React, { useEffect, useState } from 'react'
+import { Stack, SplashScreen, useRouter } from "expo-router";
+import { AuthProvider, useAuth } from '../context/authContext';
+import { supabase } from '../lib/supabase';
+import { getUserData } from '../services/userServices';
 import { useFonts } from "expo-font";
-//import "react-native-url-polyfill/auto";
-import { SplashScreen, Stack } from "expo-router";
-import { AuthProvider,useAuth } from "../contex/authContex";
-//import GlobalProvider from "../context/GlobalProvider";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
 const RootLayout = () => {
   const [fontsLoaded, error] = useFonts({
     "Poppins-Black": require("../assets/fonts/Poppins-Black.ttf"),
@@ -25,7 +26,6 @@ const RootLayout = () => {
 
   useEffect(() => {
     if (error) throw error;
-
     if (fontsLoaded) {
       SplashScreen.hideAsync();
     }
@@ -35,20 +35,45 @@ const RootLayout = () => {
     return null;
   }
 
-  if (!fontsLoaded && !error) {
-    return null;
-  }
-
-  
   return (
     <AuthProvider>
-      <Stack>
-        <Stack.Screen name="screens" options={{ headerShown: false }} />  
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-      </Stack>
-      </AuthProvider>
+      <AuthLayout />
+    </AuthProvider>
+  );
+};
+
+const AuthLayout = () => {
+  const { setAuth, setUserData } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+      supabase.auth.onAuthStateChange((_event, session) => {
+      console.log('session', session?.user?.id);
+      if (session) {
+        setAuth(session?.user);
+        updateUserData(session?.user);
+        router.push('../(tabs)/home');
+      } else {
+        router.replace('./');
+        console.log('INVALID SESSION');
+        setAuth(null); 
+        
+      }
+    });
+  }, []);
+
+  const updateUserData = async (user) => {
+    let res = await getUserData(user?.id);
+    console.log('APP/_LAYOUT :: get user data:', res);
+    if(res.success) setUserData(res.data);
+  };
+
+  return (
+    <Stack
+      screenOptions={{
+        headerShown: false,
+      }}
+    />
   );
 };
 

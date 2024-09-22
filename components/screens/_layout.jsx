@@ -1,17 +1,23 @@
 import { StyleSheet, Text, View, Button } from 'react-native'
-import React from 'react'
-import { Stack } from 'expo-router'
-
+import React,{useEffect}from 'react'
+import { Stack, useRouter } from 'expo-router'
+import { AuthProvider,useAuth } from '../../context/authContext';
 const _layout = () => {
+ 
   return (
+   
     <Stack>
        <Stack.Screen name="Settings"
        options={{
         title: 'Settings',
-        headerTitleAlign: 'center',
+        headerStyle: {
+          backgroundColor: '#F42F47',
+        },
+        headerTintColor: '#fff',
+        headerTitleAlign: '',
         headerTitleStyle: {
           fontWeight: 'bold',
-          color: '#F42F47',
+          color: 'white',
         },
       }}
        />   
@@ -32,7 +38,7 @@ const _layout = () => {
 
     <Stack.Screen name="FAQsPages" options={{ headerShown: false }} />
     </Stack>
-  
+   
   )
 }
 

@@ -8,9 +8,9 @@ import {
 import React, { useState, useEffect } from 'react';
 import { router, Link } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import InputBox from '../../components/inputBox';
-import CustomBtn from '../../components/button';
-import { supabase } from '../../lib/supabase';
+import InputBox from '../components/inputBox';
+import CustomBtn from '../components/button';
+import { supabase } from '../lib/supabase';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -54,10 +54,6 @@ const SignIn = () => {
         console.log('Sign In failed:', error.message);
         setEmailError({ condition: true, message: "Email or Password is Incorrect" });
       } else {
-       // const { data } = await supabase.auth.getSession();
-       // console.log("Sign in Successful", data.session);
-       console.log("Sign in Successful");
-        // This redirect will happen in the useEffect based on session
       }
     } catch (e) {
       console.log("Sign in failed due to:", e.message);
@@ -75,7 +71,7 @@ const SignIn = () => {
           <View className="flex-1 items-center bg-white">
             <View className="w-80 flex-row justify-center mt-32 mb-[40px]">
               <View className="w-2/5 h-mx">
-                <Image className="w-24 h-24" source={require('../../assets/icon/redcross.png')} />
+                <Image className="w-24 h-24" source={require('../assets/icon/redcross.png')} />
               </View>
               <View className="flex-1 h-mx ml-1">
                 <Text className="text-4xl text-customgray font-interbold">Philippine Red Cross</Text>
@@ -117,7 +113,7 @@ const SignIn = () => {
               />
               <View className="m-[25]">
                 <Text className="color-customgray text-sm mx-auto">Don't have an Account?
-                  <Link href={'./Email'}>
+                  <Link href={'./sign_up'}>
                     <Text className="font-interbold color-primaryRed"> Sign up</Text>
                   </Link>
                 </Text>

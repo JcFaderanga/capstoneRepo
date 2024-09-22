@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const request = () => {
+const Request = () => {
   return (
     <View className="w-full h-full bg-white">
       <Text>request</Text>
@@ -9,6 +9,6 @@ const request = () => {
   )
 }
 
-export default request
+export default Request
 
 const styles = StyleSheet.create({})

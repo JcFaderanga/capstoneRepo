@@ -2,11 +2,12 @@ import { ScrollView, Text, View,Alert } from 'react-native';
 import { useState } from 'react';
 import React from 'react';
 import { useRouter, useLocalSearchParams, router } from 'expo-router';
-import CustomBtn from '../../../components/button';
-import InputBox from '../../../components/inputBox';
-import InputBoxNum from '../../../components/inputBoxNum';
+import CustomBtn from '../../components/button';
+import InputBox from '../../components/inputBox';
+import InputBoxNum from '../../components/inputBoxNum';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { supabase } from '../../../lib/supabase';
+import { supabase } from '../../lib/supabase';
+import { useAuth } from '../../context/authContext';
 
 const Create = () => {
     const params = useLocalSearchParams();
@@ -25,7 +26,8 @@ const Create = () => {
     const [borderWidth, setBorderWidth] = useState(2);
     const [isLoading, setLoading] = useState(false);
 
-    async function signUpWithEmail() {
+    const { setAuth, setUserData } = useAuth;
+      signUpWithEmail =async()=> {
         console.log('Phone Number:', number);
         console.log('Email:', email);
         console.log('Password:', password);
@@ -39,12 +41,17 @@ const Create = () => {
           email: email,
           password: password,
         });
-      
         if (error) {
-          Alert.alert(error.message);
+            console.log("ERROR INSERTING EMAIL AND PASS:",error);
+          Alert.alert("ERROR INSERTING EMAIL AND PASS:",error.message);
           return;
         }
- 
+        // const updateUserData = async (user) => {
+        //     let res = await getUserData(user?.id);
+        //     console.log('APP/_LAYOUT :: get user data:', res);
+        //     if(res.success) setUserData(res.data);
+        //   };
+        
         const { error: profileError } = await supabase
           .from('profile')
           .insert([
@@ -59,15 +66,15 @@ const Create = () => {
                 phone_number: number
             }
           ]);
-      
         if (profileError) {
-          Alert.alert(profileError.message);
-        } else {
-          router.push('../sign_in');
+          Alert.alert("ERROR INSERTING PROFILE:",profileError.message);
         }
+        setAuth(session?.user);
+        console.log("SESSION AFTER SIGN UP:",session?.user);
+         let res = await getUserData(session?.user?.id);
+        if(res.success) setUserData(res.data);
         setLoading(false); 
       }
-      
     return (
             <ScrollView>
                 <View className="w-full h-full p-4 bg-white">

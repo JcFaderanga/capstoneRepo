@@ -6,11 +6,11 @@ import {
 import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import CustomBtn from '../../../components/button';
-import InputBox from '../../../components/inputBox';
-import InputBoxDate from '../../../components/inputBoxDate';
+import CustomBtn from '../../components/button';
+import InputBox from '../../components/inputBox';
+import InputBoxDate from '../../components/inputBoxDate';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import SignUpHeader from '../../../components/signUpHeader';
+import SignUpHeader from '../../components/signUpHeader';
 
 const Profile = () => {
     const [firstName, setFirstName] = useState('');

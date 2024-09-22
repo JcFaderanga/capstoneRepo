@@ -1,7 +1,7 @@
 import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import React, { useState } from 'react';
-import SignUpHeader from '../../../components/signUpHeader';
-import CustomBtn from '../../../components/button';
+import SignUpHeader from '../../components/signUpHeader';
+import CustomBtn from '../../components/button';
 import { router } from 'expo-router';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 
@@ -41,13 +41,13 @@ const Gender = () => {
           style={ gender === 'Male' && styles.selectedButton}
           onPress={() => setGender('Male')}
         >
-          <Image className="w-[95px] h-[95px]" source={require('../../../assets/icon/male.png')} />
+          <Image className="w-[95px] h-[95px]" source={require('../../assets/icon/male.png')} />
         </TouchableOpacity>
         <TouchableOpacity className="mx-4 mb-10 rounded-[5px]"
           style={ gender === 'Female' && styles.selectedButton}
           onPress={() => setGender('Female')}
         >
-          <Image className="w-[95px] h-[95px]" source={require('../../../assets/icon/female.png')} />
+          <Image className="w-[95px] h-[95px]" source={require('../../assets/icon/female.png')} />
         </TouchableOpacity>
       </View>
       <CustomBtn

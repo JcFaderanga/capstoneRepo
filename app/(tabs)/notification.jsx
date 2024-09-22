@@ -1,12 +1,11 @@
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar"
 import React from 'react'
 import {homeIcons} from '../../constant'
-import { Link, router } from 'expo-router';
+import { router } from 'expo-router';
 import ContentTitleButton from '../../components/contentTitle';
-import FAQsIcons from '../../constant';
-const FAQs = () => {
+
+const Notification = () => {
   return (
     <View className="w-full h-full bg-white">
         <SafeAreaView>
@@ -45,5 +44,5 @@ const FAQs = () => {
   )
 }
 
-export default FAQs
+export default Notification
 

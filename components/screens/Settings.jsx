@@ -3,27 +3,20 @@ import React from 'react';
 import { SafeAreaView } from "react-native-safe-area-context";
 import ContentTitleButton from '../../components/contentTitle';
 import { FAQsIcons, tabsIcon } from '../../constant';
-
 import { router } from 'expo-router';
 import { supabase } from '../../lib/supabase';
+import { useAuth } from '../../context/authContext';
 
-const Settings = () => {
+const Settings =() => {
+
+  const {setAuth,user} = useAuth();
  
- const handleLogout = async () => {   
-  
-  try {
-    //const { data } = await supabase.auth.getSession();
-    //console.log('this before logout',data.session);
+ const handleLogout = async () => {
+  setAuth(null);  
+ 
     console.log('this before logout');
-    await supabase.auth.signOut();
-    //console.log('Successfully logged out');
-    
-
-    // Navigate to the sign-in screen after logout
-   router.push('../(auth)/sign_in');
-  } catch (error) {
-    console.error('An unexpected error occurred during logout:', error); // Log unexpected errors
-  }
+   const {error} = await supabase.auth.signOut();
+   if(error) console.log('error on settings:',error );
 };
 
 
@@ -37,7 +30,7 @@ const Settings = () => {
          
         />
         <ContentTitleButton
-          title={"Logout"}
+          title={user.last_name}
           size={{ width: 27, height: 25 }}
           icon={FAQsIcons.aboutApp}
           onPress={handleLogout}

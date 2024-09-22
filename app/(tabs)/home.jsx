@@ -1,59 +1,36 @@
-import { FlatList, Image, ScrollView, Text, TouchableOpacity, View,Dimensions  } from 'react-native'
+import { Image, ScrollView, Text, TouchableOpacity, View,  } from 'react-native'
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar"
 import React, { useState, useEffect } from 'react'
 import {homeIcons} from '../../constant'
-import { Link, router,useLocalSearchParams } from 'expo-router';
+import { router,useLocalSearchParams } from 'expo-router';
 import CustomButtonWithIconOnHome from '../../components/mainScreenBtn'
 import DonationDrive from '../../components/donationDrive'
-import { Alert } from 'react-native';
 import { supabase } from '../../lib/supabase';
+import { useAuth } from '../../context/authContext';
 
-const home = () => {
-  const params = useLocalSearchParams();
- const [authId, setId] = useState(params.userId || '');
- const [firstName, setLastName] = useState('');
- //Alert.alert(authId);
+const Home = () => {
+ const {user} = useAuth();
 
- useEffect(() => {
-  const fetchUser = async () => {
-    const { data ,error } = await supabase
-      .from('profile')
-      .select('first_name')
-      .eq('user_id', params.userId); 
 
-    if (error) {
-      console.error('Error fetching profile:', error);
-    } else if (data && data.length > 0) {
-      const firstName = data[0].first_name;
-      setLastName(firstName); // Set the last name in state
-    } else {
-      console.log('No profile found for this user.');
-    }
-  };
-
-  fetchUser(); // Call the async function
-}, [authId]); 
-
-  const { width } = Dimensions.get('window');
   return (
     <View className="w-full h-full bg-white">
         <SafeAreaView >
           {/** nav bar */}
             <View className="w-full h-[75px] flex-row justify-between items-center">
                   <View className=" ml-5 ">
-                      <Text className="text-2xl font-bold text-primaryRed">Hi {firstName}!</Text>
+                      <Text className="text-2xl font-bold text-primaryRed">Hi {user && user.first_name}!</Text>
                   </View>
                   <View className=" w-auto h-5 mr-5 flex-row">
                        {/***/}
-                      <TouchableOpacity onPress={()=> router.push('../screens/FAQs')}>
+                      <TouchableOpacity >
                             <Image className="w-[22] h-[22]"
                             tintColor={'#F42F47'}
                                     source={homeIcons.FAQs}
                                 />
                         </TouchableOpacity>
                         {/** ()=> router.push('../screens/Settings')*/}
-                        <TouchableOpacity onPress={ ()=> router.push('../screens/Settings')}>
+                        <TouchableOpacity >
                             <Image className="w-5 h-5 ml-4"
                                     source={homeIcons.settings}
                                 />
@@ -108,4 +85,4 @@ const home = () => {
   )
 }
 
-export default home
+export default Home

@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/icon/iconLogoLink.png",
       "resizeMode": "contain",
-      "backgroundColor": "#CD3043"
+      "backgroundColor": "#F42F47"
     },
     "ios": {
       "supportsTablet": true,
@@ -19,7 +19,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon/iconLogoLink.png",
-        "backgroundColor": "#CD3043"
+        "backgroundColor": "#F42F47"
       },
       "package": "com.faderanga122.BloodLink"
     },
