@@ -1,27 +1,37 @@
 {
   "expo": {
     "name": "BloodLink",
+    "scheme": "BloodLink",
     "slug": "BloodLink",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon/iconLogoLink.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/icon/iconLogoLink.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#F42F47"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "foregroundImage": "./assets/icon/iconLogoLink.png",
+        "backgroundColor": "#F42F47"
+      },
+      "package": "com.jcfaderanga.BloodLink"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "e83cc9eb-d9cc-41eb-be8f-2ad771443621"
+      }
     }
   }
 }
