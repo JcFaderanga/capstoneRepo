@@ -20,7 +20,7 @@ const CustomModal = ({ modalVisible, setModalVisible }) => {
       return;
     } 
     setAuth(null);  
-    router.replace('../sign_in'); 
+    router.replace('.././'); 
 };
 
 const handleEdit =()=>{

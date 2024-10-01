@@ -44,7 +44,7 @@ const ProfileList = () => {
       };
     });
 
-    // Combine requests with user names
+    // Combine requests with user names and sort them by created_at date
     const requestsWithNames = requests.map(request => {
       const user = userMap[request.user_id] || { firstName: 'Unknown', lastName: '' };
       return {
@@ -53,7 +53,10 @@ const ProfileList = () => {
       };
     });
 
-    setRequestList(requestsWithNames);
+    // Sort requests by created_at date in descending order
+    const sortedRequests = requestsWithNames.sort((a, b) => new Date(b.create_at) - new Date(a.create_at));
+
+    setRequestList(sortedRequests);
     setLoading(false);
   };
 
@@ -69,7 +72,7 @@ const ProfileList = () => {
     setRefreshing(false); // Reset refreshing state
   };
 
-  if (loading) return <ActivityIndicator size="large" color="#F42F47" />;
+  if (loading) return <ActivityIndicator size="large" color="#0000ff" />;
   if (error) return <Text>Error: {error}</Text>;
 
   return (
