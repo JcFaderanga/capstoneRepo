@@ -21,7 +21,21 @@ const _layout = () => {
        />   
        <Stack.Screen name="FAQs"
        options={{
-        title: 'profileTab',
+        title: 'FAQs',
+        headerStyle: {
+          backgroundColor: '#F42F47',
+        },
+        headerTintColor: '#fff',
+        headerTitleAlign: '',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          color: 'white',
+        },
+      }}
+       /> 
+       <Stack.Screen name="editProfileInfo"
+       options={{
+        title: 'Update Profile',
         headerStyle: {
           backgroundColor: '#F42F47',
         },

@@ -22,6 +22,11 @@ const CustomModal = ({ modalVisible, setModalVisible }) => {
     setAuth(null);  
     router.replace('../sign_in'); 
 };
+
+const handleEdit =()=>{
+  router.push('../screens/editProfileInfo');
+  setModalVisible(false);
+}
   return (
     <Modal
       transparent={true} 
@@ -37,6 +42,7 @@ const CustomModal = ({ modalVisible, setModalVisible }) => {
             size={{ width: 25, height: 25 }}
             icon={require('../../assets/icon/edit.png')}
             backIcon={homeIcons.arrowNoCircle}
+            onPress={handleEdit}
           />
           <ContentTitleButton
             title={"Settings"}

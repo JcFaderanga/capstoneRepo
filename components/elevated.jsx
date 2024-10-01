@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const Elevated = ({children, width, height}) => {
+const Elevated = ({children, width, height, elevated}) => {
   return (
     <>
-       <View style={{elevation:3,width: width, height: height}} className="bg-white rounded-[10px] mx-auto my-2">
+       <View style={{elevation: elevated ? elevated : 3,width: width, height: height}} className="bg-white rounded-[10px] mx-auto my-2">
             {children}
       </View>
     </>

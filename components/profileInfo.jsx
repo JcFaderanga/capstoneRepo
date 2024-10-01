@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,Image } from 'react-native'
+import { StyleSheet, Text, View,Image, Pressable } from 'react-native'
 import React from 'react'
 import { useAuth } from '../context/authContext';
 
@@ -34,6 +34,15 @@ const ProfileInfo = () => {
                                   style={styles.profileImage}
                                   className="bg-white border"
                                   resizeMethod='retain'/>
+                          <Pressable 
+                          style={{elevation: 5}}
+                          className="w-8 h-8 rounded-full bg-white absolute bottom-0 right-1 flex items-center justify-center">
+                            <Image 
+                            source={require('../assets/icon/editPen.png')} 
+                            resizeMode='contain' 
+                            className="w-4"
+                            style={{elevation: 5, tintColor: '#3A3A3A'}}/>
+                          </Pressable>
                     </View>  
                     <View className="float-left  h-full flex-1 ml-5 justify-center">
                       <Text className="float-left text-2xl font-bold text-white">{user && user.first_name + ' '+ user.last_name}</Text>
