@@ -23,3 +23,6 @@ eas build -p android --profile preview
 }
 
 to update eas-cli@12.5.1 use "npm install -g eas-cli"
+
+for Material Top Navigation
+npm i @react-navigation/material-top-tabs

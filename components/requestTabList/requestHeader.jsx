@@ -3,8 +3,8 @@ import React from 'react'
 
 const ReaquestHeader = () => {
   return (
-    <View className="w-full h-14 flex-row items-center border-b px-5 border-gray-300">  
-        <Pressable>
+    <View className="w-full h-14 flex-row items-center border-b bg-white px-5 border-gray-300">  
+        <Pressable className=" h-full flex justify-center border-b-4 ">
             <Text className="text-base font-bold mx-1">For you</Text>
         </Pressable>
         <Pressable>

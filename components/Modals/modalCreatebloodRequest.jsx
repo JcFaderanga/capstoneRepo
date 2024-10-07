@@ -85,7 +85,7 @@ const ModalCreateBloodRequest = ({ visible, onRequestClose }) => {
         <Pressable onPress={onRequestClose}>
           <Image
             source={require('../../assets/icon/backArrow.png')}
-            className="w-6 absolute my-1 mx-6"
+            className="w-5 absolute my-1 mx-6"
             resizeMode='contain'
           />
         </Pressable>
@@ -118,7 +118,7 @@ const ModalCreateBloodRequest = ({ visible, onRequestClose }) => {
             message={requestUnitsError}
           />
           <InputBox
-            detail="Short description why you need the donation (Optional)"
+            detail="Short description (Optional)"
             value={description}
             onChangeText={(val) => setDescription(val)}
             title="Tell something about your Request"

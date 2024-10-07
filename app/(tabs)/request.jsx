@@ -15,10 +15,10 @@ const request = () => {
   return (
     <>
     <SafeAreaView>
-        <View className="w-full h-full bg-white pb-28">
+        <View className="w-full h-full bg-gray-100 pb-28">
           <ReaquestHeader/>
           {/* FILTER BAR */}
-            <View className="w-full h-[60] flex items-center justify-center">         
+            <View className="w-full h-[60] flex items-center justify-center bg-white">         
                 <Pressable className="h-10 w-11/12 border rounded-2xl border-gray-400 flex justify-center">
                     <View className="flex-row mx-3 items-center">
                       <Image source={require('../../assets/icon/filter.png') }className="w-5 mx-2" resizeMode='contain'/>

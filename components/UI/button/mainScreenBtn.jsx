@@ -15,10 +15,10 @@ import React from 'react'
 const CustomButtonWithIconOnHome = ({title, imgUrl, color, imgSize, onPress}) => {
   return (
     <>
-    <TouchableOpacity className="mb-4 h-[105] w-[105] bg-white rounded-[10px] flex justify-center items-center"
+    <TouchableOpacity className="mb-4 h-[120] w-[120] m-3 bg-white rounded-[10px] flex justify-center items-center"
         onPress={onPress}
           style={{
-              elevation: 5,
+              elevation: 3,
           }}>
         <View>
             <View className="flex justify-center items-center h-[65] ">

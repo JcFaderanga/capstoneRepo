@@ -40,7 +40,7 @@ const ProfileList = () => {
     users.forEach(user => {
       userMap[user.id] = {
         firstName: user.first_name, // Map user ID to first name
-        lastName: user.last_name,   // Map user ID to last name
+        lastName: user.last_name,  
       };
     });
 
@@ -54,7 +54,7 @@ const ProfileList = () => {
     });
 
     // Sort requests by created_at date in descending order
-    const sortedRequests = requestsWithNames.sort((a, b) => new Date(b.create_at) - new Date(a.create_at));
+    const sortedRequests = requestsWithNames.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
     setRequestList(sortedRequests);
     setLoading(false);
@@ -72,9 +72,26 @@ const ProfileList = () => {
     setRefreshing(false); // Reset refreshing state
   };
 
-  if (loading) return <ActivityIndicator size="large" color="#0000ff" />;
+  if (loading) return <ActivityIndicator size="large" color="#F42F47" />;
   if (error) return <Text>Error: {error}</Text>;
 
+  const timeAgo = (timestamp) => {
+    const now = new Date();
+    const postDate = new Date(timestamp);
+    const seconds = Math.floor((now - postDate) / 1000);
+    let interval = Math.floor(seconds / 31536000);
+
+    if (interval >= 1) return `${interval} year${interval === 1 ? '' : 's'} ago`;
+    interval = Math.floor(seconds / 2592000);
+    if (interval >= 1) return `${interval} month${interval === 1 ? '' : 's'} ago`;
+    interval = Math.floor(seconds / 86400);
+    if (interval >= 1) return `${interval} day${interval === 1 ? '' : 's'} ago`;
+    interval = Math.floor(seconds / 3600);
+    if (interval >= 1) return `${interval} hour${interval === 1 ? '' : 's'} ago`;
+    interval = Math.floor(seconds / 60);
+    if (interval >= 1) return `${interval} minute${interval === 1 ? '' : 's'} ago`;
+    return 'just now';
+  };
   return (
     <View>
       <FlatList
@@ -87,6 +104,7 @@ const ProfileList = () => {
             bloodType={item.blood_type}
             units={item.units}
             anonymous={item.anonymous}
+            timePosted={timeAgo(item.created_at)}
           />
         )}
         refreshing={refreshing} // Set refreshing state
