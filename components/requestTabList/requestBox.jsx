@@ -21,10 +21,10 @@ const RequestBox = ({name,description,bloodType,units,anonymous, timePosted}) =>
                         </View>       
                     </View>
                 </View>
-            <View className="">
+            <View className="border-b border-gray-50">
                 <Text className="my-2 mx-4">{(description)?description:`I need a blood donation of ${bloodType} as soon as possible. Please consider helping.`}</Text>
             </View>        
-                <View className="flex-1 flex-row justify-between px-4 py-2 h-16">
+                <View className=" flex-row justify-between items-center px-4 py-2 h-16">
                     <View className=" flex-row items-center h-10">
                         <Image source={require('../../assets/icon/donated.png')} className="w-8 h-8 mr-2" resizeMode='contain'/>
                         <Text className="font-bold">{units}</Text>

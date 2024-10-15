@@ -37,6 +37,8 @@ app/
 (tabs)/
 request.jsx
 screen/
+requestPages/
+requestdetails.jsx
 \_layout.jsx
 index.jsx
 component/

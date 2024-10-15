@@ -8,7 +8,9 @@ import { useAuth } from '../../context/authContext';
 import { supabase } from '../../lib/supabase';
 import ModalRequestInvalidBloodType from './modalRequestInvalidBloodType';
 
-const ModalCreateBloodRequest = ({ visible, onRequestClose }) => {
+
+
+const ModalCreateBloodRequest = ({ visible, onRequestClose, setList }) => {
   const [isRequestAnonymous, setRequestAnonymous] = useState(false);
   const [isBloodTypeValid, setBloodTypeValid] = useState(false);
   const [requestUnits, setRequestUnits] = useState(1);
@@ -40,16 +42,13 @@ const ModalCreateBloodRequest = ({ visible, onRequestClose }) => {
               description: description,
               anonymous: isRequestAnonymous
             }
-          ]);
-    
-      
+          ]); 
       if (error) {
         Alert.alert("ERROR INSERTING REQUEST:", error.message);
       } else {
         Alert.alert("Request Successful", "Your blood request has been submitted.");
+        setList([]);
         onRequestClose(); 
-        // Reset fields after successful submission
-   
         setRequestUnits('');
         setDescription('');
       }

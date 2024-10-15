@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View,Modal,Pressable } from 'react-native'
 import React,{useState, useEffect} from 'react'
 import CustomBtn from '../UI/button/button'
+
 export const BloodType = ({type, onPress, isSelected }) => {
   return (
     <View>
@@ -23,7 +24,8 @@ const styles = StyleSheet.create({
 })
 
 const modalFilterRequest = ({visible,onRequestClose,selectedBloodType}) => {
-  const [selectedTypes, setSelectedTypes] = useState([]);
+  const [selectedTypes, setSelectedTypes] = useState( []);
+  
   const typeList = ["A+","A-","B+","B-","O+","O-","AB+","AB-"];
 
   const handleSelectType = (type) => {
@@ -35,7 +37,7 @@ const modalFilterRequest = ({visible,onRequestClose,selectedBloodType}) => {
     }
   };
    const handlePressed =()=>{
-    selectedBloodType(selectedTypes);
+    selectedBloodType(selectedTypes);// pass data on array format to foryou.jsx
     }
   return (
     <Modal
@@ -63,10 +65,8 @@ const modalFilterRequest = ({visible,onRequestClose,selectedBloodType}) => {
             </View>
             <View className="mx-auto mt-2 mb-5 w-[90%] h-[50px] ">
         <Pressable className="flex-1 text-white text-base bg-primaryRed rounded-xl justify-center items-center"
-          onPress={handlePressed} 
-        >
+          onPress={handlePressed} >
             <Text className="text-white text-lg font-bold">Okay</Text>          
-       
         </Pressable>
       </View>
       </Pressable>

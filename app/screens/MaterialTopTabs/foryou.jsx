@@ -9,15 +9,18 @@ import ModalFilterRequest from '../../../components/Modals/modalFilterRequest'
 const ForYou = () => {
   const [modalVisible, setModalVisible] = useState(false); 
   const [modalFilterVisible, setModalFilterVisible] = useState(false); 
-  const [selectedTypes, setSelectedTypes] = useState([]);
+  const [selectedTypes, setSelectedTypes] = useState([]);//store type request to show on the list and pass data to RequestList.jsx
   const [listRefresh,setListOnRefresh] = useState(false);
+
   function createRequest(){
-    console.log('clicked')
-    setModalVisible(true)
+    setModalVisible(true);
+  }
+  const onModalRequestClose=()=>{
+    setModalVisible(false)
   }
   const handleSelectedBloodTypes = (types) => {
     setListOnRefresh(true);
-    setSelectedTypes(types);
+    setSelectedTypes(types); // get data in array from ModalFilterRequest.jsx and store in selectedTypes
     setModalFilterVisible(false); // Close modal after selecting
   };
   return (
@@ -44,7 +47,8 @@ const ForYou = () => {
         </View>
     <ModalCreateBloodRequest
       visible={modalVisible}
-      onRequestClose={()=>setModalVisible(false)}
+      onRequestClose={onModalRequestClose}
+      setList={(refreshList)=>setSelectedTypes(refreshList)}
     />
     <ModalFilterRequest
       visible={modalFilterVisible}

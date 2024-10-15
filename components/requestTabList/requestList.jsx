@@ -4,8 +4,8 @@ import { TimeAgo } from '../../constant/timeStamp';
 import { fetchRequests } from '../../services/userServices';
 import RequestBox from './requestBox';
 
-const ProfileList = ({ bloodTypeFilterResult }) => {
-  const [requestList, setRequestList] = useState([]);
+const ProfileList = ({ bloodTypeFilterResult }) => {//get filters of data from foryou.jsx 
+  const [requestList, setRequestList] = useState([]);//store type request to show on the list
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [refreshing, setRefreshing] = useState(false); 
@@ -14,16 +14,16 @@ const ProfileList = ({ bloodTypeFilterResult }) => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const requests = await fetchRequests({ bloodTypeFilterResult });
-        setRequestList(requests);
+        const requests = await fetchRequests({ bloodTypeFilterResult });//pass seletected types to query to filter list result 
+        setRequestList(requests);// set filter result to requestList
       } catch (err) {
         setError(err.message);
+      }finally{
+        setLoading(false);
       }
-      setLoading(false);
     };
-
     fetchData();
-  }, [bloodTypeFilterResult]);
+  }, [bloodTypeFilterResult]);// every time there is an update will automatically reload
 
   const handleRefresh = async () => {
     setRefreshing(true);
