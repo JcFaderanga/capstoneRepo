@@ -77,7 +77,7 @@ const home = () => {
             </ImageBackground>
 
           </View>
-          <View style={{ elevation: 50 }} className="w-full h-[65%] bg-white/90  rounded-t-[40px] absolute bottom-0 ">
+          <View style={{ elevation: 50 }} className="w-full h-[65%] bg-white rounded-t-[40px] absolute bottom-0 flex">
             <View className="w-full flex-wrap flex-row justify-center items-center pt-5">
               <CustomButtonWithIconOnHome
                 title={'Donate'}
@@ -88,9 +88,10 @@ const home = () => {
                 title={'Find donor'}
                 imgSize={{ width: 46, hight: 46 }}
                 imgUrl={homeIcons.findDonor}
+                onPress={()=>router.push('../../screens/findDonor')}
               />
               <CustomButtonWithIconOnHome
-                title={'Bppointment'}
+                title={'Appointment'}
                 imgSize={{ width: 44, hight: 44 }}
                 imgUrl={homeIcons.appointment}
               />

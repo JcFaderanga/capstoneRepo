@@ -6,7 +6,6 @@ import { AuthProvider,useAuth } from '../../context/authContext';
 import { supabase } from '../../lib/supabase';
 
 const _layout = () => {
-
   return (
       <Stack>
           <Stack.Screen name="Email"options={{
@@ -25,5 +24,4 @@ const _layout = () => {
       </Stack>   
   )
 }
-
 export default _layout

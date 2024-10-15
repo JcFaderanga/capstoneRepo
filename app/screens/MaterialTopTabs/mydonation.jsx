@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const editProfileInfo = () => {
+const MyDonation = () => {
   return (
-    <View>
-      
+    <View className="bg-gray-50 flex-1">
+      <Text>MyDonation</Text>
     </View>
   )
 }
 
-export default editProfileInfo
+export default MyDonation
 
 const styles = StyleSheet.create({})

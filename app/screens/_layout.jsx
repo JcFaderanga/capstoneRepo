@@ -47,8 +47,22 @@ const _layout = () => {
         },
       }}
        />  
-
+      <Stack.Screen name="findDonor"
+       options={{
+        title: 'Find Donor',
+        headerStyle: {
+          backgroundColor: '#F42F47',
+        },
+        headerTintColor: '#fff',
+        headerTitleAlign: '',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          color: 'white',
+        },
+      }}
+       /> 
     <Stack.Screen name="FAQsPages" options={{ headerShown: false }} />
+    <Stack.Screen name="MaterialTopTabs" options={{ headerShown: false }} />
     </Stack>
   
   )

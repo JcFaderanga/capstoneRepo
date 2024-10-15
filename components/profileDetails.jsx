@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,Image } from 'react-native'
+import { StyleSheet, Text, View,Image, Pressable } from 'react-native'
 import React from 'react'
 import Elevated from './elevated'
 import ToggleButton from './UI/button/toggleBtn'
@@ -10,13 +10,13 @@ const ProfileDetails = () => {
      <Text className="text-sm mt-4">Donation Information</Text>
         <View className="flex-row ">
             <Elevated width={100} height={85} >
-                    <View className="flex-1 flex-row items-center justify-center px-3 pt-2 rounded-t-[10px] bg-[#3A3A3A]">
+                    <Pressable className="flex-1 flex-row items-center justify-center px-3 pt-2 rounded-t-[10px] bg-[#3A3A3A]" onPress={()=> console.log('pressed')}>
                         <View className="flex-row items-center justify-center gap-1">
                             <Image source={require('../assets/icon/bloodType.png')} className="w-6" resizeMode='contain'/>
                             <Text className="font-bold text-[15px]"></Text>
                         </View>
                         <Text className="text-white font-bold text-3xl">{user && user.blood_type}</Text>
-                    </View>
+                    </Pressable>
                     <View className="flex w-full items-center bg-[#3A3A3A] rounded-b-[10px] pb-2"> 
                         <Text className="text-white font-bold">Blood Group</Text>
                     </View>

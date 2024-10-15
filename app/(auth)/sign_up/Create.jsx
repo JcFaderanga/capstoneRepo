@@ -7,7 +7,8 @@ import InputBox from '../../../components/UI/inputs/inputBox'
 import InputBoxNum from '../../../components/UI/inputs/inputBoxNum'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { supabase } from '../../../lib/supabase'
-
+import { useAuth } from '../../../context/authContext';
+import { getUserData } from '../../../services/userServices';
 const Create = () => {
     const params = useLocalSearchParams();
 
@@ -24,53 +25,55 @@ const Create = () => {
     const [borderColor, setBorderColor] = useState('gray');
     const [borderWidth, setBorderWidth] = useState(2);
     const [isLoading, setLoading] = useState(false);
-   
-    signUpWithEmail =async()=> {
-      console.log('Phone Number:', number);
-      console.log('Email:', email);
-      console.log('Password:', password);
-      console.log('First Name:', firstName);
-      console.log('Middle Name:', middleName);
-      console.log('Last Name:', lastName);
-      console.log('Birth Date:', birthDate);
-      console.log('Blood Type:', bloodType);
-      setLoading(true); 
-      const { data: { session, user }, error } = await supabase.auth.signUp({
-        email: email,
-        password: password,
-      });
-      if (error) {
-          console.log("ERROR INSERTING EMAIL AND PASS:",error);
-        Alert.alert("ERROR INSERTING EMAIL AND PASS:",error.message);
-        return;
+
+    const { setAuth, setUserData } = useAuth();
+      signUpWithEmail =async()=> {
+        console.log('Phone Number:', number);
+        console.log('Email:', email);
+        console.log('Password:', password);
+        console.log('First Name:', firstName);
+        console.log('Middle Name:', middleName);
+        console.log('Last Name:', lastName);
+        console.log('Birth Date:', birthDate);
+        console.log('Blood Type:', bloodType);
+        setLoading(true); 
+        const { data: { session, user }, error } = await supabase.auth.signUp({
+          email: email,
+          password: password,
+        });
+        if (error) {
+            console.log("ERROR INSERTING EMAIL AND PASS:",error);
+          Alert.alert("ERROR INSERTING EMAIL AND PASS:",error.message);
+          return;
+        }
+        // const updateUserData = async (user) => {
+        //     let res = await getUserData(user?.id);
+        //     console.log('APP/_LAYOUT :: get user data:', res);
+        //     if(res.success) setUserData(res.data);
+        //   };
+        
+        const { error: profileError } = await supabase
+          .from('profile')
+          .insert([
+            { 
+                user_id: user.id,  
+                first_name: firstName,
+                middle_name: middleName,
+                last_name: lastName,
+                birth_date: birthDate, 
+                gender: gender,
+                blood_type: bloodType,
+                phone_number: number
+            }
+          ]);
+        if (profileError) {
+          Alert.alert("ERROR INSERTING PROFILE:",profileError.message);
+        }
+         let res = await getUserData(session?.user?.id);
+        if(res.success) setUserData(res?.data);
+        setAuth(session?.user);
+        setLoading(false); 
       }
-      // const updateUserData = async (user) => {
-      //     let res = await getUserData(user?.id);
-      //     console.log('APP/_LAYOUT :: get user data:', res);
-      //     if(res.success) setUserData(res.data);
-      //   };
-      
-      const { error: profileError } = await supabase
-        .from('profile')
-        .insert([
-          { 
-              user_id: user.id,  
-              first_name: firstName,
-              middle_name: middleName,
-              last_name: lastName,
-              birth_date: birthDate, 
-              gender: gender,
-              blood_type: bloodType,
-              phone_number: number
-          }
-        ]);
-      if (profileError) {
-        Alert.alert("ERROR INSERTING PROFILE:",profileError.message);
-      }
-       let res = await getUserData(session?.user?.id);
-      if(res.success) setUserData(res.data);
-      setLoading(false); 
-    }
     return (
             <ScrollView>
                 <View className="w-full h-full p-4 bg-white">
