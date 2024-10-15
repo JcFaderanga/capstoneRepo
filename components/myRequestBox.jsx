@@ -1,11 +1,14 @@
 import { StyleSheet, Text, View,Image, Pressable } from 'react-native'
 import React from 'react'
 import { TimeAgo } from '../constant/timeStamp'
+import Elevated from './elevated'
 const myRequstBox = ({timeStamp, units,onPress}) => {
   return (
-    <View className="h-32 border-b-2 border-gray-200">
-          <Text className="w-full h-5 bg-gray-200/50 px-2">Posted {TimeAgo(timeStamp)}</Text>
-          <View className="flex-1 justify-center px-2">
+   <View className="w-full px-3">
+    <Elevated width={'100%'} height={'auto'} elevated={3}>
+      <View className="h-32 border-t-2 border-[#F42F47] bg-white rounded-md">
+          <Text className="w-full px-3 pt-2 ">Posted {TimeAgo(timeStamp)}</Text>
+          <View className="flex-1 justify-center px-4">
             <View className="  flex-row justify-between">
               <View className="borde flex-row items-center">
                 <Image source={require('../assets/icon/donated.png')} resizeMode='contain' className="w-10 h12"/>
@@ -20,6 +23,9 @@ const myRequstBox = ({timeStamp, units,onPress}) => {
             </View>
           </View>
       </View>
+    </Elevated>
+    </View>
+    
   )
 }
 
