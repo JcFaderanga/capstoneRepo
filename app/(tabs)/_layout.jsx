@@ -1,7 +1,7 @@
 import { Redirect, Stack, Tabs } from "expo-router";
 import { Text, View,Image } from 'react-native'
 import { tabsIcon } from '../../constant';
-
+import { NavigationContainer } from '@react-navigation/native';
 
 const TabIcon = ({ icon, color}) => {
     return (
@@ -48,21 +48,21 @@ const _layout = () => {
                   ),
             }}
             />
-        <Tabs.Screen
-            name="request"
-            options={{
-                title: "request",
-                headerShown: false,
-                tabBarIcon: ({ color, focused }) => (
-                    <TabIcon
-                      icon={tabsIcon.request}
-                      color={color}
-                      name="Home"
-                      focused={focused}
-                    />
-                  ),
-            }}
-            />
+                <Tabs.Screen
+                name="request"
+                options={{
+                    title: "request",
+                    headerShown: false,
+                    tabBarIcon: ({ color, focused }) => (
+                        <TabIcon
+                          icon={tabsIcon.request}
+                          color={color}
+                          name="Home"
+                          focused={focused}
+                        />
+                      ),
+                }}
+                />
             <Tabs.Screen
             name="notification"
             options={{

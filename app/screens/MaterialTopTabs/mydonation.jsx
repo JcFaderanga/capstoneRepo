@@ -3,7 +3,7 @@ import React from 'react'
 
 const MyDonation = () => {
   return (
-    <View>
+    <View className="bg-gray-50 flex-1">
       <Text>MyDonation</Text>
     </View>
   )

@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-
-const MyRequest = () => {
+import CustomBtn from '../UI/button/button'
+const ModalMyRequest = () => {
   return (
     <View>
-      <Text>MyRequest</Text>
+      <Text>ModalMyRequest</Text>
     </View>
   )
 }
 
-export default MyRequest
+export default ModalMyRequest
 
 const styles = StyleSheet.create({})

@@ -4,7 +4,7 @@ import React from 'react'
 const editProfileInfo = () => {
   return (
     <View>
-      <Text>editProfileInfo</Text>
+      
     </View>
   )
 }

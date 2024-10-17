@@ -53,7 +53,6 @@ const AuthLayout = () => {
       if (session) {
         setAuth(session?.user);
         updateUserData(session?.user);
-       
           router.replace('../(tabs)/home');
            
       } else {

@@ -8,13 +8,13 @@ import CustomButtonWithIconOnHome from '../../components/UI/button/mainScreenBtn
 import DonationDrive from '../../components/donationDrive'
 import { useAuth } from '../../context/authContext';
 import ModalBloodBank from '../../components/Modals/modalBloodBank';
-
+import RequestBox from '../../components/requestTabList/requestBox';
 const home = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const { user } = useAuth();
 
   return (
-    <View className="w-full h-full bg-primaryRed">
+    <View className="w-full h-full bg-gray-100">
       {/* {Modals} */}
       <ModalBloodBank
         visible={modalVisible}
@@ -22,7 +22,7 @@ const home = () => {
       />
       <SafeAreaView >
         {/** nav bar */}
-        <View className="w-full h-[75px] flex-row justify-between items-center">
+        <View style={{elevation: 10}} className="w-full h-[75px] flex-row justify-between items-center bg-primaryRed rounded-b-[40]">
           <View className=" ml-5 ">
             <Text className="text-2xl font-bold text-white">Hi {user && user.first_name}!</Text>
           </View>
@@ -37,47 +37,14 @@ const home = () => {
           </View>
         </View>
         {/** end nav bar */}
-        <View className="w-full h-full bg-white rounded-t-[40px]">
-          <View className="w-full h-full bg-white rounded-t-[40px] overflow-hidden ">
-            <ImageBackground source={require('../../assets/icon/mapBg.png')} // Remote image
-              className="w-full flex-1"
-              resizeMode="cover"
-            >
-              <View className="w-full h-96 rounded-t-[40px] bg-white/60 pb-30">
-                <Text className='text-primaryRed w-full text-center text-xl font-bold py-2'>Upcoming Donation Drive</Text>
-                <ScrollView >
-
-                  <DonationDrive
-                    location={'Festival Mall, Muntilupa City, 2nd floor '}
-                    time={'10am - 5pm '}
-                    date={'June 18, 2024'}
-                  />
-                  <DonationDrive
-                    location={'Festival Mall, Muntilupa City, 2nd floor '}
-                    time={'10am - 5pm '}
-                    date={'June 18, 2024'}
-                  />
-                  <DonationDrive
-                    location={'Festival Mall, Muntilupa City, 2nd floor '}
-                    time={'10am - 5pm '}
-                    date={'June 18, 2024'}
-                  />
-                  <DonationDrive
-                    location={'Festival Mall, Muntilupa City, 2nd floor '}
-                    time={'10am - 5pm '}
-                    date={'June 18, 2024'}
-                  />
-                  <DonationDrive
-                    location={'Festival Mall, Muntilupa City, 2nd floor '}
-                    time={'10am - 5pm '}
-                    date={'June 18, 2024'}
-                  />
-                </ScrollView>
+        <View className="w-full h-full">
+              <View className="flex-1 justify-center ">
+                {/* <Text className='text-primaryRed w-full text-center text-xl font-bold py-2'>Upcoming Donation Drive</Text> */}
+                    <DonationDrive/>
+ 
               </View>
-            </ImageBackground>
 
-          </View>
-          <View style={{ elevation: 50 }} className="w-full h-[65%] bg-white/90  rounded-t-[40px] absolute bottom-0 ">
+          <View style={{ elevation: 15 }} className="w-full h-[65%] bg-white rounded-t-[40px]  bottom-0 flex">
             <View className="w-full flex-wrap flex-row justify-center items-center pt-5">
               <CustomButtonWithIconOnHome
                 title={'Donate'}
@@ -88,9 +55,10 @@ const home = () => {
                 title={'Find donor'}
                 imgSize={{ width: 46, hight: 46 }}
                 imgUrl={homeIcons.findDonor}
+                onPress={()=>router.push('../../screens/findDonor')}
               />
               <CustomButtonWithIconOnHome
-                title={'Bppointment'}
+                title={'Appointment'}
                 imgSize={{ width: 44, hight: 44 }}
                 imgUrl={homeIcons.appointment}
               />

@@ -16,6 +16,11 @@ https://supabase.com/docs/guides/getting-started/tutorials/with-expo-react-nativ
 npx expo install @supabase/supabase-js @react-native-async-storage/async-storage @rneui/themed
 }
 
+MatrialTopTabs{
+npm install @react-navigation/native @react-navigation/material-top-tabs react-native-pager-view
+npm install react-native-screens react-native-safe-area-context
+
+}
 EAS Build{
 eas login / Logged out
 eas build:configure
@@ -26,3 +31,20 @@ to update eas-cli@12.5.1 use "npm install -g eas-cli"
 
 for Material Top Navigation
 npm i @react-navigation/material-top-tabs
+
+app/
+(auth)/
+(tabs)/
+request.jsx
+screen/
+requestPages/
+requestdetails.jsx
+\_layout.jsx
+index.jsx
+component/
+requestTabList/
+MaterialTopTabs/
+layoout.jsx
+foryou.jsx
+mydonation.jsx
+myrequest.jsx
