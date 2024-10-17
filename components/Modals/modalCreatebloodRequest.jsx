@@ -56,7 +56,7 @@ const ModalCreateBloodRequest = ({ visible, onRequestClose, setList }) => {
   };
   
 function Back(){
-  setBloodTypeValid(false);
+  setBloodTypeValid(false)
   setRequestUnits(1);
   setDescription('');
 }
@@ -69,7 +69,7 @@ function Back(){
     >
       <ModalRequestInvalidBloodType
         visible={isBloodTypeValid}
-        onRequestClose={''}
+        onRequestClose={() => setBloodTypeValid(false)}
       />
       <View className="w-full h-full bg-white">
         <Pressable onPress={onRequestClose}>
@@ -111,7 +111,8 @@ function Back(){
             </View>
             <ToggleButton
               onPress={(isToggled) => setRequestAnonymous(isToggled)}
-              AlterTitle={'Turning on Anonymous Request will hide your name and profile from the feed.'}
+              AlertTitle={'Anonymous Request'}
+              AlterDescription={'Turning on Anonymous Request will hide your name and profile from the feed.'}
             />
           </View>
           <CustomBtn title={'Post Request'} onPress={SubmitRequest} />

@@ -35,10 +35,9 @@ export const fetchRequests = async ({ bloodTypeFilterResult }) => {
     try {
       let query = supabase.from('blood_request').select('*');
       if (bloodTypeFilterResult && bloodTypeFilterResult.length > 0) {
-        query = query.in('blood_type', bloodTypeFilterResult);
+        query = query.in('blood_type', bloodTypeFilterResult);//if filterRequest !empty will return list of selected type
       }
-  
-      const { data: requests, error: requestError } = await query;
+      const { data: requests, error: requestError } = await query;//if filterRequest is empty will set list to all 
       if (requestError) {
         throw new Error(requestError.message);
       }

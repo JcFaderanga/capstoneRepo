@@ -1,19 +1,18 @@
 import { Pressable, Image, Alert, View } from 'react-native';
 import React, { useState } from 'react';
 
-const ToggleBtn = ({ AlterTitle, onPress }) => {
-  const [isToggle, setToggle] = useState(false);
-
+const ToggleBtn = ({ AlterDescription, onPress, AlertTitle,status }) => {
+  const [isToggle, setToggle] = useState(status);
+  console.log("toggleBtn::",status)
   const handlePress = () => {
     // If toggle is currently off (false) and being turned on (true)
     if (!isToggle) {
       Alert.alert(
-        'Anonymous Request',
-        AlterTitle,  // Alert only when turning on
+        AlertTitle,
+        AlterDescription,  // Alert only when turning on
         [{ text: 'OK' }]
       );
     }
-
     // Update the toggle state
     setToggle(!isToggle);
 
