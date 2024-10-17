@@ -1,16 +1,15 @@
 export const TimeAgo = (timestamp) => {
-    const now = new Date();
-    const postDate = new Date(timestamp);
-    const seconds = Math.floor((now - postDate) / 1000);
-    let interval = Math.floor(seconds / 31536000);
-    if (interval >= 1) return `${interval} year${interval === 1 ? '' : 's'} ago`;
-    interval = Math.floor(seconds / 2592000);
-    if (interval >= 1) return `${interval} month${interval === 1 ? '' : 's'} ago`;
-    interval = Math.floor(seconds / 86400);
-    if (interval >= 1) return `${interval} day${interval === 1 ? '' : 's'} ago`;
-    interval = Math.floor(seconds / 3600);
-    if (interval >= 1) return `${interval} hour${interval === 1 ? '' : 's'} ago`;
-    interval = Math.floor(seconds / 60);
-    if (interval >= 1) return `${interval} minute${interval === 1 ? '' : 's'} ago`;
-    return 'just now';
-  };
+const time = [60, 3600, 86400, 604800, 2592000, 31536000];
+const date = ['minute', 'hour', 'day', 'week', 'month', 'year'];
+const now = new Date();
+const postDate = new Date(timestamp);
+const seconds = Math.floor((now - postDate) / 1000);
+for (let i = time.length - 1; i >= 0; i--) { 
+    const interval = Math.floor(seconds / time[i]);
+    if (interval >= 1) {
+        return(`${interval} ${date[i]}${interval === 1 ? '' : 's'} ago`);
+        break;
+    }
+}
+};
+

@@ -49,13 +49,17 @@ const ModalCreateBloodRequest = ({ visible, onRequestClose, setList }) => {
         Alert.alert("Request Successful", "Your blood request has been submitted.");
         setList([]);
         onRequestClose(); 
-        setRequestUnits('');
+        setRequestUnits(1);
         setDescription('');
       }
     }
   };
   
-
+function Back(){
+  setBloodTypeValid(false);
+  setRequestUnits(1);
+  setDescription('');
+}
   return (
     <Modal
       transparent={true}
@@ -65,7 +69,7 @@ const ModalCreateBloodRequest = ({ visible, onRequestClose, setList }) => {
     >
       <ModalRequestInvalidBloodType
         visible={isBloodTypeValid}
-        onRequestClose={() => setBloodTypeValid(false)}
+        onRequestClose={''}
       />
       <View className="w-full h-full bg-white">
         <Pressable onPress={onRequestClose}>
