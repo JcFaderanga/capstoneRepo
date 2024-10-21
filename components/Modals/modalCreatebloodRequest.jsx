@@ -18,10 +18,8 @@ const ModalCreateBloodRequest = ({ visible, onRequestClose, setList }) => {
   const [requestDetailError, setRequestDetailError] = useState({ condition: false, message: '' });
 
   const { user } = useAuth();
-  console.log(requestUnits);
 
   const SubmitRequest = async () => {
-    console.log("click")
     let allFieldsFilled = true;
 
     // Check blood type validity only if all fields are filled
@@ -40,7 +38,8 @@ const ModalCreateBloodRequest = ({ visible, onRequestClose, setList }) => {
               blood_type: user.blood_type,
               units: requestUnits,
               description: description,
-              anonymous: isRequestAnonymous
+              anonymous: isRequestAnonymous,
+              public_request: true
             }
           ]); 
       if (error) {

@@ -1,89 +1,121 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Elevated from '../../components/elevated';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/authContext';
-
-const DonorBox = ({ name , id , anonymous}) => {
-  const {user} = useAuth();
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [bgColor, setBgColor] = useState('');
- const  [donorName, setName] = useState(name)
-  useEffect(() => {
-    if (user && user.id === id) {
-      setBgColor('#FFEFF1'); 
-      setName('You');  
-    } else {
-      setBgColor('#FFFFFF');  
-      setName(anonymous?"Anonymous":name);   
-    }
-  }, [user, id, name]);
- 
-  
-  return (
-    <Pressable className="w-11/12 h-24 mx-auto my-2">
-      <Elevated width={'100%'} height={'100%'}>
-        <View className="flex-1 flex-row justify-between items-center px-6 marker:rounded-[10px]"
-        style={{backgroundColor:bgColor}}>
-          <View className="flex-row items-center">
-            <Image
-              source={anonymous?require('../../assets/icon/anonymouseIcon.png'):require('../../assets/icon/profilePic.jpg')}
-              resizeMode="contain"
-              className="w-14 h-14 rounded-full"
-            />
-            <View className="px-3 w-40">
-              <Pressable onPress={() => setIsExpanded(!isExpanded)}>
-                <Text
-                  className="text-base font-bold"
-                  numberOfLines={isExpanded ? null : 1}
-                  ellipsizeMode="tail"
-                >
-                  {donorName}
-                </Text>
-              </Pressable>
-              <Text className="text-[12px] leading-[13px] text-gray-500">
-               ID: {anonymous? "- - - - - - - - - -":id}
-              </Text>
-            </View>
-          </View>
-          <Text className="text-primaryRed text-3xl font-bold">AB+</Text>
-        </View>
-      </Elevated>
-    </Pressable>
-  );
-};
+import ModalDirectRequest from '../../components/Modals/DirectRequest/ModalDirectRequest';
 
 const FindDonor = () => {
+  const { user } = useAuth();
   const [donors, setDonors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedDonor, setSelectedDonor] = useState(null);
 
   useEffect(() => {
-    const getDonor = async () => {
+    const getDonors = async () => {
+      setLoading(true); // Start loading
+      setError(null); // Reset error state
       try {
         const { data, error } = await supabase
           .from('profile')
           .select('*')
-          .eq('donation_availability', true);
+          .is('donation_availability', true);
+
         if (error) {
-          console.log('Error fetching data', error.message);
-        } else {
-          setDonors(data); 
+          throw new Error(error.message);
         }
+
+        setDonors(data);
       } catch (e) {
-        console.log('Error fetching available donor', e);
+        setError(e.message); // Set error state
+      } finally {
+        setLoading(false); // Stop loading
       }
     };
-    getDonor();
+
+    getDonors();
   }, []);
+
+  const handlePress = (donor) => {
+    setSelectedDonor(donor);
+     setModalVisible(true);
+     console.log("DONOR NAME --- from PROFILE ",donor.first_name)
+    console.log("DONOR NAME --- from PROFILE ",donor.anonymous_donor)
+  };
+
+  if (loading) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <ActivityIndicator size="large" color="#F42F47" />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <Text className="text-red-500">{error}</Text>
+      </View>
+    );
+  }
 
   return (
     <View className="bg-white flex-1">
-      {donors.map((donor) => (
-        <DonorBox key={donor.id} id={donor.id}  name={donor.first_name+' '+donor.last_name} anonymous={donor.anonymous_donor}/>
-      ))}
+      {donors.map((donor) => {
+        const isUserDonor = user && user.id === donor.id;
+        const bgColor = isUserDonor ? '#FFEFF1' : '#FFFFFF';
+        const donorName = isUserDonor ? 'You' : (donor.anonymous_donor ? "Anonymous" : `${donor.first_name} ${donor.last_name}`);
+
+        return (
+          <Pressable 
+            key={donor.id}
+            className="w-11/12 h-24 mx-auto my-2" 
+            onPress={() => handlePress(donor)}
+            accessibilityLabel={`Donor: ${donorName}, Blood Type: ${donor.blood_type}`}
+          >
+            <Elevated width={'100%'} height={'100%'}>
+              <View 
+                className="flex-1 flex-row justify-between items-center px-6 rounded-[10px]"
+                style={{ backgroundColor: bgColor }}
+              > 
+                <View className="flex-row items-center">
+                  <Image
+                    source={donor.anonymous_donor
+                      ? require('../../assets/icon/anonymouseIcon.png')
+                      : require('../../assets/icon/profilePic.jpg')}
+                    resizeMode="contain"
+                    className="w-14 h-14 rounded-full"
+                  />
+                  <View className="px-3 w-40">
+                    <Text
+                      className="text-base font-bold"
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                    >
+                      {donorName}
+                    </Text>
+                    <Text className="text-[12px] leading-[13px] text-gray-500">
+                      ID: {donor.anonymous_donor ? "- - - - - - - - - -" : donor.id}
+                    </Text>
+                  </View>
+                </View>
+                <Text className="text-primaryRed text-3xl font-bold">{donor.blood_type}</Text>
+              </View>
+            </Elevated>
+          </Pressable>
+        );
+      })}
+      <ModalDirectRequest
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+        donorInfo={selectedDonor} 
+      />
     </View>
   );
 };
 
 export default FindDonor;
 
-const styles = StyleSheet.create({});
+

@@ -17,7 +17,20 @@ export const getUserData = async (userId) => {
     }
     
 }
+export const getProfile = async (userId )=>{
+  const { data, error } = await supabase
+    .from('profile')
+    .select('*')
+    .eq('id',userId)
+    .single();
 
+  
+  if (error) {
+    console.log('ERROR FETCHING REQUESTS', error.message);
+  } else {
+   return data ;
+  }
+}
 export const getBloodRequest = async (userId)=>{
       const { data, error } = await supabase
         .from('blood_request')
@@ -33,7 +46,7 @@ export const getBloodRequest = async (userId)=>{
 
 export const fetchRequests = async ({ bloodTypeFilterResult }) => {
     try {
-      let query = supabase.from('blood_request').select('*');
+      let query = supabase.from('blood_request').select('*').eq('public_request', true); //get data only if public
       if (bloodTypeFilterResult && bloodTypeFilterResult.length > 0) {
         query = query.in('blood_type', bloodTypeFilterResult);//if filterRequest !empty will return list of selected type
       }

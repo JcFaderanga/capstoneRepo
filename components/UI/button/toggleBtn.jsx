@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 const ToggleBtn = ({ AlterDescription, onPress, AlertTitle,status }) => {
   const [isToggle, setToggle] = useState(status);
-  console.log("toggleBtn::",status)
+
   const handlePress = () => {
     // If toggle is currently off (false) and being turned on (true)
     if (!isToggle) {

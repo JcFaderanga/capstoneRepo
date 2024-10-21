@@ -1,14 +1,25 @@
 import { StyleSheet, Text, View,Image, Pressable } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { TimeAgo } from '../constant/timeStamp'
 import Elevated from './elevated'
-
- const MyRequstBox = ({timeStamp, units,onPress,directRequestName}) => {
+import {getProfile } from '../services/userServices'
+ const MyRequstBoxDirect = ({timeStamp, units,onPress,donorId, donorAnonymous}) => {
+    const [donorName, setDonorName] = useState('');
+    const [anonymous, setAnonymous] = useState(donorAnonymous);
+    useEffect(()=>{
+       const getDonorData = async ()=>{
+            const getDonorData = await getProfile(donorId); 
+            setDonorName(getDonorData.first_name +" "+getDonorData.last_name)
+            setAnonymous(getDonorData.anonymous_donor);
+       }
+       getDonorData();
+    },[])
   return (
    <View className="w-full px-3">
     <Elevated width={'100%'} height={'auto'} elevated={3}>
-      <View className="h-32 border-t-2 border-[#F42F47] bg-white rounded-md">
+      <View className="h-34 border-t-2 border-[#F42F47] bg-white rounded-md">
           <Text className="w-full px-3 pt-2 ">Posted {TimeAgo(timeStamp)}</Text>
+          <Text className="w-full text-base px-3 pt-2">Request to <Text className="font-bold">{anonymous ?"Anonymous Donor" :donorName}</Text></Text>
           <View className="flex-1 justify-center px-4">
             <View className="  flex-row justify-between">
               <View className="borde flex-row items-center">
@@ -29,6 +40,6 @@ import Elevated from './elevated'
     
   )
 }
-export default MyRequstBox
+export default MyRequstBoxDirect
 
 const styles = StyleSheet.create({})
