@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View, ScrollView, RefreshControl } from 'react-native';
+import { Pressable, StyleSheet, Text, View, ScrollView, RefreshControl, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import  MyRequestBox from '../../../components/myRequestBox';
 import { useAuth } from '../../../context/authContext';
@@ -10,7 +10,7 @@ const MyRequest = () => {
   const [publicRequests, setPublicRequests] = useState([]);
   const [directRequests, setDirectRequests] = useState([]);
   const [viewRequestVisible, setViewRequestVisible] = useState(false);
-  const [requestId, setRequestId] = useState(null);
+  const [userRequestData, setRequestData] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
   
   useEffect(() => {
@@ -21,8 +21,7 @@ const MyRequest = () => {
       // Separate requests into public and direct
       const publicRequestsData = requests.filter(request => request.public_request);
       const directRequestsData = requests.filter(request => request.direct_request); 
-      console.log(" ALL DATA --- ", directRequests)
-      console.log("CHECK IF DONOR IS ANONYMOUS --- ", directRequests.anonymous_donor)
+
       // Set the state for public and direct requests
       let publicRequestShowOnly3Data = publicRequestsData.slice(0,2)
       setPublicRequests(publicRequestShowOnly3Data);
@@ -49,8 +48,8 @@ const MyRequest = () => {
   };
 
   // Function to view a specific request
-  const viewRequest = (id) => {
-    setRequestId(id);
+  const viewRequest = (data) => {
+    setRequestData(data);
     setViewRequestVisible(true);
   };
 
@@ -63,7 +62,10 @@ const MyRequest = () => {
     >
       <View className="mt-5 mb-3 flex-row justify-between items-center px-3">
         <Text className="text-xl font-bold">Public Requests</Text>
-        <Pressable><Text>More</Text></Pressable>
+          <Pressable className="flex-row items-center">
+            <Text>More</Text>
+            <Image source={require('../../../assets/icon/smallArrow.png')} className="h-3 w-5" resizeMode='contain'/>
+          </Pressable>
       </View>
       
       {/* Public requests display */}
@@ -73,7 +75,7 @@ const MyRequest = () => {
             key={index} 
             timeStamp={request.created_at} 
             units={request.units} 
-            onPress={() => viewRequest(request.blood_request_id)} // Pass the correct request ID
+            onPress={() => viewRequest(request)} // Pass the correct request ID
           />
         ))
       ) : (
@@ -84,7 +86,10 @@ const MyRequest = () => {
 
       <View className="mt-6 mb-3 flex-row justify-between items-center px-3">
         <Text className="text-xl font-bold">Direct Requests</Text>
-        <Pressable><Text>More</Text></Pressable>
+        <Pressable className="flex-row items-center">
+            <Text>More</Text>
+            <Image source={require('../../../assets/icon/smallArrow.png')} className="h-3 w-5" resizeMode='contain'/>
+          </Pressable>
       </View>
       
       {/* Direct requests display */}
@@ -96,7 +101,7 @@ const MyRequest = () => {
             units={request.units} 
             donorId={request.requested_to}
             donorAnonymous={request.anonymous_donor}
-            onPress={() => viewRequest(request.blood_request_id)} // Pass the correct request ID
+            onPress={() => viewRequest(request)} // Pass the correct request ID
           />
         ))
       ) : (
@@ -106,7 +111,7 @@ const MyRequest = () => {
       )}
 
       <ModalViewRequest
-        requestId={requestId}
+        requestData={userRequestData}
         visible={viewRequestVisible}
         onRequestClose={() => setViewRequestVisible(false)} 
       />

@@ -1,7 +1,9 @@
 import { Modal, StyleSheet, Text, View,Pressable,Image,ImageBackground } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { getBloodRequest } from '../../../services/userServices'
-const ModalBloodBank = ({visible, onRequestClose,requestId}) => {
+const ModalBloodBank = ({visible, onRequestClose,requestData}) => {
+    const [selectedRequestData, setReuquestData]= useState();
+    // console.log("REQUEST TO VIEW DATA: ",JSON.stringify(requestData,null, 5));
   return (
     <View>
         <Modal
@@ -18,7 +20,7 @@ const ModalBloodBank = ({visible, onRequestClose,requestId}) => {
             />
         </Pressable>
             <View className='w-full h-full'> 
-                <Text>modal view request {requestId}</Text>
+                <Text>modal view request {requestData?.user_id}</Text>
             </View>
         </Modal>
     </View>
