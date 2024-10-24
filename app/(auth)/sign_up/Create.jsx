@@ -57,6 +57,7 @@ const Create = () => {
           .insert([
             { 
                 user_id: user.id,  
+                email: email,
                 first_name: firstName,
                 middle_name: middleName,
                 last_name: lastName,

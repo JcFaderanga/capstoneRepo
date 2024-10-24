@@ -7,7 +7,7 @@ import {
   import {useState, useEffect} from 'react'
   import React from 'react'
   import Require from '../../require';
-const InputBoxNum = ({value, onChangeText, borderWidth, borderColor,detail,message}) => {
+const InputBoxNum = ({value, onChangeText, borderWidth, borderColor,detail,message=''}) => {
   return (
     <View className= "mt-5 mx-auto ">
       <Text className="ont-bold text-base `pl-2 pb-1 ">{detail}</Text>
@@ -34,6 +34,7 @@ const InputBoxNum = ({value, onChangeText, borderWidth, borderColor,detail,messa
                     {message ? (
                     <Require message={message} />
                 ) : null}
+                <Text className="px-2 absolute bottom-[-20] text-primaryRed">{message.message}</Text>
           </View>
     </View>
     

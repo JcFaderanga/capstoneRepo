@@ -43,6 +43,7 @@ const InputBox = ({
                 {message ? (
                     <Require message={message} />
                 ) : null}
+                <Text className="px-2 absolute bottom-[-20] text-primaryRed">{message.message}</Text>
             </View>
         </View>
     );
