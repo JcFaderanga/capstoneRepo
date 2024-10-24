@@ -21,6 +21,15 @@ npm install @react-navigation/native @react-navigation/material-top-tabs react-n
 npm install react-native-screens react-native-safe-area-context
 
 }
+for dropdown list or menu{
+npm install react-native-picker-select,
+npm install @react-native-picker/picker
+}
+
+philippines addresses{
+npm install phil-reg-prov-mun-brgy
+}
+
 EAS Build{
 eas login / Logged out
 eas build:configure

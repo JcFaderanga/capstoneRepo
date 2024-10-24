@@ -22,6 +22,11 @@ const Create = () => {
     const [birthDate, setBirthDate] = useState(params.birthDate || '');
     const [gender, setGender] = useState(params.gender || '');
     const [bloodType, setBloodType] = useState(params.bloodType || '');
+    const [street, setStreet] = useState(params.street ||'')
+    const [region, set] = useState(params.regionName ||'')
+    const [province, setProvince] = useState(params.provinceName ||'')
+    const [city,setCity ] = useState(params.cityName ||'')
+    const [barangay, setBarangay] = useState(params.barangay ||'')
     const [borderColor, setBorderColor] = useState('gray');
     const [borderWidth, setBorderWidth] = useState(2);
     const [isLoading, setLoading] = useState(false);
@@ -52,6 +57,7 @@ const Create = () => {
         //     if(res.success) setUserData(res.data);
         //   };
         
+    console.log("create address ------", street+region+province+city+barangay)
         const { error: profileError } = await supabase
           .from('profile')
           .insert([
@@ -61,6 +67,13 @@ const Create = () => {
                 first_name: firstName,
                 middle_name: middleName,
                 last_name: lastName,
+                address:{
+                    street:street,
+                    region:region,
+                    province:province,
+                    city:city,
+                    barangay:barangay,
+                },
                 birth_date: birthDate, 
                 gender: gender,
                 blood_type: bloodType,

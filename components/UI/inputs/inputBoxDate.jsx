@@ -18,7 +18,7 @@ const InputBoxDate = ({title, keyboardType, onChangeText, borderWidth, borderCol
                     options={{
                     format: 'MM/DD/YYYY'
                     }}
-                    className="w-[310px] h-[50px]  rounded-[15px] p-4 text-base bg-gray-50 focus:bg-gray-100 focus:border-2 focus:border-gray-500"
+                    className="w-[310px] h-[56px]  rounded-[15px] p-4 text-base bg-gray-50 focus:bg-gray-100 focus:border-2 focus:border-gray-500"
                     style={{
                         borderColor: borderColor,
                         borderWidth: borderWidth

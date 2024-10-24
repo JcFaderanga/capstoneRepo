@@ -54,7 +54,7 @@ const Profile = () => {
 
         if (allFieldsFilled) {
             router.push({
-                pathname: './gender',
+                pathname: './address',
                 params: {
                     ...params,
                     firstName,
