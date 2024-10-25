@@ -51,13 +51,6 @@ const Create = () => {
           Alert.alert("ERROR INSERTING EMAIL AND PASS:",error.message);
           return;
         }
-        // const updateUserData = async (user) => {
-        //     let res = await getUserData(user?.id);
-        //     console.log('APP/_LAYOUT :: get user data:', res);
-        //     if(res.success) setUserData(res.data);
-        //   };
-        
-    console.log("create address ------", street+region+province+city+barangay)
         const { error: profileError } = await supabase
           .from('profile')
           .insert([

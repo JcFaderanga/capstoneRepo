@@ -24,7 +24,7 @@ const home = () => {
         {/** nav bar */}
         <View style={{elevation: 10}} className="w-full h-[75px] flex-row justify-between items-center bg-primaryRed rounded-b-[40]">
           <View className=" ml-5 ">
-            <Text className="text-2xl font-bold text-white">Hi {user && user.first_name}!</Text>
+            <Text className="text-2xl font-bold text-white">Hi {user && user?.first_name}!</Text>
           </View>
           <View className=" w-auto h-5 mr-5 flex-row">
             {/** onPress={()=> router.push('../screens/FAQs')} */}

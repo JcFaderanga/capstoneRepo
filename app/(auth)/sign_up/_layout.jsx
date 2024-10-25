@@ -88,6 +88,18 @@ const _layout = () => {
               fontWeight: 'bold',
             },
           }}
+        />
+        <Stack.Screen name="termAndCondition" options={{
+            title: 'Sign Up',
+            headerStyle: {
+              backgroundColor: '#F42F47',
+            },
+            headerTintColor: '#fff',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
         /> 
     </Stack>
   )

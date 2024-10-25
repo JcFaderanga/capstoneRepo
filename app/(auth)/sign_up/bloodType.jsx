@@ -32,7 +32,7 @@ const BloodGroup = () => {
     //pass value to next path
     function handlePressed(){
       router.push({
-        pathname: './Create',
+        pathname: './termAndCondition',
         params: {...params,bloodType },
       });
     } 
