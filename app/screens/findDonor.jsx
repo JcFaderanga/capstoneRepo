@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View, ActivityIndicator, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Elevated from '../../components/elevated';
 import { supabase } from '../../lib/supabase';
@@ -62,7 +62,7 @@ const FindDonor = () => {
   }
 
   return (
-    <View className="bg-white flex-1">
+    <ScrollView className="bg-white flex-1">
       {donors.map((donor) => {
         const isUserDonor = user && user.id === donor.id;
         const bgColor = isUserDonor ? '#FFEFF1' : '#FFFFFF';
@@ -112,7 +112,7 @@ const FindDonor = () => {
         onRequestClose={() => setModalVisible(false)}
         donorInfo={selectedDonor} 
       />
-    </View>
+    </ScrollView>
   );
 };
 
