@@ -24,20 +24,13 @@ const Notification = () => {
                   </View>
               </View>
               <ContentTitleButton
-                title={"Am I Eligible?"}
+                title={"Jc Faderanga"}
                 size= {{width: 27, hieght:25}}
                 icon = {homeIcons.mailUnseen}
                 backIcon={homeIcons.arrowNoCircle}
                 
               />
-              <ContentTitleButton
-                title={"Hi There JC!"}
-                size= {{width: 27, hieght:25}}
-                icon = {homeIcons.mailUnseen}
-                backIcon={homeIcons.arrowNoCircle}
-                
-              />
-              
+
             </ScrollView>
         </SafeAreaView>     
     </View>

@@ -1,9 +1,10 @@
-import { Image, Pressable, StyleSheet, Text, View, ActivityIndicator, ScrollView } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Elevated from '../../components/elevated';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/authContext';
 import ModalDirectRequest from '../../components/Modals/DirectRequest/ModalDirectRequest';
+import { ScrollView } from 'react-native';
 
 const FindDonor = () => {
   const { user } = useAuth();
@@ -62,57 +63,59 @@ const FindDonor = () => {
   }
 
   return (
-    <ScrollView className="bg-white flex-1">
-      {donors.map((donor) => {
-        const isUserDonor = user && user.id === donor.id;
-        const bgColor = isUserDonor ? '#FFEFF1' : '#FFFFFF';
-        const donorName = isUserDonor ? 'You' : (donor.anonymous_donor ? "Anonymous" : `${donor.first_name} ${donor.last_name}`);
+    <View className="bg-white flex-1 border">
+      <ScrollView>
+        {donors.map((donor) => {
+          const isUserDonor = user && user.id === donor.id;
+          const bgColor = isUserDonor ? '#FFEFF1' : '#FFFFFF';
+          const donorName = isUserDonor ? 'You' : (donor.anonymous_donor ? "Anonymous" : `${donor.first_name} ${donor.last_name}`);
 
-        return (
-          <Pressable 
-            key={donor.id}
-            className="w-11/12 h-24 mx-auto my-2" 
-            onPress={() => handlePress(donor)}
-            accessibilityLabel={`Donor: ${donorName}, Blood Type: ${donor.blood_type}`}
-          >
-            <Elevated width={'100%'} height={'100%'}>
-              <View 
-                className="flex-1 flex-row justify-between items-center px-6 rounded-[10px]"
-                style={{ backgroundColor: bgColor }}
-              > 
-                <View className="flex-row items-center">
-                  <Image
-                    source={donor.anonymous_donor
-                      ? require('../../assets/icon/anonymouseIcon.png')
-                      : require('../../assets/icon/profilePic.jpg')}
-                    resizeMode="contain"
-                    className="w-14 h-14 rounded-full"
-                  />
-                  <View className="px-3 w-40">
-                    <Text
-                      className="text-base font-bold"
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                    >
-                      {donorName}
-                    </Text>
-                    <Text className="text-[12px] leading-[13px] text-gray-500">
-                      ID: {donor.anonymous_donor ? "- - - - - - - - - -" : donor.id}
-                    </Text>
+          return (
+            <Pressable 
+              key={donor.id}
+              className="w-11/12 h-24 mx-auto my-2" 
+              onPress={() => handlePress(donor)}
+              accessibilityLabel={`Donor: ${donorName}, Blood Type: ${donor.blood_type}`}
+            >
+              <Elevated width={'100%'} height={'100%'}>
+                <View 
+                  className="flex-1 flex-row justify-between items-center px-6 rounded-[10px]"
+                  style={{ backgroundColor: bgColor }}
+                > 
+                  <View className="flex-row items-center">
+                    <Image
+                      source={donor.anonymous_donor
+                        ? require('../../assets/icon/anonymouseIcon.png')
+                        : require('../../assets/icon/profilePic.jpg')}
+                      resizeMode="contain"
+                      className="w-14 h-14 rounded-full"
+                    />
+                    <View className="px-3 w-40">
+                      <Text
+                        className="text-base font-bold"
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
+                      >
+                        {donorName}
+                      </Text>
+                      <Text className="text-[12px] leading-[13px] text-gray-500">
+                        ID: {donor.anonymous_donor ? "- - - - - - - - - -" : donor.id}
+                      </Text>
+                    </View>
                   </View>
+                  <Text className="text-primaryRed text-3xl font-bold">{donor.blood_type}</Text>
                 </View>
-                <Text className="text-primaryRed text-3xl font-bold">{donor.blood_type}</Text>
-              </View>
-            </Elevated>
-          </Pressable>
-        );
-      })}
-      <ModalDirectRequest
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-        donorInfo={selectedDonor} 
-      />
-    </ScrollView>
+              </Elevated>
+            </Pressable>
+          );
+        })}
+        <ModalDirectRequest
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+          donorInfo={selectedDonor} 
+        />
+     </ScrollView> 
+    </View>
   );
 };
 
