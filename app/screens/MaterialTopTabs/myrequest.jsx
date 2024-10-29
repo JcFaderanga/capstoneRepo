@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, View, ScrollView, RefreshControl, Image } 
 import React, { useEffect, useState } from 'react';
 import  MyRequestBox from '../../../components/myRequestBox';
 import { useAuth } from '../../../context/authContext';
-import { getBloodRequest } from '../../../services/userServices';
+import { getBloodRequest } from '../../../services/requestServices';
 import ModalViewRequest from '../../../components/Modals/MyRequestModals/modalViewRequest';
 import MyRequstBoxDirect from '../../../components/myRequestDirect';
 const MyRequest = () => {
@@ -13,41 +13,37 @@ const MyRequest = () => {
   const [userRequestData, setRequestData] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
   
-  useEffect(() => {
-    const fetchRequests = async () => {
-      if (!user || !user.id) return;
-      const requests = await getBloodRequest(user.id); // Get all data from Supabase
-      
-      // Separate requests into public and direct
+
+  const filteredList = async () => {
+    try {
+      const requests = await getBloodRequest(user.id); 
       const publicRequestsData = requests.filter(request => request.public_request);
       const directRequestsData = requests.filter(request => request.direct_request); 
-
-      // Set the state for public and direct requests
-      let publicRequestShowOnly3Data = publicRequestsData.slice(0,2)
+  
+      const publicRequestShowOnly3Data = publicRequestsData.slice(0, 3);
       setPublicRequests(publicRequestShowOnly3Data);
-      let directRequestShowOnly3Data = directRequestsData.slice(0,3)
+  
+      const directRequestShowOnly3Data = directRequestsData.slice(0, 3);
       setDirectRequests(directRequestShowOnly3Data);
-    };
-    fetchRequests();
+    } catch (error) {
+      console.error("Error fetching requests:", error);
+    }
+  };
+  
+  useEffect(() => {
+    if (user && user.id) {
+      filteredList();
+    }
   }, [user]);
-
-  // Function to handle refreshing
+  
   const onRefresh = async () => {
     setRefreshing(true);
     if (user?.id) {
-      const refreshedRequests = await getBloodRequest(user.id);
-      const publicRequestsData = refreshedRequests.filter(request => request.public_request);
-      const directRequestsData = refreshedRequests.filter(request => request.direct_request); 
-
-      let publicRequestShowOnly3Data = publicRequestsData.slice(0,2)
-      setPublicRequests(publicRequestShowOnly3Data);
-      let directRequestShowOnly3Data = directRequestsData.slice(0,3)
-      setDirectRequests(directRequestShowOnly3Data);
+      await filteredList();
     }
-    setRefreshing(false); // Stop the refreshing animation
+    setRefreshing(false);
   };
-
-  // Function to view a specific request
+  
   const viewRequest = (data) => {
     setRequestData(data);
     setViewRequestVisible(true);
@@ -75,7 +71,7 @@ const MyRequest = () => {
             key={index} 
             timeStamp={request.created_at} 
             units={request.units} 
-            onPress={() => viewRequest(request)} // Pass the correct request ID
+            onPress={() => viewRequest(request)}
           />
         ))
       ) : (

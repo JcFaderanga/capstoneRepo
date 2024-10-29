@@ -40,7 +40,9 @@ const home = () => {
         <View className="w-full h-full">
               <View className="flex-1 justify-center ">
                 {/* <Text className='text-primaryRed w-full text-center text-xl font-bold py-2'>Upcoming Donation Drive</Text> */}
-                    <DonationDrive/>
+                    <DonationDrive
+                    onPress={()=>router.push('../screens/donationDrive')}
+                    />
  
               </View>
 

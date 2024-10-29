@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { homeIcons } from '../constant';
 import Elevated from './elevated';
 
-const DonationDrive = ({location, time, date}) => {
+const DonationDrive = ({location, time, date, onPress}) => {
   return (
     <>
     <View className="w-full px-4">
@@ -24,7 +24,9 @@ const DonationDrive = ({location, time, date}) => {
                 <Text className="my-2 mx-4">Are you nearby? Join us and donate, be a hero and help save lives!</Text>
             </View>        
                 <View className=" flex-row justify-between items-center px-4 py-3">
-                <Pressable className="rounded-[20px] rounded-bl-none w-28 h-9 bg-primaryRed flex-row justify-center items-center">
+                <Pressable className="rounded-[20px] rounded-bl-none w-28 h-9 bg-primaryRed flex-row justify-center items-center"
+                onPress={onPress}
+                >
                         <Text className="text-white font-bold px-2">See all</Text>
                         <Image style={{tintColor: "white"}} source={require('../assets/icon/arrowNoCircle.png')} resizeMode='contain' className="w-4"/>
                     </Pressable>

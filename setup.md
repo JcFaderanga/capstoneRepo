@@ -41,6 +41,15 @@ to update eas-cli@12.5.1 use "npm install -g eas-cli"
 for Material Top Navigation
 npm i @react-navigation/material-top-tabs
 
+for image picker{
+npx expo install expo-image-picker
+}
+
+for file system to upload image to supabase storage{
+npx expo install expo-file-system
+npm i base64-arraybuffer
+}
+folder structure
 app/
 (auth)/
 (tabs)/
@@ -57,3 +66,27 @@ layoout.jsx
 foryou.jsx
 mydonation.jsx
 myrequest.jsx
+
+database structure
+profile{
+id,
+user_id,
+contact: {email, phone},
+user: {first_name,middle_name,last_name},
+user_details: {birth_date,gender,blood_type},
+donation_status:{donation_Availability,anonymous_donor},
+address:{region,province,city,street},
+},
+
+NOTIFICATION
+
+donation request
+
+- recieve notif if some send a blood request
+- status of blood request(if you request)
+- status of who donated how many donated(if you request)
+- status of your donation when you donate
+
+donation drive
+
+- recieve notication for up comming donation drive

@@ -10,15 +10,14 @@ const bloodCompatibility = {
     'AB-': { canDonateTo: ['AB+', 'AB-'], canReceiveFrom: ['AB-', 'A-', 'B-', 'O-'] }
 };
 
-const bloodType = 'B+';
-
-function showCompatibility(bloodType) {
+export function ShowCompatibility(bloodType) {
     const compatibility = bloodCompatibility[bloodType];
     if (!compatibility) {
         return `Unknown blood type: ${bloodType}`;
     }
-    return `Blood type ${bloodType} can donate to: ${compatibility.canDonateTo.join(', ')} and can receive from: ${compatibility.canReceiveFrom.join(', ')}.`;
+    let bloodCopatiblity =  `Blood type ${bloodType} can donate to: ${compatibility.canDonateTo.join(', ')} and can receive from: ${compatibility.canReceiveFrom.join(', ')}.`;
+    console.log(bloodCopatiblity);
 }
 
-console.log(showCompatibility(bloodType));
+
 

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View,Image, Pressable } from 'react-native'
 import React from 'react'
 import { useAuth } from '../context/authContext';
-
+import { avatar } from '../constant';
 const _layout=()=>{
     return (
         <AuthProvider>
@@ -10,8 +10,8 @@ const _layout=()=>{
       );
 }
 
-const ProfileInfo = () => {
-
+const ProfileInfo = ({setProfile,profile}) => {
+console.log("profilInfo = avatar is -- ",profile)
     const { setAuth, user } = useAuth();
     const formatDate = (timestamp) => {
       // Check if timestamp is valid
@@ -29,19 +29,22 @@ const ProfileInfo = () => {
     <>
         <View className="w-full h-[180px] flex bg-primaryRed">
                 <View className="w-full h-[130px] flex-row items-center justify-between">
-                    <View className=" ml-6" style={{ elevation: 5, borderRadius: 500,}}>
-                        <Image source={require('../assets/icon/profilePic.jpg')} 
+                    <View className=" ml-6">
+                        <Image source={profile}
                                   style={styles.profileImage}
-                                  className="bg-white border"
+                                  className=""
                                   resizeMethod='retain'/>
                           <Pressable 
                           style={{elevation: 5}}
-                          className="w-8 h-8 rounded-full bg-white absolute bottom-0 right-1 flex items-center justify-center">
+                          className="w-8 h-8 rounded-full bg-white absolute bottom-0 right-1 flex items-center justify-center"
+                          onPress={setProfile}
+                          >
                             <Image 
                             source={require('../assets/icon/editPen.png')} 
                             resizeMode='contain' 
                             className="w-4"
-                            style={{elevation: 5, tintColor: '#3A3A3A'}}/>
+                            style={{elevation: 5, tintColor: '#3A3A3A'}}
+                            />
                           </Pressable>
                     </View>  
                     <View className="float-left  h-full flex-1 ml-5 justify-center">
@@ -75,9 +78,9 @@ const styles = StyleSheet.create({
     profileImage: {
       width: 110,
       height: 110,
-      borderWidth: 2,
       borderColor: 'white',
-      borderRadius: 500,
+     // borderWidth: 1,
+      borderRadius:50,
       elevation: 10,
       shadowColor: '#000',
       shadowOffset: { width: 20, height: 20 },

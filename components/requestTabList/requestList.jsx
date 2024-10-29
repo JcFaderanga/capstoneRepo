@@ -10,29 +10,23 @@ const ProfileList = ({ bloodTypeFilterResult }) => {//get filters of data from f
   const [error, setError] = useState(null);
   const [refreshing, setRefreshing] = useState(false); 
 
+  const getRequestList = async()=>{
+    const requests = await fetchRequests({ bloodTypeFilterResult });//pass seletected types to query to filter list result 
+    setRequestList(requests);// set filter result to requestList
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      try {
-        const requests = await fetchRequests({ bloodTypeFilterResult });//pass seletected types to query to filter list result 
-        setRequestList(requests);// set filter result to requestList
-      } catch (err) {
-        setError(err.message);
-      }finally{
-        setLoading(false);
-      }
+        getRequestList();
+      setLoading(false);
     };
     fetchData();
   }, [bloodTypeFilterResult]);// every time there is an update will automatically reload
 
   const handleRefresh = async () => {
     setRefreshing(true);
-    try {
-      const requests = await fetchRequests({ bloodTypeFilterResult });
-      setRequestList(requests);
-    } catch (err) {
-      setError(err.message);
-    }
+      await getRequestList();
     setRefreshing(false);
   };
 
@@ -68,5 +62,4 @@ const ProfileList = ({ bloodTypeFilterResult }) => {//get filters of data from f
     </View>
   );
 };
-
 export default ProfileList;

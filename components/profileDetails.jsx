@@ -4,7 +4,7 @@ import Elevated from './elevated';
 import ToggleButton from './UI/button/toggleBtn';
 import { useAuth } from '../context/authContext';
 import { supabase } from '../lib/supabase';
-
+import { ShowCompatibility } from '../services/bloodcopatibilty';
 const ProfileDetails = () => {
  const { user } = useAuth();
   const [availability, setAvailability] = useState(user && user.donation_availability);
@@ -42,7 +42,7 @@ const ProfileDetails = () => {
         <Elevated width={100} height={85}>
           <Pressable
             className="flex-1 flex-row items-center justify-center px-3 pt-2 rounded-t-[10px] bg-[#3A3A3A]"
-            onPress={() => console.log('pressed')}
+            onPress={() => ShowCompatibility(user.blood_type)}
           >
             <View className="flex-row items-center justify-center gap-1">
               <Image

@@ -1,14 +1,16 @@
 import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ProfileInfo from '../../components/profileInfo';
 import ContentTitleButton from '../../components/contentTitle';
-import { homeIcons } from '../../constant';
 import { Modal } from 'react-native'; 
 import { useAuth } from '../../context/authContext';
 import { useRouter } from 'expo-router';
 import { supabase } from '../../lib/supabase';
 import ProfileDetails from '../../components/profileDetails';
+import { getUserImageSrc, uploadFile, getSupabaseFileUrl } from '../../services/imageServices';
+import * as ImagePicker from 'expo-image-picker';
+import { avatar, homeIcons } from '../../constant';
 const CustomModal = ({ modalVisible, setModalVisible }) => {
   const { setAuth } = useAuth(); 
   const router = useRouter();
@@ -21,12 +23,13 @@ const CustomModal = ({ modalVisible, setModalVisible }) => {
     } 
     setAuth(null);  
     router.replace('.././'); 
-};
+  };
 
-const handleEdit =()=>{
-  router.push('../screens/editProfileInfo');
-  setModalVisible(false);
-}
+  const handleEdit = () => {
+    router.push('../screens/editProfileInfo');
+    setModalVisible(false);
+  };
+
   return (
     <Modal
       transparent={true} 
@@ -34,27 +37,23 @@ const handleEdit =()=>{
       animationType="fade" 
       onRequestClose={() => setModalVisible(false)} 
     >
-
       <Pressable className="flex-1 justify-end bg-black/30" onPress={() => setModalVisible(false)}>
         <Pressable className="w-full bg-white rounded-t-[20px]" onPress={(e) => e.stopPropagation()}>
           <ContentTitleButton
             title={"Edit"}
-            size={{ width: 25, height: 25 }}
+            size={{ width: 22, height: 22 }}
             icon={require('../../assets/icon/edit.png')}
-            backIcon={homeIcons.arrowNoCircle}
             onPress={handleEdit}
           />
           <ContentTitleButton
             title={"Settings"}
-            size={{ width: 25, height: 25 }}
+            size={{ width: 22, height: 22 }}
             icon={homeIcons.settings}
-            backIcon={homeIcons.arrowNoCircle}
           />
           <ContentTitleButton
             title={"Log out"}
-            size={{ width: 25, height: 25 }}
+            size={{ width: 22, height: 22 }}
             icon={require('../../assets/icon/logout.png')}
-            backIcon={homeIcons.arrowNoCircle}
             onPress={handleLogout} 
           />
         </Pressable>
@@ -65,10 +64,24 @@ const handleEdit =()=>{
 
 const Profile = () => {
   const [modalVisible, setModalVisible] = useState(false); 
+  const [profileImage, setProfileImage] = useState(null);
+  const { user } = useAuth();
+  const router = useRouter();
+
   const menuOptions = () => {
     setModalVisible(true); 
   };
 
+  const setProfile = async () => {
+      console.log("profile")
+  };
+
+  const avatarProfile = ()=>{
+    if(user && user.avatar){
+     return !user.avatar ? avatar.m1 :  avatar[user.avatar] ; 
+    }
+  }
+ 
   return (
     <View className="w-full h-full bg-white">
       <SafeAreaView>
@@ -84,7 +97,7 @@ const Profile = () => {
             </Pressable>
           </View>
         </View>
-        <ProfileInfo />
+        <ProfileInfo setProfile={setProfile} profile={avatarProfile()}/>
         <ProfileDetails/>
       </SafeAreaView>
       <CustomModal modalVisible={modalVisible} setModalVisible={setModalVisible} /> 

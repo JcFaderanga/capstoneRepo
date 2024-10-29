@@ -20,7 +20,7 @@ import {getProfile } from '../services/userServices'
       <View className="h-34 border-t-2 border-[#F42F47] bg-white rounded-md">
           <Text className="w-full px-3 pt-2 ">Posted {TimeAgo(timeStamp)}</Text>
           <Text className="w-full text-base px-3 pt-2">Request to <Text className="font-bold">{anonymous ?"Anonymous Donor" :donorName}</Text></Text>
-          <View className="flex-1 justify-center px-4">
+          <View className="flex-1 w-full h-full justify-center px-4">
             <View className="  flex-row justify-between">
               <View className="borde flex-row items-center">
                 <Image source={require('../assets/icon/donated.png')} resizeMode='contain' className="w-10 h12"/>

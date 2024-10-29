@@ -67,7 +67,7 @@ const AuthLayout = () => {
 
   const updateUserData = async (user) => {
     let res = await getUserData(user?.id);
-    console.log('APP/_LAYOUT :: get user data:', res);
+    console.log('APP/_LAYOUT :: get user data:',JSON.stringify(res, null,2));
     if(res.success) setUserData(res.data);
   };
 

@@ -6,7 +6,7 @@ import ToggleButton from '../../UI/button/toggleBtn';
 import { useAuth } from '../../../context/authContext';
 import { supabase } from '../../../lib/supabase';
 import ModalRequestInvalidBloodType from '../modalRequestInvalidBloodType';
-
+import { createDirectRequest } from '../../../services/requestServices';
 const ModalDirectRequest = ({ visible, onRequestClose, donorInfo }) => {
   const [isRequestAnonymous, setRequestAnonymous] = useState(false);
   const [isDonorAnonymous, setDonorAnonymous] = useState(false);
@@ -30,29 +30,24 @@ const ModalDirectRequest = ({ visible, onRequestClose, donorInfo }) => {
       setBloodTypeValid(true);
       return;
     }
-
-    const { error } = await supabase
-      .from('blood_request')
-      .insert([
-        {
-          user_id: user.id,
-          blood_type: user.blood_type,
-          units: requestUnits,
-          description: description,
-          anonymous: isRequestAnonymous,
-          anonymous_donor: isAnonymousDonor,
-          direct_request: true,
-          requested_to:donorID
-        },
-      ]);
-
-    if (error) {
-      Alert.alert('Error Inserting Request:', error.message);
-    } else {
-      Alert.alert('Request Successful', 'Your blood request has been submitted.');
-      resetForm();
-      onRequestClose();
-    }
+    let request = {
+      user_id: user.id,
+      blood_type: user.blood_type,
+      units: requestUnits,
+      description: description,
+      anonymous: isRequestAnonymous,
+      anonymous_donor: isAnonymousDonor,
+      direct_request: true,
+      requested_to:donorID
+   }
+      let res = createDirectRequest(request);
+      if(res.success){
+          console.log("this ID is for new request -- ",res?.data?.id);
+          Alert.alert('Request Successful', 'Your blood request has been submitted.');
+          resetForm();
+          onRequestClose();
+        
+      }
   };
 
   const resetForm = () => {

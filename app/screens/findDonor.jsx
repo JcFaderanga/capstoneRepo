@@ -5,6 +5,7 @@ import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/authContext';
 import ModalDirectRequest from '../../components/Modals/DirectRequest/ModalDirectRequest';
 import { ScrollView } from 'react-native';
+import { homeIcons } from '../../constant';
 
 const FindDonor = () => {
   const { user } = useAuth();
@@ -86,7 +87,7 @@ const FindDonor = () => {
                     <Image
                       source={donor.anonymous_donor
                         ? require('../../assets/icon/anonymouseIcon.png')
-                        : require('../../assets/icon/profilePic.jpg')}
+                        : homeIcons.profile}
                       resizeMode="contain"
                       className="w-14 h-14 rounded-full"
                     />

@@ -7,7 +7,7 @@ import ToggleButton from '../UI/button/toggleBtn';
 import { useAuth } from '../../context/authContext';
 import { supabase } from '../../lib/supabase';
 import ModalRequestInvalidBloodType from './modalRequestInvalidBloodType';
-
+import { createPublicRequest } from '../../services/requestServices';
 
 
 const ModalCreateBloodRequest = ({ visible, onRequestClose, setList }) => {
@@ -21,36 +21,26 @@ const ModalCreateBloodRequest = ({ visible, onRequestClose, setList }) => {
 
   const SubmitRequest = async () => {
     let allFieldsFilled = true;
-
-    // Check blood type validity only if all fields are filled
+    
     if (allFieldsFilled) {
-     
         if (user && user.blood_type === '--') {
           setBloodTypeValid(true);
-          return; // Exit the function if blood type is invalid
+          return; 
         }
-    
-        const { error } = await supabase
-          .from('blood_request')
-          .insert([
-            {
-              user_id: user.id,
-              blood_type: user.blood_type,
-              units: requestUnits,
-              description: description,
-              anonymous: isRequestAnonymous,
-              public_request: true
-            }
-          ]); 
-      if (error) {
-        Alert.alert("ERROR INSERTING REQUEST:", error.message);
-      } else {
+       let request = {
+          user_id: user?.id,
+          blood_type: user?.blood_type,
+          units: requestUnits,
+          description: description,
+          anonymous: isRequestAnonymous,
+          public_request: true
+       }
+       createPublicRequest(request); //send reqeust to requestServices.js to insert
         Alert.alert("Request Successful", "Your blood request has been submitted.");
         setList([]);
         onRequestClose(); 
         setRequestUnits(1);
         setDescription('');
-      }
     }
   };
   

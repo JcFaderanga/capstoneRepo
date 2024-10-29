@@ -21,27 +21,13 @@ export const getProfile = async (userId )=>{
   const { data, error } = await supabase
     .from('profile')
     .select('*')
-    .eq('id',userId)
+    .eq('id',userId) 
     .single();
-
-  
   if (error) {
     console.log('ERROR FETCHING REQUESTS', error.message);
   } else {
    return data ;
   }
-}
-export const getBloodRequest = async (userId)=>{
-      const { data, error } = await supabase
-        .from('blood_request')
-        .select('*')
-        .eq('user_id',userId);
-      
-      if (error) {
-        console.log('ERROR FETCHING REQUESTS', error.message);
-      } else {
-       return (data || []).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-      }
 }
 
 export const fetchRequests = async ({ bloodTypeFilterResult }) => {

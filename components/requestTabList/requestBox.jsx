@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
 import Elevated from '../elevated'
-
+import { homeIcons  } from '../../constant'
 const RequestBox = ({name,description,bloodType,units,anonymous, timePosted}) => {
   return (
     <View className="w-full px-4">
@@ -10,7 +10,7 @@ const RequestBox = ({name,description,bloodType,units,anonymous, timePosted}) =>
                 <View className="w-full h-16">
                     <View className="flex-1 h-14 pt-2">
                         <View className=" h-14 px-1 py flex-row  items-center">
-                            <Image source={(anonymous) ? require('../../assets/icon/anonymouseIcon.png') : require('../../assets/icon/profilePic.jpg')} className="w-12 h-12 rounded-full mx-3" resizeMode='contain'/>
+                            <Image source={(anonymous) ? require('../../assets/icon/anonymouseIcon.png') : homeIcons.profile} className="w-12 h-12 rounded-full mx-3" resizeMode='contain'/>
                                 <View>
                                     <Text className="text-[16px] h-7 font-bold">
                                         {(anonymous)? 'Anonymous': name} •
