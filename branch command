@@ -1,0 +1,4 @@
+git branch -m main Documentation
+git fetch origin
+git branch -u origin/Documentation Documentation
+git remote set-head origin -a
