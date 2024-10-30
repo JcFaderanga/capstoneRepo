@@ -21,6 +21,7 @@
 ## EAS Build
 
 - `eas login` (if not already logged in)
+- `eas logout` (to logout)
 - `eas build:configure`
 - `eas build -p android --profile preview`
 
@@ -36,6 +37,25 @@
 
 - `npx expo install expo-file-system`
 - `npm i base64-arraybuffer`
+
+## Folder Structure
+
+`app/
+    (auth)/
+    (tabs)/
+        request.jsx
+        screen/
+        requestPages/
+            requestdetails.jsx
+        _layout.jsx
+index.jsx
+component/
+    requestTabList/
+        MaterialTopTabs/
+            layout.jsx
+            foryou.jsx
+            mydonation.jsx
+            myrequest.jsx`
 
 <!-- <h2>React Native and Expo Router installation</h2>
 <h3><a href="https://docs.expo.dev/router/installation/#prerequisites " target="blank">Installation docs</a></h3>
