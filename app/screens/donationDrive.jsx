@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const donationDrive = () => {
+const DonationDrive = () => {
   return (
     <View>
-      <Text>donationDrive</Text>
+      <Text>DonationDrive</Text>
     </View>
   )
 }
 
-export default donationDrive
+export default DonationDrive
 
 const styles = StyleSheet.create({})

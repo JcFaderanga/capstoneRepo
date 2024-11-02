@@ -57,7 +57,7 @@ request.jsx
 screen/
 requestPages/
 requestdetails.jsx
-\_layout.jsx
+/\_layout.jsx
 index.jsx
 component/
 requestTabList/

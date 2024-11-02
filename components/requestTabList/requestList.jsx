@@ -9,7 +9,7 @@ const ProfileList = ({ bloodTypeFilterResult }) => {//get filters of data from f
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [refreshing, setRefreshing] = useState(false); 
-
+ console.log(JSON.stringify(requestList, null, 4) )
   const getRequestList = async()=>{
     const requests = await fetchRequests({ bloodTypeFilterResult });//pass seletected types to query to filter list result 
     setRequestList(requests);// set filter result to requestList
@@ -46,6 +46,7 @@ const ProfileList = ({ bloodTypeFilterResult }) => {//get filters of data from f
           keyExtractor={(item) => item.blood_request_id.toString()}
           renderItem={({ item }) => (
             <RequestBox
+              userId={item.user_id}
               name={item.userName}
               description={item.description}
               bloodType={item.blood_type}

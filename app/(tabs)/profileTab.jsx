@@ -8,9 +8,9 @@ import { useAuth } from '../../context/authContext';
 import { useRouter } from 'expo-router';
 import { supabase } from '../../lib/supabase';
 import ProfileDetails from '../../components/profileDetails';
-import { getUserImageSrc, uploadFile, getSupabaseFileUrl } from '../../services/imageServices';
-import * as ImagePicker from 'expo-image-picker';
+import { avatar__icon } from '../../services/userAvatar'
 import { avatar, homeIcons } from '../../constant';
+
 const CustomModal = ({ modalVisible, setModalVisible }) => {
   const { setAuth } = useAuth(); 
   const router = useRouter();
@@ -64,7 +64,7 @@ const CustomModal = ({ modalVisible, setModalVisible }) => {
 
 const Profile = () => {
   const [modalVisible, setModalVisible] = useState(false); 
-  const [profileImage, setProfileImage] = useState(null);
+  const [avatar_image, setAvatarImage] = useState(null);
   const { user } = useAuth();
   const router = useRouter();
 
@@ -76,11 +76,16 @@ const Profile = () => {
       console.log("profile")
   };
 
-  const avatarProfile = ()=>{
-    if(user && user.avatar){
-     return !user.avatar ? avatar.m1 :  avatar[user.avatar] ; 
-    }
-  }
+  useEffect(() => {
+    const fetchAvatar = async () => {
+      if (user && user.id) {
+        const avatar = await avatar__icon(user.id);
+        setAvatarImage(avatar);
+      }
+    };
+    fetchAvatar();
+  }, [user?.id]);
+
  
   return (
     <View className="w-full h-full bg-white">
@@ -97,7 +102,7 @@ const Profile = () => {
             </Pressable>
           </View>
         </View>
-        <ProfileInfo setProfile={setProfile} profile={avatarProfile()}/>
+        <ProfileInfo setProfile={setProfile} profile={avatar_image}/>
         <ProfileDetails/>
       </SafeAreaView>
       <CustomModal modalVisible={modalVisible} setModalVisible={setModalVisible} /> 

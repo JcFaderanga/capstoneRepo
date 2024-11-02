@@ -1,8 +1,19 @@
 import { Pressable, StyleSheet, Text, View, Image } from 'react-native'
-import React from 'react'
+import React, { useEffect,useState } from 'react'
 import Elevated from '../elevated'
 import { homeIcons  } from '../../constant'
-const RequestBox = ({name,description,bloodType,units,anonymous, timePosted}) => {
+import { avatar__icon } from '../../services/userAvatar'
+const RequestBox = ({name,description,bloodType,units,anonymous, timePosted,userId}) => {
+    const [avatar_image, setAvatarImage] = useState(null);
+    //console.log("this requestbox = ",userId)
+    useEffect(() => {
+        const fetchAvatar = async () => {
+            const avatar = await avatar__icon(userId);
+            setAvatarImage(avatar);
+          }
+        fetchAvatar();
+      }, []);
+    
   return (
     <View className="w-full px-4">
          <Elevated width={'100%'} height={"auto"} elevated={2}>
@@ -10,7 +21,7 @@ const RequestBox = ({name,description,bloodType,units,anonymous, timePosted}) =>
                 <View className="w-full h-16">
                     <View className="flex-1 h-14 pt-2">
                         <View className=" h-14 px-1 py flex-row  items-center">
-                            <Image source={(anonymous) ? require('../../assets/icon/anonymouseIcon.png') : homeIcons.profile} className="w-12 h-12 rounded-full mx-3" resizeMode='contain'/>
+                            <Image source={(anonymous) ? require('../../assets/icon/anonymouseIcon.png')  : avatar_image} className="w-12 h-12 rounded-full mx-3" resizeMode='contain'/>
                                 <View>
                                     <Text className="text-[16px] h-7 font-bold">
                                         {(anonymous)? 'Anonymous': name} •
