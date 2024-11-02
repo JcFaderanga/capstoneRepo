@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View, ScrollView, RefreshControl, Image } from 'react-native';
+import { Pressable, StyleSheet, Text, View, ScrollView, RefreshControl, Image,ActivityIndicator, } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import  MyRequestBox from '../../../components/myRequestBox';
 import { useAuth } from '../../../context/authContext';
@@ -48,7 +48,8 @@ const MyRequest = () => {
     setRequestData(data);
     setViewRequestVisible(true);
   };
-
+  if (refreshing) return <ActivityIndicator size="large" color="#F42F47" />;
+ 
   return (
     <ScrollView
       className="bg-gray-50 flex-1"

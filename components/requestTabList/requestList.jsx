@@ -3,15 +3,15 @@ import { View, Text, FlatList, ActivityIndicator, Image } from 'react-native';
 import { TimeAgo } from '../../constant/timeStamp';
 import { fetchRequests } from '../../services/userServices';
 import RequestBox from './requestBox';
-
+var limit = 0;
 const ProfileList = ({ bloodTypeFilterResult }) => {//get filters of data from foryou.jsx 
   const [requestList, setRequestList] = useState([]);//store type request to show on the list
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [refreshing, setRefreshing] = useState(false); 
- console.log(JSON.stringify(requestList, null, 4) )
-  const getRequestList = async()=>{
-    const requests = await fetchRequests({ bloodTypeFilterResult });//pass seletected types to query to filter list result 
+  //console.log(JSON.stringify(requestList, null, 4) )
+  const getRequestList = async(limit)=>{
+    const requests = await fetchRequests({ bloodTypeFilterResult }, limit);//pass seletected types to query to filter list result 
     setRequestList(requests);// set filter result to requestList
   }
 
@@ -29,10 +29,15 @@ const ProfileList = ({ bloodTypeFilterResult }) => {//get filters of data from f
       await getRequestList();
     setRefreshing(false);
   };
-
   if (loading) return <ActivityIndicator size="large" color="#F42F47" />;
-  if (error) return <Text>Error: {error}</Text>;
+  
+  const fetchListLimit= async()=>{
+    setRefreshing(true);
+      await getRequestList(limit += 10);
+    setRefreshing(false);
+  }
 
+ 
   return (
     <View className="h-full">
       {requestList.length === 0 ? (
@@ -57,6 +62,10 @@ const ProfileList = ({ bloodTypeFilterResult }) => {//get filters of data from f
           )}
           refreshing={refreshing}
           onRefresh={handleRefresh}
+          onEndReached={()=>{
+            fetchListLimit();
+            
+          }}
         />
       )}
       

@@ -6,7 +6,7 @@ import { useAuth } from '../../context/authContext';
 import ModalDirectRequest from '../../components/Modals/DirectRequest/ModalDirectRequest';
 import { ScrollView } from 'react-native';
 import { homeIcons } from '../../constant';
-
+import { avatar__icon } from '../../services/userAvatar';
 const FindDonor = () => {
   const { user } = useAuth();
   const [donors, setDonors] = useState([]);
@@ -14,7 +14,8 @@ const FindDonor = () => {
   const [error, setError] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedDonor, setSelectedDonor] = useState(null);
-
+  const [avatar_image, setAvatarImage] = useState(null);
+  console.log("this donors -", JSON.stringify(donors,null,4) )
   useEffect(() => {
     const getDonors = async () => {
       setLoading(true); // Start loading
@@ -39,12 +40,19 @@ const FindDonor = () => {
 
     getDonors();
   }, []);
+  
+  console.log("this requrst avatar = ",avatar_image)
+  useEffect(() => {
+      const fetchAvatar = async () => {
+          const avatar = await avatar__icon(donors.id);
+          setAvatarImage(avatar);
+        }
+      fetchAvatar();
+    }, []);
 
   const handlePress = (donor) => {
     setSelectedDonor(donor);
      setModalVisible(true);
-     console.log("DONOR NAME --- from PROFILE ",donor.first_name)
-    console.log("DONOR NAME --- from PROFILE ",donor.anonymous_donor)
   };
 
   if (loading) {
@@ -87,7 +95,7 @@ const FindDonor = () => {
                     <Image
                       source={donor.anonymous_donor
                         ? require('../../assets/icon/anonymouseIcon.png')
-                        : homeIcons.profile}
+                        : avatar_image}
                       resizeMode="contain"
                       className="w-14 h-14 rounded-full"
                     />

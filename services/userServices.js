@@ -30,13 +30,15 @@ export const getProfile = async (userId )=>{
   }
 }
 
-export const fetchRequests = async ({ bloodTypeFilterResult }) => {
+export const fetchRequests = async ({ bloodTypeFilterResult }, limit=10) => {
     try {
       let query = supabase.from('blood_request').select('*').eq('public_request', true); //get data only if public
       if (bloodTypeFilterResult && bloodTypeFilterResult.length > 0) {
         query = query.in('blood_type', bloodTypeFilterResult);//if filterRequest !empty will return list of selected type
       }
-      const { data: requests, error: requestError } = await query;//if filterRequest is empty will set list to all 
+      const { data: requests, error: requestError } = await 
+        query.limit(limit).order('created_at', { ascending: false });;//if filterRequest is empty will set list to all 
+        
       if (requestError) {
         throw new Error(requestError.message);
       }
@@ -61,9 +63,9 @@ export const fetchRequests = async ({ bloodTypeFilterResult }) => {
         return { ...request, userName: `${user.firstName} ${user.lastName}` };
       });
   
-      const sortedRequests = requestsWithNames.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      //const sortedRequests = requestsWithNames.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
   
-      return sortedRequests;
+      return requestsWithNames;
     } catch (error) {
       throw error;
     }
