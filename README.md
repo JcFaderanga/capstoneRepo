@@ -32,6 +32,9 @@
 
 ## EAS Build
 
+### [Installation and doplyment tutorial](https://www.youtube.com/watch?v=4hw_UehVBAU&list=PLCn4foV7_u7A96yEugfr_GKMsT-1-I_L2)
+
+- `npm install -g eas-cli`
 - `eas login` (if not already logged in)
 - `eas logout` (to logout)
 - `eas build:configure`
