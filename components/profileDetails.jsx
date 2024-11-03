@@ -9,9 +9,21 @@ const ProfileDetails = () => {
  const { user } = useAuth();
   const [availability, setAvailability] = useState(user && user.donation_availability);
   const [anonymous, setAnonymous] = useState(user && user.anonymous_donor);
-
+  var alert_title = '';
+  var alert_description = '';
+  if(user && user.blood_type === '--'){
+     alert_title = 'Invalid Blood Group';
+     alert_description = 'Please visit the nearest blood center to confirm your blood type or update your records to be eligible as a donor.';
+  }else{
+     alert_title = 'Available to Donate';
+     alert_description = 'Turning on Available to Donate will display your profile in the list of available donors.';
+  }
 
   const handleDonorAvailability = async (val) => {
+    if(user.blood_type === '--'){
+      console.log(user.blood_type, " is invalid blood type",  user.donation_availability)
+      return setAvailability(false);
+    }
     const { error } = await supabase
       .from('profile')
       .update({ donation_availability: val })
@@ -21,6 +33,7 @@ const ProfileDetails = () => {
       console.error('Error updating availability:', error);
       setAvailability(!val);
     }
+    console.log(user.blood_type, "set as true and donor avail is = ", user.donation_availability)
   };
 
   const handleAnonymousDonor = async (val) => {
@@ -105,10 +118,8 @@ const ProfileDetails = () => {
               <Text className="font-bold text-[15px]">Available to Donate</Text>
             </View>
             <ToggleButton
-              AlertTitle={'Available to Donate'}
-              AlterDescription={
-                'Turning on Available to Donate will display your profile in the list of available donors.'
-              }
+              AlertTitle={alert_title}
+              AlterDescription={alert_description}
               onPress={handleDonorAvailability}
               status={availability}
             />
