@@ -9,6 +9,8 @@
 - [Material Top Navigation](#material-top-navigation)
 - [Image Picker](#image-picker)
 - [File System for Uploading Images to Supabase Storage](#file-system-for-uploading-images-to-supabase-storage)
+- [Philippines address](#Philippines-address)
+- [Date Picker](#date-picker)
 
 ## React Native and Expo Router Installation
 
@@ -52,3 +54,11 @@
 
 - `npx expo install expo-file-system`
 - `npm i base64-arraybuffer`
+
+## Philippines address
+
+- `npm install phil-reg-prov-mun-brgy`
+
+## Date Picker
+
+- `npm install @react-native-community/datetimepicker`
