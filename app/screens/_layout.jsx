@@ -40,7 +40,7 @@ const _layout = () => {
           backgroundColor: '#F42F47',
         },
         headerTintColor: '#fff',
-        headerTitleAlign: '',
+        headerTitleAlign: 'center',
         headerTitleStyle: {
           fontWeight: 'bold',
           color: 'white',

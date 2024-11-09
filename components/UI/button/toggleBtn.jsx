@@ -14,6 +14,7 @@ const ToggleBtn = ({ AlterDescription, onPress, AlertTitle,status }) => {
       );
     }
     // Update the toggle state
+    if(!status) return;
     setToggle(!isToggle);
 
     // Call the onPress function passed as a prop if it exists

@@ -62,3 +62,5 @@
 ## Date Picker
 
 - `npm install @react-native-community/datetimepicker`
+- `npm install react-native-modal-datetime-picker`
+- `npm install react-native-wheel-picker-expo`

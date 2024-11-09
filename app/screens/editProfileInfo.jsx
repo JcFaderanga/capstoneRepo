@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/authContext';
 import CustomBtn from '../../components/UI/button/button';
 import { supabase } from '../../lib/supabase';
-
+import { getUserData } from '../../services/userServices';
+import { useRouter } from 'expo-router';
 const TextBoxBetween = ({ text, detail, onChangeText, value }) => {
   return (
     <View className="w-full h-16 flex-row justify-between items-center border-b border-b-[#F0F0F0]">
@@ -20,7 +21,8 @@ const TextBoxBetween = ({ text, detail, onChangeText, value }) => {
 
 const EditProfileInfo = () => {
   const [refreshing, setRefreshing] = useState(false);
-  const { user } = useAuth();
+  const { user ,setUserData } = useAuth();
+  const router = useRouter();
   const [profile, setProfile] = useState({
     email: '',
     first_name: '',
@@ -62,6 +64,7 @@ const EditProfileInfo = () => {
   }, [user]);
 
   const updateProfile = async () => {
+    let userData = {...profile};
     const { error } = await supabase
       .from('profile')
       .update(profile)
@@ -70,14 +73,16 @@ const EditProfileInfo = () => {
     if (error) {
       console.log('Error updating profile:', error);
     } else {
-      console.log('Profile updated successfully');
+      console.log('Profile updated successfully',JSON.stringify(profile, null,2));
+      setUserData({...user,...userData});
+      router.back();
     }
   };
 
   const onRefresh = async () => {
     setRefreshing(true);
     if (user?.id) {
-      setProfile();
+      user
     }
     setRefreshing(false);
   };

@@ -111,7 +111,7 @@ const SignIn = () => {
               />
               <View className="m-[25]">
                 <Text className="color-customgray text-sm mx-auto">Don't have an Account?
-                  <Link href={'./Email'}>
+                  <Link href={'./sign_up/finish'}>
                     <Text className="font-interbold color-primaryRed"> Sign up</Text>
                   </Link>
                 </Text>
