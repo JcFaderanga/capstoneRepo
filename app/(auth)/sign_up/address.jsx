@@ -25,7 +25,10 @@ const Address = () => {
     
     const router = useRouter();
     const params = useLocalSearchParams();
-
+    console.log("on address after submit data is :",params.birthDate)
+    const date = new Date(params.birthDate)
+    const ISODate = date.toISOString();
+    console.log("on address ISO date :",ISODate)
     const regionList = philData.regions.map((region) => ({
         label: region.name, 
         value: region.reg_code,  
@@ -73,6 +76,7 @@ const Address = () => {
                 pathname: './gender',
                 params: {
                     ...params,
+                    birthDate: ISODate,
                     street,
                     regionName,
                     provinceName,

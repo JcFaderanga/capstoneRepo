@@ -86,6 +86,16 @@ const EditProfileInfo = () => {
     }
     setRefreshing(false);
   };
+  
+  const formatDate = (date) => {
+    return date ? date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    }) : 'Select Date';
+  };
+  const DOB = new Date(user.birth_date);
+  console.log("editProfile check date format:",formatDate(DOB))
 
   return (
     <View className="w-full h-full bg-[#f0f0f0]">
@@ -124,13 +134,15 @@ const EditProfileInfo = () => {
             onChangeText={(val) => setProfile({ ...profile, phone_number: val })}
           />
         </View>
-
+        <Text className="px-4 mx-auto mb-4 font-bold text-gray-400">NOTE: 
+          <Text className="font-normal"> Updating the email in your contact information will not change your email username.</Text>
+        </Text>
         {/* Birthday Section */}
         <View className="px-5 mb-3 bg-white" style={{ elevation: 1 }}>
           <Text className="text-primaryRed font-bold text-base mt-4">Your birthday</Text>
           <TextBoxBetween
             detail="Date of birth"
-            value={profile.birth_date}
+            value={formatDate(DOB)}
             onChangeText={(val) => setProfile({ ...profile, birth_date: val })}
           />
         </View>

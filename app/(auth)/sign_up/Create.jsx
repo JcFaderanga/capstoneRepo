@@ -11,7 +11,7 @@ import { useAuth } from '../../../context/authContext';
 import { getUserData } from '../../../services/userServices';
 const Create = () => {
     const params = useLocalSearchParams();
-
+    console.log("params",params.birthDate)
     // Initialize state with params values
     const [number, setPhoneNumber] = useState(params.number || '');
     const [email, setEmail] = useState(params.email || '');

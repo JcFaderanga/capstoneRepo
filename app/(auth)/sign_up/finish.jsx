@@ -5,7 +5,6 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 const CustomDatePicker = () => {
   const [date, setDate] = useState(null); // Initialize as null
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -27,7 +26,7 @@ const CustomDatePicker = () => {
       day: 'numeric' 
     }) : 'Select Date';
   };
-
+console.log(date)
   return (
     <View style={{ padding: 20 }}>
       <View style={{ width: '100%', borderColor: '#ccc', borderWidth: 1, height: 48, borderRadius: 15, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16 }}>

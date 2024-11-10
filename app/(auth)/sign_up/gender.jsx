@@ -11,7 +11,6 @@ const Gender = () => {
 
   const router = useRouter();
   const params = useLocalSearchParams();
-  
   const handlePress = () => {
     if (gender === '') {
       // No gender selected, show error message

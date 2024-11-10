@@ -17,7 +17,7 @@ const [Visible, setModalVisible] = useState(false);
 
 const params = useLocalSearchParams();
 const { setAuth, setUserData } = useAuth();
-
+console.log("params",params.birthDate)
 useEffect(() => {
     setBgColor1(condition1 ? '#F42F47' : 'transparent'); 
     setBgColor2(condition2 ? '#F42F47' : 'transparent'); 
