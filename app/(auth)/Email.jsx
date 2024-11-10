@@ -26,7 +26,7 @@ const Email = () => {
             const { data, error } = await supabase
                 .from('profile') // Make sure 'profile' is the correct table name
                 .select('email')
-                .eq('email', email.toLocaleLowerCase());
+                .eq('email', email.toUpperCase());
 
             if (error) {
                 throw new Error(error.message);
@@ -38,14 +38,13 @@ const Email = () => {
                 setEmailError({ condition: true, message: 'Email already exists!' });
                 console.log('Email already exists:', email);
             } else {
-                // If no data is returned, the email does not exist
                 setEmailError({ condition: false, message: '' });
                 console.log('Email is available');
                 
-                // Navigate to the next step
+                const emailToUpperCase = email.toUpperCase();
                 router.push({
                     pathname: '../sign_up/password',
-                    params: { email },
+                    params: { email:emailToUpperCase  },
                 });
             }
         } catch (error) {
