@@ -11,6 +11,7 @@ const Password = () => {
   const [passwordError, setPasswordError] = useState({ condition: false, message: '' });
   const [confirmPasswordError, setConfirmPasswordError] = useState({ condition: false, message: '' });
   const [passwordVisibility, setPasswordVisibility] = useState(true);
+  const [passwordIconDisplay, setPasswordIconDisplay] = useState('');
   const router = useRouter();
   const params = useLocalSearchParams();
   const validatePassword = () => {
@@ -54,6 +55,7 @@ const Password = () => {
         message={passwordError}
         secureTextEntry = {passwordVisibility}
       />
+      <View>
       <InputBox
         keyboardType="default"
         value={confirmPassword}
@@ -69,17 +71,17 @@ const Password = () => {
         autoCapitalize="none"
         customize={{ display: "none" }}
       />
-      <View className="w-[310px] m-auto pt-4 h-12 pb-2 ">
-        <Pressable className="flex-row items-center px-2" onPress={()=>setPasswordVisibility(!passwordVisibility)}>
+      <Pressable className=" right-7 top-8 px-4 absolute"
+        style={{display: passwordIconDisplay}} 
+        onPress={()=>setPasswordVisibility(!passwordVisibility)}>
             <Image source={
               passwordVisibility 
               ? require('../../../assets/icon/show.png')
               : require('../../../assets/icon/hide.png')}
               className="w-5" resizeMode='contain'/>
-            <Text className="text-customgray px-2">
-             {passwordVisibility ? "Show password" : "Hide password"} </Text>
-        </Pressable>
-      </View>
+       </Pressable>
+       </View>
+
       <CustomBtn
         onPress={() => {
           if (validatePassword()) {
