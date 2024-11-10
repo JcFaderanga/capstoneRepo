@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   Image,
   Alert,
+  Pressable
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { router, Link } from 'expo-router';
@@ -19,10 +20,12 @@ const SignIn = () => {
   const [emailError, setEmailError] = useState({ condition: false, message: '' });
   const [passwordError, setPasswordError] = useState({ condition: false, message: '' });
   const [isLoading, setIsLoading] = useState(false);
-
+  const [passwordVisibility, setPasswordVisibility] = useState(true);
+  const [passwordIconDisplay, setPasswordIconDisplay] = useState('');
   const validateEmail = (email) => {
     if (email.trim() === '' || (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))){
       setEmailError({ condition: true, message: 'Field is empty' });
+      
     } else {
       setEmailError({ condition: false, message: '' });
     }
@@ -31,7 +34,9 @@ const SignIn = () => {
   const validatePassword = (password) => {
     if (password.trim() === '') {
       setPasswordError({ condition: true, message: 'Field is empty' });
+      setPasswordIconDisplay("none");
     } else {
+      setPasswordIconDisplay("");
       setPasswordError({ condition: false, message: '' });
     }
   };
@@ -89,20 +94,31 @@ const SignIn = () => {
                 borderColor={emailError.condition ? 'red' : '#D9D9D9'}
                 message={emailError}
               />
-              <InputBox
-                value={password}
-                onChangeText={(passwordVal) => {
-                  setPassword(passwordVal);
-                  validatePassword(passwordVal);
-                }}
-                title="Enter Password here"
-                borderWidth={passwordError.condition ? 2 : 1}
-                borderColor={passwordError.condition ? 'red' : '#D9D9D9'}
-                secureTextEntry
-                autoCapitalize="none"
-                message={passwordError}
-                customize={{ display: "none" }}
-              />
+              <View>
+                <InputBox
+                  value={password}
+                  onChangeText={(passwordVal) => {
+                    setPassword(passwordVal);
+                    validatePassword(passwordVal);
+                  }}
+                  title="Enter Password here"
+                  borderWidth={passwordError.condition ? 2 : 1}
+                  borderColor={passwordError.condition ? 'red' : '#D9D9D9'}
+                  secureTextEntry = {passwordVisibility}
+                  autoCapitalize="none"
+                  message={passwordError}
+                  customize={{ display: "none" }}
+                />
+                <Pressable className=" right-0 top-8 px-4 absolute"
+                  style={{display: passwordIconDisplay}} 
+                  onPress={()=>setPasswordVisibility(!passwordVisibility)}>
+                      <Image source={
+                        passwordVisibility 
+                        ? require('../../assets/icon/hide.png')
+                        : require('../../assets/icon/show.png')}
+                        className="w-5" resizeMode='contain'/>
+                  </Pressable>
+              </View>
               <CustomBtn
                 title="Sign In"
                 onPress={signInWithEmail}
