@@ -16,10 +16,11 @@ const Password = () => {
 
     if (password === '') {
       setPasswordError({ condition: true, message: 'Invalid Password' });
+      return;
      
     } else if (password.length < 6) {
       setPasswordError({ condition: true, message: 'At least 6 Characters' });
-     
+      return;
     } else {
       setPasswordError({ condition: false, message: '' });
     }
