@@ -16,8 +16,8 @@ import DropDown from '../../../components/UI/inputs/dropDown';
 import { Alert } from 'react-native';
 const Address = () => { 
     const [street, setStreet] = useState('');
-    const [region, setRegion] = useState('');
-    const [province, setProvince] = useState('');
+    const [region, setRegion] = useState('13');
+    const [province, setProvince] = useState('1376');
     const [city, setCity] = useState('');
     const [barangay, setBarangay] = useState('');
 
@@ -25,14 +25,19 @@ const Address = () => {
     
     const router = useRouter();
     const params = useLocalSearchParams();
-    console.log("on address after submit data is :",params.birthDate)
+
     const date = new Date(params.birthDate)
     const ISODate = date.toISOString();
     console.log("on address ISO date :",ISODate)
+
+   
+    console.log("Provinces in Region 01:", provincesInRegion);
     const regionList = philData.regions.map((region) => ({
         label: region.name, 
         value: region.reg_code,  
       }));
+      //const regionCode = "name":"NCR, FOURTH DISTRICT","reg_code":"13","prov_code":"1376"; 
+      //const provincesInRegion = philData.provinces.filter(province => province.reg_code === regionCode);
       const provincesInRegion = philData.getProvincesByRegion(region);
       const provinceList = provincesInRegion.map((province) => ({
         label: province.name, 
@@ -91,28 +96,16 @@ const Address = () => {
             <SafeAreaView className="bg-white h-full">
                 <ScrollView>
                     <SignUpHeader text={`What's your Address?`} />
-                    
-                    <InputBox
-                        detail="No./Blk./St./Sub."
-                        value={street}
-                        onChangeText={(val) => {
-                            setStreet(val);
-                            if (val.trim() !== '') setStreetError({ condition: false, message: '' });
-                        }}
-                        title="No./Blk./St./Sub."
-                        borderWidth={streetError.condition ? 2 : 1}
-                        borderColor={streetError.condition ? 'red' : '#EAEAEA'}
-                        message={streetError}
-                    />
+                
                     <DropDown
                         title = {"Select region"}
-                        placeholder =  {"Region"}
+                        placeholder =  {regionName}
                         list = {regionList}
                         onValueChange={(value) => setRegion(value)}
                     />
                     <DropDown
                         title = {"Select province"}
-                        placeholder =  {"Province"}
+                        placeholder =  {provinceName}
                         list = {provinceList}
                         onValueChange={(value) => setProvince(value)}
                     />
@@ -128,7 +121,18 @@ const Address = () => {
                         list = {barangayList}
                         onValueChange={(value) => setBarangay(value)}
                     />
-
+                    <InputBox
+                        detail="No./Blk./St./Sub."
+                        value={street}
+                        onChangeText={(val) => {
+                            setStreet(val);
+                            if (val.trim() !== '') setStreetError({ condition: false, message: '' });
+                        }}
+                        title="No./Blk./St./Sub."
+                        borderWidth={streetError.condition ? 2 : 1}
+                        borderColor={streetError.condition ? 'red' : '#EAEAEA'}
+                        message={streetError}
+                    />
                     <CustomBtn title={'Continue'} onPress={handleProfile} />
                 </ScrollView>
             </SafeAreaView>
