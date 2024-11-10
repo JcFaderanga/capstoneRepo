@@ -1,4 +1,4 @@
-import { Text, View } from 'react-native';
+import { Text, View,Image, Pressable } from 'react-native';
 import React, { useState } from 'react';
 import Require from '../../../components/require';
 import CustomBtn from '../../../components/UI/button/button'
@@ -10,6 +10,7 @@ const Password = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState({ condition: false, message: '' });
   const [confirmPasswordError, setConfirmPasswordError] = useState({ condition: false, message: '' });
+  const [passwordVisibility, setPasswordVisibility] = useState(true);
   const router = useRouter();
   const params = useLocalSearchParams();
   const validatePassword = () => {
@@ -20,7 +21,7 @@ const Password = () => {
      
     } else if (password.length < 6) {
       setPasswordError({ condition: true, message: 'At least 6 Characters' });
-      return;
+     return;
     } else {
       setPasswordError({ condition: false, message: '' });
     }
@@ -34,13 +35,8 @@ const Password = () => {
       params: {...params, password }});
     }
   };
-  // const setBorder = {
-  //   borderWidth: passwordError.condition || confirmPasswordError.condition ? 2 : 1,
-  //   borderColor: confirmPasswordError.condition
-  //     ? 'red'
-  //     : (password === '' ? '#D9D9D9' : (confirmPassword === password ? '#008000' : 'red')),
-  // };
 
+  
   return (
     <View>
       <SignUpHeader text={"Create your Password"} />
@@ -56,7 +52,7 @@ const Password = () => {
         borderColor={passwordError.condition ? 'red' : '#D9D9D9'}
         autoCapitalize="none"
         message={passwordError}
-        secureTextEntry
+        secureTextEntry = {passwordVisibility}
       />
       <InputBox
         keyboardType="default"
@@ -69,10 +65,21 @@ const Password = () => {
         borderWidth={confirmPasswordError.condition ? 2 : 1}
         borderColor={confirmPasswordError.condition ? 'red' : '#D9D9D9'}
         message={confirmPasswordError}
-        secureTextEntry
+        secureTextEntry = {passwordVisibility}
         autoCapitalize="none"
         customize={{ display: "none" }}
       />
+      <View className="w-[310px] m-auto pt-4 h-12 pb-2 ">
+        <Pressable className="flex-row items-center px-2" onPress={()=>setPasswordVisibility(!passwordVisibility)}>
+            <Image source={
+              passwordVisibility 
+              ? require('../../../assets/icon/show.png')
+              : require('../../../assets/icon/hide.png')}
+              className="w-5" resizeMode='contain'/>
+            <Text className="text-customgray px-2">
+             {passwordVisibility ? "Show password" : "Hide password"} </Text>
+        </Pressable>
+      </View>
       <CustomBtn
         onPress={() => {
           if (validatePassword()) {
