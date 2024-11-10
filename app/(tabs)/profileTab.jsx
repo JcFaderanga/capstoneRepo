@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Image, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ProfileInfo from '../../components/profileInfo';
@@ -92,14 +92,14 @@ const Profile = () => {
       <SafeAreaView>
         <View className="w-full h-[40px] flex-row justify-between items-center bg-primaryRed">
           <View></View>
-          <View className="w-auto h-5 mr-5 flex-row">
-            <Pressable onPress={menuOptions}>
+          <View className="w-auto h-full ">
+            <TouchableOpacity  onPress={menuOptions} className=" pr-5 h-full justify-center items-center flex-row">
               <Image
                 className="w-6 h-5 ml-4"
                 style={{ tintColor: "white" }}
                 source={require('../../assets/icon/menu.png')}
               />
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </View>
         <ProfileInfo setProfile={setProfile} profile={avatar_image}/>
