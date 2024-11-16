@@ -97,6 +97,13 @@ const EditProfileInfo = () => {
   const DOB = new Date(user.birth_date);
   console.log("editProfile check date format:",formatDate(DOB))
 
+  function capitalizeFirstLetter(str) {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }
+  
+  const text = "hello WORLD";
+  console.log(capitalizeFirstLetter(text)); 
   return (
     <View className="w-full h-full bg-[#f0f0f0]">
       <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
@@ -125,7 +132,7 @@ const EditProfileInfo = () => {
           <Text className="text-primaryRed font-bold text-base mt-4">Your contact</Text>
           <TextBoxBetween
             detail="Email"
-            value={profile.email}
+            value={capitalizeFirstLetter(profile.email)}
             onChangeText={(val) => setProfile({ ...profile, email: val })}
           />
           <TextBoxBetween
