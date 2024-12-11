@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.content {
+  color: blue;
+  animation: fadeInLeft 2s cubic-bezier(0.69, -0.33, 0.23, 1.24);
+}
