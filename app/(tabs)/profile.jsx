@@ -33,7 +33,7 @@ const Profile = () => {
 
   const handleEdit = () => {
     router.push('../pages/profile__tab/editProfile');
-    setMenuVisible(false)
+    bottomSheetRef.current?.close();
   };
 
   useEffect(() => {

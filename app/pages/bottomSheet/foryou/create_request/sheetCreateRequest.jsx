@@ -4,19 +4,40 @@ import { BottomSheetView, BottomSheetBackdrop,BottomSheetModal  } from '@gorhom/
 import BloodReminder from '../../../../../components/request__tab/foryou/blood_request/bloodReminder';
 import CreateBloodRequest from '../../../../../components/request__tab/foryou/blood_request/createBloodRequest';
 import * as Animatable from 'react-native-animatable'
+import { useRouter } from 'expo-router';
+import { fetchRecentRequest } from '../../../../../services/requestServices';
+import MyRequest from './createRequest__modal/MyRequest';
+
 const sheetCreateRequest = forwardRef(({user}, ref) => {
     const [isSubmitSuccess, setSubmitSuccess] = useState(false);
-    const snapPoints = useMemo(() => ['70%', '80%'], []);
+    const [modalMyRequest, setModalMyRequest] = useState(false);
+    const [recentRequestData, setRecentRequestData] = useState(null);
+
+    const snapPoints = useMemo(() => ['90%', '95%'], []);
     const renderBackdrop = useCallback(
         (props) => <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1} {...props} />,
         []
     );
-    const handleSubmit = () =>{ 
+    const handleSubmit = (requestData) =>{ 
+
+
+      setRecentRequestData(requestData)
       setSubmitSuccess(true);
       setTimeout(() => {
         ref.current?.close();
         setSubmitSuccess(false);
-       }, 1500); 
+        setModalMyRequest(true);
+
+        }, 1500); 
+     }
+
+    if(modalMyRequest){
+      return(
+        <MyRequest 
+        visible={modalMyRequest}
+        recentRequestData = {recentRequestData}
+        onRequestClose={() => setModalMyRequest(false)}/>
+      )
     }
     const renderCustomHandle = () => (
       <View className="p-4 rounded-t-lg">
@@ -30,6 +51,7 @@ const sheetCreateRequest = forwardRef(({user}, ref) => {
      handleComponent={renderCustomHandle} 
      backdropComponent={renderBackdrop}>
         <BottomSheetView>
+
         {isSubmitSuccess?(
             <Animatable.View
             animation = 'bounceIn'

@@ -53,7 +53,7 @@ const home = () => {
           </View>
           <View className=" w-auto h-5 mr-5 flex-row">
             {/** onPress={()=> router.push('../screens/FAQs')} */}
-            <TouchableOpacity onPress={() => router.push('../screens/FAQs')}>
+            <TouchableOpacity onPress={() => router.push('../pages/FAQsPages/FAQs')}>
               <Image className="w-[22] h-[22]"
                 tintColor={'#ffffff'}
                 source={homeIcons.FAQs}

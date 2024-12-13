@@ -83,3 +83,7 @@
 - `npm i @gorhom/bottom-sheet`
 - `npx expo install react-native-reanimated react-native-gesture-handler`
 - `npm install --save react-native-gesture-handler`
+
+## ReactNative QR code
+
+- `npm install react-native-qrcode-svg`

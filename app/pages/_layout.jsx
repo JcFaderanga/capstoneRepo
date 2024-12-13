@@ -7,17 +7,6 @@ import { supabase } from '../../lib/supabase';
 const _layout = () => {
   return ( 
       <Stack>
-          <Stack.Screen name="Email"options={{
-          title: 'Sign Up',
-          headerStyle: {
-            backgroundColor: '#F42F47',
-          },
-          headerTintColor: '#fff',
-          headerTitleAlign: 'center',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-        }}/>
         <Stack.Screen name="profile__tab"options={{
           title: 'Update Profile',
           headerStyle: {
@@ -29,7 +18,10 @@ const _layout = () => {
             fontWeight: 'bold',
           },
         }}/>
+        <Stack.Screen name="bottomSheet" options={{ headerShown: false }} /> 
+        <Stack.Screen name="request_tab" options={{ headerShown: false }} /> 
         <Stack.Screen name="request_materialtop" options={{ headerShown: false }} /> 
+        <Stack.Screen name="FAQsPages" options={{ headerShown: false }} /> 
       </Stack>  
   )
 }

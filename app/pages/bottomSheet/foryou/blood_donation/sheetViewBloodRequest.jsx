@@ -7,7 +7,8 @@ import * as Animatable from 'react-native-animatable'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useAuth } from '../../../../../context/authContext';
 import { ScrollView } from 'react-native-gesture-handler';
-
+import ModalPublicDonate from '../../../../../components/Modals/request__tab/foryou/publicDonate/ModalPublicDonate';
+import PreSreening from './components/PreScreening'
 const SheetViewRequest = forwardRef(({request_data}, ref) => {
 const [isDonate, setDonate] = useState(false);
   
@@ -49,7 +50,7 @@ const [isDonate, setDonate] = useState(false);
       >
             <BottomSheetView className="bg-primary_red h-full" >
               {isDonate?(
-                  <Donate request_data={request_data}/>
+                  <PreSreening/>
               ):(
                 <Preview request_data={request_data} />
               )}
@@ -108,6 +109,7 @@ const RequestStatus =({request_data})=>{
 
 {/* PREVIEW PAGE*/}
 const Preview = ({request_data}) =>{
+  const {user} = useAuth();
  return(
   <View className="bg-primary_red  "> 
       < View className="w-full flex items-center pt-11 px-4 " >
@@ -122,23 +124,13 @@ const Preview = ({request_data}) =>{
            </Animatable.View>  
       </View>
     <RequestStatus request_data={request_data} />
+        <Animatable.Text animation = 'zoomIn' duration={200} easing={'ease-in-out'} delay={400}
+          className="text-white px-4 text-base text-center font-bold">
+            Your blood type {user?.blood_type} is compatible with patients having A+ and AB+ blood types.
+        </Animatable.Text>
     </View>
  );
 }
-
-
-{/* PREVIEW PAGE*/}
-const Donate = ({request_data,isDonate}) =>{
-  const {user} = useAuth();
-  return(
-   <ScrollView className="bg-primary_red"> 
-       <RequestStatus request_data={request_data} isDonate={isDonate}/>
-       <Animatable.Text animation = 'zoomIn' duration={200} easing={'ease-in-out'} delay={100}
-       className="text-white px-4 text-base text-center font-bold">
-        Your blood type {user?.blood_type} is compatible with patients having A+ and AB+ blood types.</Animatable.Text>
-     </ScrollView>
-  );
- }
 const styles = StyleSheet.create({
   progressText: {
     color: 'white',

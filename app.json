@@ -20,13 +20,22 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon/iconLogoLink.png",
         "backgroundColor": "#F42F47"
-      }
+      },
+      "package": "com.faderanga122.BloodLink"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "9a3a2942-2492-4c41-bf4f-faedaa342c7e"
+      }
+    }
   }
 }

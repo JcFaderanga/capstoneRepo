@@ -16,13 +16,8 @@ const RequestBox = ({name,description,bloodType,units,anonymous, timePosted,user
       }, []);
     
   return (
-    <Animatable.View className="w-full px-4"
-    animation = 'bounceIn'
-    duration={1000}
-    easing={'ease-in'}
-    delay={index * 100}
-    interationCount='infinity'
-    >
+    <View className="w-full px-4">
+
          <Elevated width={'100%'} height={"auto"} elevated={2}>
             <View className="">
                 <View className="w-full h-16">
@@ -54,7 +49,7 @@ const RequestBox = ({name,description,bloodType,units,anonymous, timePosted,user
                 </View>
             </View>
         </Elevated>   
-    </Animatable.View>
+    </View>
     
   )
 }

@@ -110,41 +110,28 @@
 //     backgroundColor: "gray",
 //   },
 // });
-import React, { useRef, useMemo, forwardRef } from 'react';
+import React, { useRef, useMemo, forwardRef, useCallback } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'; // Import GestureHandlerRootView
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import BottomSheet ,{ BottomSheetView } from '@gorhom/bottom-sheet';
 
-
-const CustomBottomSheetModal = forwardRef((props, ref) => {
-  const snapPoints = useMemo(() => ['50%', '75%'], []);
-
-  return (
-    <BottomSheetModal ref={ref} index={0} snapPoints={snapPoints}>
-      <View style={styles.contentContainer}>
-        <Text style={styles.containerHeadline}>Bottom Modal 😎</Text>
-      </View>
-    </BottomSheetModal>
-  );
-});
 
 export default function TabOneScreen() {
-  const bottomSheetRef = useRef(null);
 
-  const handlePresentModalPress = () => {
-    if (bottomSheetRef.current) {
-      bottomSheetRef.current.present(); 
-    } else {
-      console.warn('BottomSheetModal reference is not set.');
-    }
-  };
+	const snapPoints = useMemo(() => [ '50%', '70%'], []);
 
+  
   return (
     <GestureHandlerRootView style={{ flex: 1 }}> 
-      <View style={styles.container}>
-        <CustomBottomSheetModal ref={bottomSheetRef} />
-        <Button title="Present Modal" onPress={handlePresentModalPress} />
-      </View>
+    <View style={styles.container}>
+			<BottomSheet index={1} snapPoints={snapPoints}>
+      <BottomSheetView>
+      <View style={styles.contentContainer}>
+					<Text style={styles.containerHeadline}>Awesome Bottom Sheet 🎉</Text>
+				</View>
+      </BottomSheetView>
+			</BottomSheet>
+		</View>
     </GestureHandlerRootView>
   );
 }
