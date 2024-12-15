@@ -26,7 +26,7 @@ const ModalBloodBank = ({visible, onRequestClose}) => {
                         resizeMode="cover" >
                             <View className="flex w-full h-[40%]">
                                 <Text className=" text-xl text-[#464A57] text-center">BE A LIFESAVER</Text>
-                                <Text className=" text-4xl text-primaryRed text-center">DONATE <Text className="font-bold">BLOOD</Text></Text>
+                                <Text className=" text-4xl text-primary_red text-center">DONATE<Text className="font-bold">BLOOD</Text></Text>
                             </View>
                     </ImageBackground>
                 </View>

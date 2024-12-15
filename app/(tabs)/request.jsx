@@ -24,8 +24,8 @@ const Request = () => {
       }}
     >
       <Tab.Screen name="For You" component={Foryou} />
-      <Tab.Screen name="My Request" component={Mydonation} />
-      <Tab.Screen name="My Donation" component={Myrequest} />
+      <Tab.Screen name="My Request" component={Myrequest} />
+      <Tab.Screen name="My Donation" component={Mydonation} />
     </Tab.Navigator>
     </SafeAreaView>
    

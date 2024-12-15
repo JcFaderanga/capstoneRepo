@@ -6,7 +6,7 @@ import Elevated from '../elevated'
  const MyRequstBox = ({timeStamp, units,onPress,directRequestName}) => {
   return (
    <View className="w-full px-3">
-    <Elevated width={'100%'} height={'auto'} elevated={3}>
+    <Elevated width={'100%'} height={'auto'} elevated={0}>
       <View className="h-32 border-t-2 border-[#F42F47] bg-white rounded-md">
           <Text className="w-full px-3 pt-2 ">Posted {TimeAgo(timeStamp)}</Text>
           <View className="flex-1 w-full h-full justify-center px-4">

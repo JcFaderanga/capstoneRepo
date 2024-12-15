@@ -33,20 +33,7 @@ const _layout = () => {
             },
           }}
        />  
-       <Stack.Screen name="FAQs"
-          options={{
-            title: 'FAQs',
-            headerStyle: {
-              backgroundColor: '#F42F47',
-            },
-            headerTintColor: '#fff',
-            headerTitleAlign: '',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              color: 'white',
-            },
-          }}
-       />  
+  
     </Stack>
     
   

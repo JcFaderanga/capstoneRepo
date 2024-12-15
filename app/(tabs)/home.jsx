@@ -11,23 +11,13 @@ import ModalBloodBank from '../../components/Modals/modalBloodBank';
 import ThemeContainer from '../../components/UI/themeContainer';
 //import useFetchRequests from '../../hooks/fetchRequests';
 import { TimeAgo } from '../../constant/timeStamp';
+
 const home = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [refreshing, setRefreshing] = useState(false); 
   const { user } = useAuth();
   
   if(!user)return;
-  //const { requests, isRequestLoading, errorRequestData } = useFetchRequests(user.id);
-
-    // if (isRequestLoading) {
-    //   return <ActivityIndicator />;
-    // }
-  
-    // if (errorRequestData) {
-    //   console.log(errorRequestData)
-    //   return <Text>Error: {errorRequestData}</Text>;
-
-    // }
   
     if(modalVisible){
       return(
@@ -53,7 +43,7 @@ const home = () => {
           </View>
           <View className=" w-auto h-5 mr-5 flex-row">
             {/** onPress={()=> router.push('../screens/FAQs')} */}
-            <TouchableOpacity onPress={() => router.push('../pages/FAQsPages/FAQs')}>
+            <TouchableOpacity onPress={() => router.push('../pages/FAQs')}>
               <Image className="w-[22] h-[22]"
                 tintColor={'#ffffff'}
                 source={homeIcons.FAQs}
@@ -88,7 +78,7 @@ const home = () => {
                 title={'Find donor'}
                 imgSize={{ width: 43, hight: 43 }}
                 imgUrl={homeIcons.findDonor}
-                onPress={()=>router.push('../../screens/findDonor')}
+                onPress={()=>router.push('../pages/findDonor')}
               />
               <CustomButtonWithIconOnHome
                 title={'Blood Bank'}

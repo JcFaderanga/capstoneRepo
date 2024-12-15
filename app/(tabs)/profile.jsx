@@ -58,7 +58,7 @@ const Profile = () => {
         []
     );
   return (
-    <ThemeContainer>   
+    <ThemeContainer bgColor={'white'}>   
       <View className="w-full h-[40px] flex-row justify-between items-center bg-primary_red">
           <View></View>
           <View className="w-auto h-full ">

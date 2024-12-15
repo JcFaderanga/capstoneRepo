@@ -3,6 +3,8 @@ import React, { useEffect, useState, useMemo } from 'react';
 import QRCode from 'react-native-qrcode-svg';
 import * as Animatable from 'react-native-animatable'
 import { fetchRecentRequest } from '../../../../../../services/requestServices';
+import { router } from 'expo-router';
+
 const MyRequest = ({ visible, onRequestClose, recentRequestData }) => {
   const [requestData, setRequestData] = useState({});
   const [recentId, setRecentId] = useState(null);
@@ -26,6 +28,15 @@ const MyRequest = ({ visible, onRequestClose, recentRequestData }) => {
     fetchRequest();
   }, [recentId]);
 
+  const handleBackHome = ()=>{
+
+    
+    if(onRequestClose){
+      onRequestClose();
+    }
+    router.push('/pages/request_materialtop/myrequest');
+
+  }
   const snapPoints = useMemo(() => ['50%', '70%'], []);
 
   return (
@@ -61,7 +72,7 @@ const MyRequest = ({ visible, onRequestClose, recentRequestData }) => {
           <Animatable.View  animation = 'zoomIn' duration={200} easing={'ease-in-out'} delay={400}
           className="absolute bottom-0 left-0 right-0 mb-28"
           >
-              <TouchableOpacity onPress={onRequestClose}
+              <TouchableOpacity onPress={handleBackHome}
                   className="w-[310px] h-[50px] mx-auto rounded-2xl bg-white justify-center items-center shadow-md mt-4"
                 >
                   <Text className="text-primary_red font-bold text-xl">Back to home</Text>

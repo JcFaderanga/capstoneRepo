@@ -16,10 +16,14 @@ const RequestBox = ({name,description,bloodType,units,anonymous, timePosted,user
       }, []);
     
   return (
-    <View className="w-full px-4">
-
-         <Elevated width={'100%'} height={"auto"} elevated={2}>
-            <View className="">
+    <View className="w-full px-2">
+            <Animatable.View className="my-2 border rounded-lg border-gray-200"
+            animation = 'zoomIn'
+            duration={200}
+            easing={'ease-in-out'}
+            delay={index * 100}
+            interationCount='infinity'
+            >
                 <View className="w-full h-16">
                     <View className="flex-1 h-14 pt-2">
                         <View className=" h-14 px-1 py flex-row  items-center">
@@ -47,8 +51,7 @@ const RequestBox = ({name,description,bloodType,units,anonymous, timePosted,user
                         <Text className="text-white font-bold">Donate</Text>
                     </Pressable>
                 </View>
-            </View>
-        </Elevated>   
+            </Animatable.View>
     </View>
     
   )
