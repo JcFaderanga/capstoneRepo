@@ -18,8 +18,8 @@ import useTextValidation from '../../../hooks/validation/useTextValidation';
 import { useRegistrationStorage } from '../../../hooks/sign_up_hooks/useRegistrationStorage';
 const Address = () => { 
     const [street, setStreet] = useState('');
-    const [region, setRegion] = useState('13');
-    const [province, setProvince] = useState('1376');
+    const [region, setRegion] = useState('');
+    const [province, setProvince] = useState('');
     const [city, setCity] = useState('');
     const [barangay, setBarangay] = useState('');
 
@@ -90,13 +90,13 @@ const Address = () => {
                 
                     <DropDown
                         title = {"Select region"}
-                        placeholder =  {regionName}
+                        placeholder ={"Region"}
                         list = {regionList}
                         onValueChange={(value) => setRegion(value)}
                     />
                     <DropDown
                         title = {"Select province"}
-                        placeholder =  {provinceName}
+                        placeholder =  {"Province"}
                         list = {provinceList}
                         onValueChange={(value) => setProvince(value)}
                     />

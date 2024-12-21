@@ -16,6 +16,8 @@ const createBloodRequest = ({onPress, user}) => {
       units: requestUnits,
       anonymous: isRequestAnonymous,
       public_request: true,
+      active: true,
+      approve: false,
     };
     const reqData =await createPublicRequest(request);
 
