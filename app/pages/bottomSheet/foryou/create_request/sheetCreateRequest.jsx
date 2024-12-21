@@ -18,8 +18,6 @@ const sheetCreateRequest = forwardRef(({user}, ref) => {
         []
     );
     const handleSubmit = (requestData) =>{ 
-
-
       setRecentRequestData(requestData)
       setSubmitSuccess(true);
       setTimeout(() => {

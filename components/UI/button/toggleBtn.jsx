@@ -1,24 +1,29 @@
 import { Pressable, Image, Alert, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const ToggleBtn = ({ AlterDescription, onPress, AlertTitle,status }) => {
+const ToggleBtn = ({ AlterDescription, onPress, AlertTitle, status = false }) => {
   const [isToggle, setToggle] = useState(status);
 
+  useEffect(() => {
+    setToggle(!!status); // Ensure status is a boolean
+  }, [status]);
+
   const handlePress = () => {
-    // If toggle is currently off (false) and being turned on (true)
     if (!isToggle) {
       Alert.alert(
-        AlertTitle,
-        AlterDescription,  // Alert only when turning on
+        AlertTitle || 'Alert', // Fallback for AlertTitle
+        AlterDescription || 'No description provided.', // Fallback for AlterDescription
         [{ text: 'OK' }]
       );
     }
-    // Update the toggle state
-    if(!status) return;
-    setToggle(!isToggle);
 
-    // Call the onPress function passed as a prop if it exists
-    onPress && onPress(!isToggle); // Passing the new toggle state
+    // Update toggle state
+    setToggle((prevToggle) => !prevToggle);
+
+    // Trigger onPress callback if provided
+    if (onPress) {
+      onPress(!isToggle);
+    }
   };
 
   return (
@@ -28,10 +33,10 @@ const ToggleBtn = ({ AlterDescription, onPress, AlertTitle,status }) => {
           className="w-9"
           source={
             isToggle
-              ? require('../../../assets/icon/toggleOn.png')  // Show on state
-              : require('../../../assets/icon/toggleOff.png') // Show off state
+              ? require('../../../assets/icon/toggleOn.png')
+              : require('../../../assets/icon/toggleOff.png')
           }
-          resizeMode='contain'
+          resizeMode="contain"
         />
       </Pressable>
     </View>

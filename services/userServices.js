@@ -32,7 +32,7 @@ export const getProfile = async (userId )=>{
 
 export const fetchRequests = async ({ bloodTypeFilterResult }, limit=10) => {
     try {
-      let query = supabase.from('blood_request').select('*').eq('public_request', true); //get data only if public
+      let query = supabase.from('blood_request').select('*').eq('public_request', true).eq('approve', true); //get data only if public and approved
       if (bloodTypeFilterResult && bloodTypeFilterResult.length > 0) {
         query = query.in('blood_type', bloodTypeFilterResult);//if filterRequest !empty will return list of selected type
       }
