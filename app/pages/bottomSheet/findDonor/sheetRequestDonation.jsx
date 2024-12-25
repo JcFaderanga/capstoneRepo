@@ -1,8 +1,19 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
-import React,{useState, useCallback, useMemo, useRef, forwardRef} from 'react'
+import React,{useState, useCallback, useMemo, useRef, forwardRef, useEffect} from 'react'
 import { BottomSheetView, BottomSheetBackdrop,BottomSheetModal  } from '@gorhom/bottom-sheet';
-
+import useFetchUser from '../../../../hooks/user/useFetchUser';
 const sheetRequestDonation =  forwardRef(({donor_data}, ref) => {
+  const {
+    user,
+    loading, 
+    error, 
+    fetchUser
+  } = useFetchUser();
+
+  useEffect(()=>{
+    fetchUser(donor_data?.id)
+  },[donor_data?.id])
+
      const snapPoints = useMemo(() => ['50%','80%'], []);
         const renderBackdrop = useCallback(
             (props) => <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1} {...props} />,
@@ -26,10 +37,9 @@ const sheetRequestDonation =  forwardRef(({donor_data}, ref) => {
      backdropComponent={renderBackdrop}>
         <BottomSheetView className="w-full h-full ">
                 <Text>{donor_data?.id}</Text>
-                <Text>VIEW</Text>
-                <Text>VIEW</Text>
-                <Text>VIEW</Text>
-                <Text>VIEW</Text>
+                <Text>{user?.first_name}</Text>
+                <Text>{user?.last_name}</Text>
+                <Text>{user?.anonymous_donor? 'TRUE' : 'FALSE'}</Text>
         </BottomSheetView>
     </BottomSheetModal> 
   )
