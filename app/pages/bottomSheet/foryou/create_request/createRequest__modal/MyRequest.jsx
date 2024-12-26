@@ -30,12 +30,9 @@ const MyRequest = ({ visible, onRequestClose, recentRequestData }) => {
 
   const handleBackHome = ()=>{
 
-    
     if(onRequestClose){
       onRequestClose();
     }
-    router.push('/pages/request_materialtop/myrequest');
-
   }
   const snapPoints = useMemo(() => ['50%', '70%'], []);
 
