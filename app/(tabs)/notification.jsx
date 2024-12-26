@@ -111,19 +111,20 @@
 //   },
 // });
 import React, { useRef, useMemo, forwardRef, useCallback } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, Pressable } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'; // Import GestureHandlerRootView
 import BottomSheet ,{ BottomSheetView } from '@gorhom/bottom-sheet';
 
 
 export default function TabOneScreen() {
 
-	const snapPoints = useMemo(() => [ '50%', '70%'], []);
+	const snapPoints = useMemo(() => [ '50%', '90%'], []);
 
   
   return (
     <GestureHandlerRootView style={{ flex: 1 }}> 
     <View style={styles.container}>
+      
 			<BottomSheet index={1} snapPoints={snapPoints}>
       <BottomSheetView>
       <View style={styles.contentContainer}>

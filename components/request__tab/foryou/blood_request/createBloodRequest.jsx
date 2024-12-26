@@ -7,7 +7,7 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 const createBloodRequest = ({onPress, user}) => {
   const [requestUnits, setRequestUnits] = useState(1);
   const [isRequestAnonymous, setRequestAnonymous] = useState(false);
-
+  const [urgent, setUrgent] = useState(false);
   const handleSave = async() => {
     const { id, blood_type } = user;
     let request = {
@@ -18,6 +18,7 @@ const createBloodRequest = ({onPress, user}) => {
       public_request: true,
       active: true,
       approve: false,
+      urgent: urgent,
     };
     const reqData =await createPublicRequest(request);
 
@@ -58,9 +59,9 @@ const createBloodRequest = ({onPress, user}) => {
               <Text className="font-bold text-[15px] text-primary_red">Mark as urgent</Text>
             </View>
             <ToggleButton
-              onPress={(isToggled) => setRequestAnonymous(isToggled)}
-              AlertTitle={'Anonymous Request'}
-              AlterDescription={'Turning on Anonymous Request will hide your name and profile from the feed.'}
+              onPress={(isToggled) => setUrgent(isToggled)}
+              AlertTitle={'Set as urgent request'}
+              AlterDescription={'Urgent request will still be depends on the review.'}
             />
           </View>
         </View>

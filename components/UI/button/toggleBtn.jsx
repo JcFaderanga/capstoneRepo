@@ -5,7 +5,7 @@ const ToggleBtn = ({ AlterDescription, onPress, AlertTitle, status = false }) =>
   const [isToggle, setToggle] = useState(status);
 
   useEffect(() => {
-    setToggle(!!status); // Ensure status is a boolean
+    setToggle(!!status); 
   }, [status]);
 
   const handlePress = () => {

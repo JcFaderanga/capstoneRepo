@@ -1,16 +1,54 @@
-import { StyleSheet, Text, View, Button } from 'react-native'
-import React from 'react'
-import ThemeContainer from '../../../components/UI/themeContainer'
+import { StyleSheet, Text, View, Button, Pressable } from 'react-native'
+import React,{useEffect, useMemo} from 'react'
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { GestureHandlerRootView } from 'react-native-gesture-handler'; 
+import BottomSheet ,{ BottomSheetView } from '@gorhom/bottom-sheet';
+import MostRecentRequest from '../../../components/request__tab/myrequest/mostRecentRequest';
+import {FetchRequestCount, FetchMostRecentRequest} from '../../../hooks/my_request_hooks';
+import { useAuth } from '../../../context/authContext';
 const Myrequest = () => {
+  const {user} = useAuth();
+ const { count, loading: loadingCount, fetchRequestCount } = FetchRequestCount();
+const { recentRequest, loading: loadingRequest, fetchMostRecentRequest } = FetchMostRecentRequest();
+
+ useEffect(()=>{
+  fetchRequestCount(user?.id);
+  fetchMostRecentRequest(user?.id);
+ },[])
+  console.log('recent:', recentRequest);
+
+  const snapPoints = useMemo(() => ['79%', '95%'], []);
+  const renderCustomHandle = () => (
+        <View className="p-4 rounded-t-lg">
+          <Text className="text-center text-xl font-bold">Your most recent request</Text>
+        </View>
+      );
     return (
-
       <View className="w-full h-full bg-white">
-      <Text>Myrequest</Text>
-
+        <GestureHandlerRootView style={{ flex: 1 }}> 
+          <View className="w-full h-36 bg-[#4A4A4A] flex-row items-center justify-evenly px-2">
+              <View className="w-36 h-24 bg-[#5F5F5F] rounded-3xl mx-1 py-4 px-6">
+                <Text className="text-white ">Unit received</Text>
+                <Text className="text-white text-4xl font-bold">20</Text>
+              </View>
+              <View className="w-36 h-24 bg-[#5F5F5F] rounded-3xl mx-1 py-4 px-5">
+                <Text className="text-white ">Total requests</Text>
+                <Text className="text-white text-4xl font-bold">{loadingCount ? '--' : count}</Text>
+              </View>
+              <Pressable className="w-20 h-20 rounded-full flex items-center justify-center">
+                  <MaterialIcons name="keyboard-arrow-right" size={40} color="white" />
+              </Pressable>
+          </View>
+          
+              <BottomSheet index={1} snapPoints={snapPoints} handleComponent={renderCustomHandle} >
+                  <BottomSheetView>
+                      <View className="px-4">
+                          <MostRecentRequest recentRequest={recentRequest}/>
+                      </View>
+                  </BottomSheetView>
+              </BottomSheet>
+          </GestureHandlerRootView>
       </View>
-
   )}
-
 export default Myrequest
 
-const styles = StyleSheet.create({})
