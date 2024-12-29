@@ -57,7 +57,19 @@ const _layout = () => {
                 color: 'white',
               },
           }}/>
-      
+      <Stack.Screen name="donate"
+            options={{
+              title: '',
+              headerStyle: {
+                backgroundColor: '#F42F47',
+              },
+              headerTintColor: '#fff',
+              headerTitleAlign: 'center',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+          }}/>
         <Stack.Screen name="request_materialtop" options={{ headerShown: false }} /> 
         <Stack.Screen name="FAQsPages" options={{ headerShown: false }} /> 
      

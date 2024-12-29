@@ -8,6 +8,8 @@ const createBloodRequest = ({onPress, user}) => {
   const [requestUnits, setRequestUnits] = useState(1);
   const [isRequestAnonymous, setRequestAnonymous] = useState(false);
   const [urgent, setUrgent] = useState(false);
+
+
   const handleSave = async() => {
     const { id, blood_type } = user;
     let request = {
@@ -79,9 +81,7 @@ const createBloodRequest = ({onPress, user}) => {
             />
           </View>
         </View>
-
         <ThemeButton title={'Submit Request'} onPress={handleSave} />
-
     </View>
   )
 }

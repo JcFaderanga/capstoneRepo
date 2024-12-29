@@ -16,13 +16,18 @@ const [isDonate, setDonate] = useState(false);
       snapeToIndex(1)
       setDonate(true)
    };
+
     const snapPoints = useMemo(() => ['80%','96%'], []);
     const snapeToIndex = (index) => ref.current?.snapToIndex(index);
     const renderBackdrop = useCallback(
         (props) => <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1} {...props} />,
         []
     );
-
+    const handleCloseSheet = (proceed)=>{
+      if(proceed){
+          return ref.current?.close();
+      }
+    }
     const onSheetChange = useCallback((index) => {
       if (index === -1) {
         setDonate(false);
@@ -50,7 +55,7 @@ const [isDonate, setDonate] = useState(false);
       >
             <BottomSheetView className="bg-primary_red h-full" >
               {isDonate?(
-                  <PreSreening/>
+                  <PreSreening onPress={handleCloseSheet} request_data={request_data}/>
               ):(
                 <Preview request_data={request_data} />
               )}

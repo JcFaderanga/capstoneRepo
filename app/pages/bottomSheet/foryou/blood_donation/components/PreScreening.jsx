@@ -2,11 +2,21 @@ import { StyleSheet, Text, View, Pressable, TouchableOpacity } from 'react-nativ
 import React,{useState} from 'react'
 import * as Animatable from 'react-native-animatable'
 import { ScrollView } from 'react-native-gesture-handler';
+import { useRouter } from 'expo-router';
 
-
-const PreScreening = () =>{
+const PreScreening = ({onPress, request_data}) =>{
     const [modalVisible, setModalVisible] = useState(false);
-  
+
+    const router = useRouter();
+    const handleProceed = () =>{
+        router.push({
+            pathname: '../../../../pages/donate',
+            params: { request_data: JSON.stringify(request_data) },
+        });
+        if(onPress){
+            onPress(true);
+        }
+    }
     if(modalVisible){
       return(
         <ModalPublicDonate
@@ -66,10 +76,9 @@ const PreScreening = () =>{
                 </View>
             </Animatable.View>
 
-            
-
-
-           <TouchableOpacity className="w-[310px] h-[50px] mx-auto rounded-2xl bg-white justify-center items-center shadow-md mt-4"
+           <TouchableOpacity 
+            className="w-[310px] h-[50px] mx-auto rounded-2xl bg-white justify-center items-center shadow-md mt-4"
+            onPress={handleProceed}
            >
               <Text className="text-primary_red font-bold text-xl">Proceed now</Text>
             </TouchableOpacity>
