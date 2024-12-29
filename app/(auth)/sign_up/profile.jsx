@@ -57,9 +57,6 @@ const Profile = () => {
       last_name: lastName.trim(),
       birth_date: dateOnly,
     });
-
-    
-   
     router.push('./address');
   };
 

@@ -44,11 +44,23 @@ const _layout = () => {
               color: 'white',
             },
           }}/>
-        <Stack.Screen name="bottomSheet" options={{ headerShown: false }} /> 
-        <Stack.Screen name="request__tab" options={{ headerShown: false }} /> 
-        <Stack.Screen name="home__tab" options={{ headerShown: false }} /> 
+          <Stack.Screen name="request_list"
+            options={{
+              title: 'My Requests',
+              headerStyle: {
+                backgroundColor: '#F42F47',
+              },
+              headerTintColor: '#fff',
+              headerTitleAlign: 'center',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+          }}/>
+      
         <Stack.Screen name="request_materialtop" options={{ headerShown: false }} /> 
         <Stack.Screen name="FAQsPages" options={{ headerShown: false }} /> 
+     
       </Stack>  
   )
 }

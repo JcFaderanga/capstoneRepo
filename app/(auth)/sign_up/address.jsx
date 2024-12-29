@@ -1,15 +1,12 @@
 import {
     View,
-    SafeAreaView,
     ScrollView,
-    Text,
 } from 'react-native';
 import { useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import ThemeButton from '../../../components/UI/button/themeButton'
 import InputBox from '../../../components/UI/inputs/inputBox'
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useRouter } from 'expo-router';
 import SignUpHeader from '../../../components/signUpHeader';
 import philData from 'phil-reg-prov-mun-brgy';
 import DropDown from '../../../components/UI/inputs/dropDown';
@@ -22,7 +19,6 @@ const Address = () => {
     const [province, setProvince] = useState('');
     const [city, setCity] = useState('');
     const [barangay, setBarangay] = useState('');
-
     const {addDetails} = useRegistrationStorage();
     const{textError: streetError, setTextError: setStreetError} = useTextValidation();
 
@@ -84,10 +80,9 @@ const Address = () => {
         }
     };
     return (
-        <View className="bg-white h-full">
-                <ScrollView>
+        <View className="bg-white h-full w-full">
+                <ScrollView className="h-full">
                     <SignUpHeader text={`What's your Address?`} />
-                
                     <DropDown
                         title = {"Select region"}
                         placeholder ={"Region"}

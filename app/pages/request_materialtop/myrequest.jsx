@@ -6,6 +6,8 @@ import BottomSheet ,{ BottomSheetView } from '@gorhom/bottom-sheet';
 import MostRecentRequest from '../../../components/request__tab/myrequest/mostRecentRequest';
 import {FetchRequestCount, FetchMostRecentRequest} from '../../../hooks/my_request_hooks';
 import { useAuth } from '../../../context/authContext';
+import { router } from 'expo-router';
+
 const Myrequest = () => {
   const {user} = useAuth();
  const { count, loading: loadingCount, fetchRequestCount } = FetchRequestCount();
@@ -25,7 +27,6 @@ const { recentRequest, loading: loadingRequest, fetchMostRecentRequest } = Fetch
       );
     return (
       <View className="w-full h-full bg-white">
-        <GestureHandlerRootView style={{ flex: 1 }}> 
           <View className="w-full h-36 bg-[#4A4A4A] flex-row items-center justify-evenly px-2">
               <View className="w-36 h-24 bg-[#5F5F5F] rounded-3xl mx-1 py-4 px-6">
                 <Text className="text-white ">Unit received</Text>
@@ -35,19 +36,17 @@ const { recentRequest, loading: loadingRequest, fetchMostRecentRequest } = Fetch
                 <Text className="text-white ">Total requests</Text>
                 <Text className="text-white text-4xl font-bold">{loadingCount ? '--' : count}</Text>
               </View>
-              <Pressable className="w-20 h-20 rounded-full flex items-center justify-center">
+              <Pressable className="w-20 h-20 rounded-full flex items-center justify-center" 
+              onPress={()=>router.push('/../../pages/request_list')}>
                   <MaterialIcons name="keyboard-arrow-right" size={40} color="white" />
               </Pressable>
           </View>
-          
-              <BottomSheet index={1} snapPoints={snapPoints} handleComponent={renderCustomHandle} >
-                  <BottomSheetView>
-                      <View className="px-4">
-                          <MostRecentRequest recentRequest={recentRequest}/>
-                      </View>
-                  </BottomSheetView>
-              </BottomSheet>
-          </GestureHandlerRootView>
+          <View className="p-4 rounded-t-lg">
+            <Text className="text-center text-xl font-bold">Your most recent request</Text>
+          </View>
+          <View className="px-4">
+              <MostRecentRequest recentRequest={recentRequest}/>
+          </View>
       </View>
   )}
 export default Myrequest

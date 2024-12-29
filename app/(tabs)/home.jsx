@@ -62,8 +62,8 @@ const home = () => {
                   scrollEventThrottle={16}
                 >
                   {/* <Text className='text-primaryRed w-full text-center text-xl font-bold py-2'>Upcoming Donation Drive</Text> */}
-                  <DonationDrive onPress={()=>router.push('../screens/donationDrive')}/>
-                  <DonationDrive onPress={()=>router.push('../screens/donationDrive')}
+                  <DonationDrive onPress={()=>router.push('../pages/request_list')}/>
+                  <DonationDrive onPress={()=>router.push('../pages/request_list')}
                   />
                 </ScrollView>
               </View>
