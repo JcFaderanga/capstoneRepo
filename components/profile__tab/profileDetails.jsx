@@ -50,8 +50,47 @@ const ProfileDetails = () => {
   };
 
   return (
-    <View className="w-[93%] mx-auto">
-      <Text className="text-sm mt-4">Donation Information</Text>
+    <View className="w-full mx-auto">
+      <View className="w-full h-16 bg-[#878787]">
+          <View className="flex-1 flex-row justify-between items-center px-6">
+            <View className="flex-row items-center gap-3">
+              <Image
+                source={require('../../assets/icon/availability.png')}
+                className="w-7"
+                resizeMode="contain"
+              />
+              <Text className="font-bold text-[15px] text-black">Available to Donate</Text>
+            </View>
+            <ToggleButton
+              AlertTitle={alert_title}
+              AlterDescription={alert_description}
+              onPress={handleDonorAvailability}
+              status={availability}
+            />
+          </View>
+      </View>
+
+      <View className="w-full h-16 bg-[#B7B7B7]">
+        <View className="flex-1 flex-row justify-between items-center px-6">
+          <View className="flex-row items-center gap-3">
+            <Image
+              source={require('../../assets/icon/lock.png')}
+              className="w-7"
+              resizeMode="contain"
+            />
+            <Text className="font-bold text-[15px]">Anonymous Donor</Text>
+          </View>
+          <ToggleButton
+            AlertTitle={'Anonymous Donor'}
+            AlterDescription={
+              'Turning on Anonymous Donor will hide your name and profile from the donor list.'
+            }
+            onPress={handleAnonymousDonor}
+            status={anonymous}
+          />
+        </View>
+      </View>
+
       <View className="flex-row ">
         <Elevated width={100} height={85}>
           <Pressable
@@ -74,7 +113,7 @@ const ProfileDetails = () => {
             <Text className="text-white font-bold">Blood Group</Text>
           </View>
         </Elevated>
-
+      
         <View className="flex-1 pl-4">
           <Elevated width={'100%'} height={85}>
             <View className="flex-row h-full">
@@ -106,48 +145,7 @@ const ProfileDetails = () => {
         </View>
       </View>
 
-      <Text className="text-sm mt-4">Donation Settings</Text>
-      <View>
-        <Elevated width={'100%'} height={50}>
-          <View className="flex-1 flex-row justify-between items-center px-6">
-            <View className="flex-row items-center gap-3">
-              <Image
-                source={require('../../assets/icon/availability.png')}
-                className="w-7"
-                resizeMode="contain"
-              />
-              <Text className="font-bold text-[15px]">Available to Donate</Text>
-            </View>
-            <ToggleButton
-              AlertTitle={alert_title}
-              AlterDescription={alert_description}
-              onPress={handleDonorAvailability}
-              status={availability}
-            />
-          </View>
-        </Elevated>
-      </View>
-
-      <Elevated width={'100%'} height={50}>
-        <View className="flex-1 flex-row justify-between items-center px-6">
-          <View className="flex-row items-center gap-3">
-            <Image
-              source={require('../../assets/icon/lock.png')}
-              className="w-7"
-              resizeMode="contain"
-            />
-            <Text className="font-bold text-[15px]">Anonymous Donor</Text>
-          </View>
-          <ToggleButton
-            AlertTitle={'Anonymous Donor'}
-            AlterDescription={
-              'Turning on Anonymous Donor will hide your name and profile from the donor list.'
-            }
-            onPress={handleAnonymousDonor}
-            status={anonymous}
-          />
-        </View>
-      </Elevated>
+      
     </View>
   );
 };

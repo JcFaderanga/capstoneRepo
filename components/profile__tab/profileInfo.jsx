@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View,Image, Pressable } from 'react-native'
 import React from 'react'
 import { useAuth } from '../../context/authContext';
-
+import Elevated from '../elevated';
 const _layout=()=>{
     return (
         <AuthProvider>
@@ -27,12 +27,12 @@ console.log("profilInfo = avatar is -- ",profile)
     const formattedDate = formatDate(userCreatedAt);
   return (
     <>
-        <View className="w-full flex bg-primary_red ">
-            <View className="w-full h-[130px] flex-row items-center justify-between ">
-                <View className=" ml-6">
+        <View className="w-full flex bg-primary_red h-52 rounded-b-2xl">
+            <View className=" h-[130px] flex-row items-center justify-center">
+                <View className="">
                     <Image source={require('../../assets/icon/profilePic2.jpg')}
                               style={styles.profileImage}
-                              className=""
+                              className="border"
                               resizeMethod='retain'/>
                       <Pressable 
                       style={{elevation: 5}}
@@ -47,17 +47,32 @@ console.log("profilInfo = avatar is -- ",profile)
                         />
                       </Pressable>
                 </View>  
-                <View className="float-left  h-full flex-1 ml-5 justify-center">
+                <View className="float-left h-full ml-2 justify-center">
                   <Text className="float-left text-2xl font-bold text-white">{user && user.first_name + ' '+ user.last_name}</Text>
                   <Text className="float-left text-sm font-bold text-white">ID: {user&&user.id}</Text>
                 </View>
             </View>
-            <View className="w-full h-[35px] flex-1 flex-row items-center justify-between px-4">
-              <View className="flex-row items-center">
-                <Text className="text-white text-[11px]">Joined {user && formattedDate}</Text>
+            <View className="w-72 mx-auto mt-[-10px]">
+              <Elevated width={'100%'} height={100}>
+                <View className="flex-row h-full">
+                  <View className="flex-1 justify-center items-center ">
+                    <Text className="text-sm font-bold">Unit Donated</Text>
+                    <View className="flex-row items-center h-[60]">
+                      <Text className="font-bold text-[20px]">--</Text>
+                    </View>
+                  </View>
+
+                  <View className="flex-1 justify-center items-center ">
+                    <Text className="text-sm font-bold">Next Donation</Text>
+                    <View className="flex-row items-center h-[60]">
+                      <Text className="font-bold text-[20px]">--</Text>
+                    </View>
+                  </View>
                 </View>
+              </Elevated>
             </View>
         </View>
+        
     </>
     
   )
@@ -66,8 +81,8 @@ console.log("profilInfo = avatar is -- ",profile)
 export default ProfileInfo
 const styles = StyleSheet.create({
     profileImage: {
-      width: 80,
-      height: 80,
+      width: 70,
+      height: 70,
       borderColor: 'white',
      // borderWidth: 1,
       borderRadius:99,
