@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const Mydonation = () => {
+const FindDonor = () => {
   return (
     <View>
-      <Text>Mydonation</Text>
+      <Text>FindDonor</Text>
     </View>
   )
 }
 
-export default Mydonation
+export default FindDonor
 
 const styles = StyleSheet.create({})

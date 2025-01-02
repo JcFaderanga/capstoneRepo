@@ -49,6 +49,15 @@ const _layout = () => {
                 tabBarButton: (props) => <TouchableOpacity {...props} />,
               }}
                 />
+          <Tabs.Screen
+            name="findDonor"
+            options={{
+              title: "Donor",
+              headerShown: false,
+              tabBarIcon: ({ color }) =><TabIcon icon={tabsIcon.findDonor} color={color}/>,
+              tabBarButton: (props) => <TouchableOpacity {...props} />,
+            }}
+            />
             <Tabs.Screen
             name="notification"
             options={{
@@ -58,15 +67,7 @@ const _layout = () => {
               tabBarButton: (props) => <TouchableOpacity {...props} />,
             }}
             />
-        <Tabs.Screen
-            name="profile"
-            options={{
-              title: "Profile",
-              headerShown: false,
-              tabBarIcon: ({ color }) =><TabIcon icon={tabsIcon.profile} color={color}/>,
-              tabBarButton: (props) => <TouchableOpacity {...props} />,
-            }}
-            />
+        
     </Tabs>
   )
 }

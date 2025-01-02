@@ -1,7 +1,6 @@
 import React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Foryou from '../pages/request_materialtop/foryou';
-import Mydonation from '../pages/request_materialtop/mydonation';
 import Myrequest from '../pages/request_materialtop/myrequest';
 import { SafeAreaView } from 'react-native-safe-area-context';
 const Tab = createMaterialTopTabNavigator();
@@ -24,7 +23,6 @@ const Request = () => {
     >
       <Tab.Screen name="For You" component={Foryou} />
       <Tab.Screen name="My Request" component={Myrequest} />
-      <Tab.Screen name="My Donation" component={Mydonation} />
     </Tab.Navigator>
     </SafeAreaView>
    

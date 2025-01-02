@@ -10,8 +10,7 @@ const _layout=()=>{
       );
 }
 
-const ProfileInfo = ({setProfile,profile}) => {
-console.log("profilInfo = avatar is -- ",profile)
+const ProfileInfo = ({setProfile,profile, unit}) => {
     const { setAuth, user } = useAuth();
     const formatDate = (timestamp) => {
       // Check if timestamp is valid
@@ -58,7 +57,7 @@ console.log("profilInfo = avatar is -- ",profile)
                   <View className="flex-1 justify-center items-center ">
                     <Text className="text-sm font-bold">Unit Donated</Text>
                     <View className="flex-row items-center h-[60]">
-                      <Text className="font-bold text-[20px]">--</Text>
+                      <Text className="font-bold text-[20px]">{unit === 0 ? '--' : unit}</Text>
                     </View>
                   </View>
 
