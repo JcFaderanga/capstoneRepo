@@ -4,7 +4,7 @@ import Elevated from '../../elevated'
 import QRCode from 'react-native-qrcode-svg';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-const MostRecentRequest = ({recentRequest}) => {
+const MostRecentRequest = ({recentRequest, onPress}) => {
 
 
   const convertTimestampToDate = (timestamp) => {
@@ -35,9 +35,10 @@ const MostRecentRequest = ({recentRequest}) => {
                                   {recentRequest?.approve ? 'Approve' : 'Under review'}
                                 </Text>
                             </View>
-                            <Pressable className="flex-row px-5 py-2 bg-[#DEDEDE] rounded-full">
-                                <Text className="text-xl text-[#5B5B5B]">View</Text>
-                                <MaterialIcons name="keyboard-arrow-right" size={30} color="#5B5B5B" />
+                            <Pressable className="flex-row w-32 h-12 justify-center items-center bg-[#DEDEDE] rounded-full" 
+                             onPress={onPress}>
+                                <Text className="text-xl text-[#5B5B5B] pb-1">View</Text>
+                                <MaterialIcons name="keyboard-arrow-right" size={30} color="#5B5B5B" className="mr-[-12] "/>
                             </Pressable>
                         </View>
                     </View>

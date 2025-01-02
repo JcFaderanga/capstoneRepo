@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, ImageBackground } from 'react-native'
 import React from 'react'
 import * as Progress from 'react-native-progress';
+
 const DonationStatusBar = ({request_data, progress}) => {
   return (
     <ImageBackground

@@ -9,6 +9,7 @@ import { useAuth } from '../../../../../context/authContext';
 import { ScrollView } from 'react-native-gesture-handler';
 import ModalPublicDonate from '../../../../../components/Modals/request__tab/foryou/publicDonate/ModalPublicDonate';
 import PreSreening from './components/PreScreening'
+import UseFetchDonationCount from '../../../../../hooks/blood_donation/fetchDonationUnitCount';
 const SheetViewRequest = forwardRef(({request_data}, ref) => {
 const [isDonate, setDonate] = useState(false);
   
@@ -81,6 +82,11 @@ export default SheetViewRequest
 {/* REQUEST STATUS*/}
 const RequestStatus =({request_data})=>{
 
+const {totalUnits, error, loading, FetchUnitCount} = UseFetchDonationCount();
+useEffect(()=> {FetchUnitCount(request_data?.blood_request_id)}, [])
+const currentUnitLeft = request_data?.units - totalUnits ;
+const currentPercent = totalUnits / request_data?.units;
+
   return(
 <  Animatable.View  animation = 'zoomIn' duration={200} easing={'ease-in-out'} delay={300}>
       <ImageBackground
@@ -90,7 +96,7 @@ const RequestStatus =({request_data})=>{
           <View className="flex-row h-full w-full items-center justify-evenly">
             <View className="w-32  h-32 rounded-full flex justify-center items-center">
             <Progress.Circle
-                progress={.70} size={110} borderWidth={0}
+                progress={currentPercent} size={110} borderWidth={0}
                 color="#F42F47" thickness={9} showsText={true} 
                 formatText={() => request_data?.blood_type} 
                 textStyle={styles.progressText} unfilledColor="#E5E5E5" 
@@ -103,7 +109,7 @@ const RequestStatus =({request_data})=>{
             </View>
             <View>
               <Text className="text-white text-2xl font-bold">Left</Text>
-              <Text className="text-white text-5xl font-bold">2</Text>
+              <Text className="text-white text-5xl font-bold">{currentUnitLeft}</Text>
             </View>
           </View>
         </ImageBackground>

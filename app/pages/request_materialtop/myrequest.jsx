@@ -3,7 +3,7 @@ import React,{useEffect, useMemo} from 'react'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'; 
 import BottomSheet ,{ BottomSheetView } from '@gorhom/bottom-sheet';
-import MostRecentRequest from '../../../components/request__tab/myrequest/mostRecentRequest';
+import MostRecentRequest from '../../../components/request__tab/myrequest/requestBox';
 import {FetchRequestCount, FetchMostRecentRequest} from '../../../hooks/my_request_hooks';
 import { useAuth } from '../../../context/authContext';
 import { router } from 'expo-router';
@@ -37,7 +37,7 @@ const { recentRequest, loading: loadingRequest, fetchMostRecentRequest } = Fetch
                 <Text className="text-white text-4xl font-bold">{loadingCount ? '--' : count}</Text>
               </View>
               <Pressable className="w-20 h-20 rounded-full flex items-center justify-center" 
-              onPress={()=>router.push('/../../pages/request_list')}>
+              onPress={()=>router.push('/../../pages/myRequestList')}>
                   <MaterialIcons name="keyboard-arrow-right" size={40} color="white" />
               </Pressable>
           </View>

@@ -58,7 +58,9 @@ const Foryou = () => {
      
         </ScrollView>
       </View>
+      
         <RequestList bloodTypeFilterResult = {selectedTypes} onRefresh={listRefresh} />
+
         <Pressable onPress={openCreatRequestSheet}
           className=" h-16 w-16 rounded-full bg-primary_red flex items-center justify-center absolute bottom-0 right-0 m-5 border border-white">
             <Image source={require('../../../assets/icon/droplet.png')} className="w-6" resizeMode='contain'/>

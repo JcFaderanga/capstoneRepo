@@ -44,7 +44,7 @@ const _layout = () => {
               color: 'white',
             },
           }}/>
-          <Stack.Screen name="request_list"
+          <Stack.Screen name="myRequestList"
             options={{
               title: 'My Requests',
               headerStyle: {
@@ -57,6 +57,7 @@ const _layout = () => {
                 color: 'white',
               },
           }}/>
+
       <Stack.Screen name="donate"
             options={{
               title: '',
@@ -71,6 +72,7 @@ const _layout = () => {
               },
           }}/>
         <Stack.Screen name="request_materialtop" options={{ headerShown: false }} /> 
+        <Stack.Screen name="viewRequest" options={{ headerShown: false }} /> 
         <Stack.Screen name="FAQsPages" options={{ headerShown: false }} /> 
      
       </Stack>  

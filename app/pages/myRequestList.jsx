@@ -2,15 +2,23 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { FetchAllRequest } from '../../hooks/my_request_hooks'
 import { useAuth } from '../../context/authContext'
-import MostRecentRequest from '../../components/request__tab/myrequest/mostRecentRequest'
+import MostRecentRequest from '../../components/request__tab/myrequest/requestBox'
 import { FlatList } from 'react-native-gesture-handler'
+import { useRouter } from 'expo-router';
 const Request_list = () => {
     const {user} = useAuth();
     const {allRequest, fetchAllRequest} = FetchAllRequest();
-
+    const router = useRouter();
     useEffect(()=>{
         fetchAllRequest(user?.id);
     },[allRequest]);
+
+    const handleViewRequest = (request_data)=>{
+        router.push({
+            pathname: './viewRequest',
+            params: { request_data: JSON.stringify(request_data) },
+        });
+    }
   return (
     <View >
         <FlatList
@@ -18,7 +26,10 @@ const Request_list = () => {
             data={allRequest}
             keyExtractor={(item)=> item.blood_request_id.toString()}
             renderItem={({item, index})=>(
-                <MostRecentRequest recentRequest={item}/>
+                <MostRecentRequest 
+                    recentRequest={item}
+                    onPress={()=>handleViewRequest(item)}
+                />
             )}
         />
     </View>
