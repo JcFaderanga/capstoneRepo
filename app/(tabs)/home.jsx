@@ -36,37 +36,10 @@ const home = () => {
     };
   return (
     <ThemeContainer bgColor={'white'}>
-        {/** nav bar */}
-        <View className="w-full h-[75px] flex-row justify-between items-center bg-primary_red ">
-          <View className=" ml-5 ">
-            <Text className="text-2xl font-bold text-white">Hi {user && user?.first_name}!</Text>
-          </View>
-          <View className=" w-auto h-5 mr-5 flex-row">
-            {/** onPress={()=> router.push('../screens/FAQs')} */}
-            <TouchableOpacity onPress={() => router.push('../pages/FAQs')}>
-              <Image className="w-[22] h-[22]"
-                tintColor={'#ffffff'}
-                source={homeIcons.FAQs}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
-        {/** end nav bar */}
+
         <ScrollView>
         <View className="w-full ">        
-              <View className=" mt-6 mb-4">
-                <ScrollView
-                  horizontal
-                  pagingEnabled
-                  showsHorizontalScrollIndicator={false}
-                  scrollEventThrottle={16}
-                >
-                  {/* <Text className='text-primaryRed w-full text-center text-xl font-bold py-2'>Upcoming Donation Drive</Text> */}
-                  <DonationDrive onPress={()=>router.push('../pages/request_list')}/>
-                  <DonationDrive onPress={()=>router.push('../pages/request_list')}
-                  />
-                </ScrollView>
-              </View>
+ 
           <View  className="w-full h-36  bg-white flex">
             <View className="w-full flex-row justify-center items-center">
               <CustomButtonWithIconOnHome
