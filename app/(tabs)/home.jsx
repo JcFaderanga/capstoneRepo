@@ -14,6 +14,7 @@ import { ProfileInfo } from '../../components/profile__tab';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'; 
 import BottomSheet, { BottomSheetView, BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import UseFetchDonationCount from '../../hooks/blood_donation/fetchUnitDonated';
+import UseFetchNextDonation from '../../hooks/blood_donation/fetchNextDonationDays';
 import ContentTitleButton from '../../components/contentTitle';
 import { supabase } from '../../lib/supabase';
 
@@ -21,15 +22,17 @@ const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const { user } = useAuth();
   const { totalUnitDonated, FetchUnitCount } = UseFetchDonationCount();
+  const {nextDonation, error,FetchNextDonation} = UseFetchNextDonation();
   const bottomSheetRef = useRef(null);
   const modalRef = useRef(null);
 
   const snapPoints = useMemo(() => ['59%', '95%'], []);
   const modalSnapPoints = useMemo(() => ['25%'], []);
-
+console.log(error)
   useEffect(() => {
     if (user) {
       FetchUnitCount(user?.id);
+      FetchNextDonation(user?.id);
     }
   }, [user]);
 
@@ -96,7 +99,7 @@ const Home = () => {
             />
           </TouchableOpacity>
         </View>
-        <ProfileInfo unit={totalUnitDonated} />    
+        <ProfileInfo unit={totalUnitDonated} nextDonation={nextDonation}/>    
         <BottomSheet 
           index={0} 
           snapPoints={snapPoints} 

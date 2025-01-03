@@ -10,7 +10,7 @@ const _layout=()=>{
       );
 }
 
-const ProfileInfo = ({setProfile,profile, unit}) => {
+const ProfileInfo = ({setProfile,profile, unit,nextDonation}) => {
     const { setAuth, user } = useAuth();
     const formatDate = (timestamp) => {
       // Check if timestamp is valid
@@ -64,7 +64,7 @@ const ProfileInfo = ({setProfile,profile, unit}) => {
                   <View className="flex-1 justify-center items-center ">
                     <Text className="text-sm font-bold">Next Donation</Text>
                     <View className="flex-row items-center h-[60]">
-                      <Text className="font-bold text-[20px]">--</Text>
+                      <Text className="font-bold text-[20px]">{nextDonation}</Text>
                     </View>
                   </View>
                 </View>
