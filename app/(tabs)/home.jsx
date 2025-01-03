@@ -104,33 +104,38 @@ const Home = () => {
           backdropComponent={renderBackdrop}
         >
           <BottomSheetView>
-            <FeatureBox 
-              icon={require('../../assets/icon/mediumStock.png')}
-              title={'Blood Bank'}
-              description={'Explore available blood types and inventory.'}
-            />
-            <FeatureBox 
-              icon={require('../../assets/icon/target.png')}
-              title={'Donation Drive'}
-              description={'Explore available blood types and inventory.'}
-            />
-            <FeatureBox 
-              icon={require('../../assets/icon/why donate.png')}
-              title={'Donate'}
-              description={'Be a hero, donate and save lives.'}
-            />
-            <FeatureBox 
-              icon={require('../../assets/icon/clock.png')}
-              title={'Donation History'}
-              description={'View your past donations and their impact.'}
-              tintColor={'#F42F47'}
-            />
-            <FeatureBox 
-              icon={require('../../assets/icon/FAQs.png')}
-              title={'FAQs'}
-              description={'Find answers to common questions about blood donation.'}
-              tintColor={'#F42F47'}
-            /> 
+                  <FeatureBox 
+                    icon={require('../../assets/icon/mediumStock.png')}
+                    title={'Blood Bank'}
+                    description={'Explore available blood types and inventory.'}
+                  />
+                  <FeatureBox 
+                    icon={require('../../assets/icon/target.png')}
+                    title={'Donation Drive'}
+                    description={'Explore available blood types and inventory.'}
+                  />
+
+                  <FeatureBox 
+                    icon={require('../../assets/icon/settings.png')}
+                    title={'Donation Settings'}
+                    description={'Manage your donation preferences.'}
+                    tintColor={'#F42F47'}
+                    onPress={()=>router.push('../pages/donationSettings')}
+                  />
+                  <FeatureBox 
+                    icon={require('../../assets/icon/clock.png')}
+                    title={'Donation History'}
+                    description={'View your past donations and their impact.'}
+                    tintColor={'#F42F47'}
+                    onPress={()=>router.push('../pages/donationHistory')}
+                  />
+                  <FeatureBox 
+                    icon={require('../../assets/icon/FAQs.png')}
+                    title={'FAQs'}
+                    description={'Find answers to common questions about blood donation.'}
+                    tintColor={'#F42F47'}
+                    onPress={()=>router.push('../pages/FAQs')}
+                  /> 
           </BottomSheetView>
         </BottomSheet>
         <BottomSheetModal ref={modalRef} snapPoints={modalSnapPoints} backdropComponent={modalBackDrop}>
@@ -159,10 +164,10 @@ const Home = () => {
   );
 };
 
-const FeatureBox = ({ icon, title, description, tintColor }) => {
+const FeatureBox = ({ icon, title, description, tintColor,onPress }) => {
   return (
     <View className="w-full px-5">
-      <Pressable 
+      <Pressable onPress={onPress}
         className="w-full h-28 bg-slate-100 border-gray-500 rounded-3xl px-6 mb-4 flex-row items-center">
         <Image
           source={icon}

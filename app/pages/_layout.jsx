@@ -71,6 +71,32 @@ const _layout = () => {
                 color: 'white',
               },
           }}/>
+          <Stack.Screen name="donationHistory"
+            options={{
+              title: 'history',
+              headerStyle: {
+                backgroundColor: '#F42F47',
+              },
+              headerTintColor: '#fff',
+              headerTitleAlign: 'center',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+          }}/>
+          <Stack.Screen name="donationSettings"
+            options={{
+              title: 'Donation Settings',
+              headerStyle: {
+                backgroundColor: '#F42F47',
+              },
+              headerTintColor: '#fff',
+              headerTitleAlign: 'center',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                color: 'white',
+              },
+          }}/>
         <Stack.Screen name="request_materialtop" options={{ headerShown: false }} /> 
         <Stack.Screen name="viewRequest" options={{ headerShown: false }} /> 
         <Stack.Screen name="FAQsPages" options={{ headerShown: false }} /> 
