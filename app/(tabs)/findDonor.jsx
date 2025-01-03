@@ -1,14 +1,49 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-
+import { Image, Pressable, StyleSheet, Text, View, ActivityIndicator, FlatList } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import Elevated from '../../components/elevated';
+import { supabase } from '../../lib/supabase';
+import { useAuth } from '../../context/authContext';
+import useFetchDonors from '../../hooks/find_donor/useFetchDonors';
+import DonorBox from '../../components/find_donor/donorBox';
+import SheetRequestDonation from '../pages/bottomSheet/findDonor/sheetRequestDonation';
+import useFetchUser from '../../hooks/user/useFetchUser';
 const FindDonor = () => {
-  return (
-    <View>
-      <Text>FindDonor</Text>
-    </View>
-  )
+  const[viewDonor, setViewDonor] = useState(false);
+  const [selectedDonor, setSelectedDonor] = useState(null);
+  const { user } = useAuth();
+
+
+const {donor,loading,error} = useFetchDonors();
+const ViewDonorBottomSheetRef = useRef(null);
+
+const viewDonorProfile=(data)=>{
+  setSelectedDonor(data);
+  ViewDonorBottomSheetRef.current?.present();
 }
 
-export default FindDonor
+    return (
+      <View className="h-full w-full bg-white">
+      {donor?.length !== 0 ? (
 
-const styles = StyleSheet.create({})
+          <FlatList
+          className="h-full w-full"
+          data={donor}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item, index }) => (
+            <DonorBox donor={item} index={index} onPress={()=>viewDonorProfile(item)}/>
+          )}
+          />
+      ):(
+      <Text>
+          No donor found.
+      </Text>
+    )} 
+      <SheetRequestDonation ref={ViewDonorBottomSheetRef} donor_data={selectedDonor}/>
+    
+    </View>
+  );
+};
+
+export default FindDonor;
+
+

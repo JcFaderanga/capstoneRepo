@@ -87,7 +87,7 @@ const Address = () => {
 
   return (
     <View className="bg-white h-full w-full">
-      <ScrollView className="h-full">
+      <ScrollView className="w-full h-full">
         <SignUpHeader text="What's your Address?" />
         <DropDown
           title="Select region"
@@ -127,3 +127,4 @@ const Address = () => {
 };
 
 export default Address;
+
