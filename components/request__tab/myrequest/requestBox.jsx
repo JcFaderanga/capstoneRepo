@@ -15,6 +15,8 @@ const MostRecentRequest = ({recentRequest, onPress}) => {
   
     return `${month}/${day}/${year}`;
   };
+
+  const color = recentRequest?.approve ? 'green' : '#f97316';
     return (
         <View>
             <Elevated width={'100%'} height={"auto"} elevated={2}>
@@ -31,7 +33,7 @@ const MostRecentRequest = ({recentRequest, onPress}) => {
                         <View className="flex-row justify-between items-center">
                             <View>
                                 <Text className="font-bold text-[16px]">Status</Text>
-                                <Text className="font-bold text-[16px] text-orange-500">
+                                <Text className="font-bold text-[16px] " style={{color: color}}>
                                   {recentRequest?.approve ? 'Approve' : 'Under review'}
                                 </Text>
                             </View>

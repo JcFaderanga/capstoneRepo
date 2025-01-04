@@ -4,20 +4,22 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'; 
 import BottomSheet ,{ BottomSheetView } from '@gorhom/bottom-sheet';
 import MostRecentRequest from '../../../components/request__tab/myrequest/requestBox';
-import {FetchRequestCount, FetchMostRecentRequest} from '../../../hooks/my_request_hooks';
+import {FetchRequestCount, FetchMostRecentRequest, FetchUnitRecieved} from '../../../hooks/my_request_hooks';
 import { useAuth } from '../../../context/authContext';
 import { router } from 'expo-router';
 
 const Myrequest = () => {
   const {user} = useAuth();
- const { count, loading: loadingCount, fetchRequestCount } = FetchRequestCount();
-const { recentRequest, loading: loadingRequest, fetchMostRecentRequest } = FetchMostRecentRequest();
+  const { count, loading: loadingCount, fetchRequestCount } = FetchRequestCount();
+  const {unitRecieved, error, fetchUnitRecieved} = FetchUnitRecieved();
+  const { recentRequest, loading: loadingRequest, fetchMostRecentRequest } = FetchMostRecentRequest();
 
  useEffect(()=>{
   fetchRequestCount(user?.id);
   fetchMostRecentRequest(user?.id);
+  fetchUnitRecieved(user?.id);
  },[])
-  console.log('recent:', recentRequest);
+  console.log('recent:', error);
 
   const snapPoints = useMemo(() => ['79%', '95%'], []);
   const renderCustomHandle = () => (
@@ -30,7 +32,7 @@ const { recentRequest, loading: loadingRequest, fetchMostRecentRequest } = Fetch
           <View className="w-full h-36 bg-[#4A4A4A] flex-row items-center justify-evenly px-2">
               <View className="w-36 h-24 bg-[#5F5F5F] rounded-3xl mx-1 py-4 px-6">
                 <Text className="text-white ">Unit received</Text>
-                <Text className="text-white text-4xl font-bold">20</Text>
+                <Text className="text-white text-4xl font-bold">{unitRecieved}</Text>
               </View>
               <View className="w-36 h-24 bg-[#5F5F5F] rounded-3xl mx-1 py-4 px-5">
                 <Text className="text-white ">Total requests</Text>
@@ -45,7 +47,7 @@ const { recentRequest, loading: loadingRequest, fetchMostRecentRequest } = Fetch
             <Text className="text-center text-xl font-bold">Your most recent request</Text>
           </View>
           <View className="px-4">
-              <MostRecentRequest recentRequest={recentRequest}/>
+             <View className="w-full h-80 rounded-3xl border border-[#F6B300]"></View>
           </View>
       </View>
   )}

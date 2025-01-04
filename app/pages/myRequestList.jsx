@@ -11,8 +11,9 @@ const Request_list = () => {
     const router = useRouter();
     useEffect(()=>{
         fetchAllRequest(user?.id);
-    },[allRequest]);
+    },[user]);
 
+    console.log(allRequest)
     const handleViewRequest = (request_data)=>{
         router.push({
             pathname: './viewRequest',

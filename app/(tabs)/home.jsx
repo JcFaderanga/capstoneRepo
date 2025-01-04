@@ -28,7 +28,6 @@ const Home = () => {
 
   const snapPoints = useMemo(() => ['59%', '95%'], []);
   const modalSnapPoints = useMemo(() => ['25%'], []);
-console.log(error)
   useEffect(() => {
     if (user) {
       FetchUnitCount(user?.id);
@@ -39,10 +38,7 @@ console.log(error)
   const handleLogout = async () => {
     try {
       const { error } = await supabase.auth.signOut(); 
-      if (error) {
-        console.log('Error during logout:', error.message);
-        return;
-      }
+      if (error) return;
       setTimeout(() => {
         router.replace('.././');
       }, 100);

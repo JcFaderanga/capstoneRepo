@@ -14,7 +14,7 @@ const Donate = ({ request_data }) => {
   const { user } = useAuth();
   const { InsertDoation } = useSaveDonation();
   const request = JSON.parse(params?.request_data);
-
+  console.log(request)
   const { totalUnits, FetchUnitCount } = UseFetchDonationCount();
   
   useEffect(() => {
@@ -48,6 +48,7 @@ const Donate = ({ request_data }) => {
       const DONATION_DATA = {
         blood_request_id: request?.blood_request_id,
         donor: user?.id,
+        recipient: request?.user_id,
         units_donated: units,
         anonymous_donation: user?.anonymous_donor,
       };
