@@ -73,7 +73,7 @@ const _layout = () => {
           }}/>
           <Stack.Screen name="donationHistory"
             options={{
-              title: 'history',
+              title: 'My Donation',
               headerStyle: {
                 backgroundColor: '#F42F47',
               },

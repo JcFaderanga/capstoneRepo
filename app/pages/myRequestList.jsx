@@ -21,7 +21,7 @@ const Request_list = () => {
         });
     }
   return (
-    <View >
+    <View className="bg-white">
         <FlatList
             className="px-4"
             data={allRequest}

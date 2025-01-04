@@ -167,7 +167,7 @@ const FeatureBox = ({ icon, title, description, tintColor,onPress }) => {
   return (
     <View className="w-full px-5">
       <Pressable onPress={onPress}
-        className="w-full h-28 bg-slate-100 border-gray-500 rounded-3xl px-6 mb-4 flex-row items-center">
+        className="w-full h-28 bg-slate-100 rounded-3xl px-6 mb-4 flex-row items-center">
         <Image
           source={icon}
           className="w-9 h-12 mr-4"
