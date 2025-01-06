@@ -27,7 +27,7 @@ const Home = () => {
   const modalRef = useRef(null);
 
   const snapPoints = useMemo(() => ['59%', '95%'], []);
-  const modalSnapPoints = useMemo(() => ['25%'], []);
+  const modalSnapPoints = useMemo(() => ['35%'], []);
   useEffect(() => {
     if (user) {
       FetchUnitCount(user?.id);
@@ -107,11 +107,13 @@ const Home = () => {
                     icon={require('../../assets/icon/mediumStock.png')}
                     title={'Blood Bank'}
                     description={'Explore available blood types and inventory.'}
+                    onPress={()=>router.push('../pages/bloodBank')}
                   />
                   <FeatureBox 
                     icon={require('../../assets/icon/target.png')}
                     title={'Donation Drive'}
                     description={'Explore available blood types and inventory.'}
+                    onPress={()=>router.push('../pages/donationDrive')}
                   />
 
                   <FeatureBox 

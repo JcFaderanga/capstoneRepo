@@ -10,15 +10,25 @@ import { ScrollView } from 'react-native-gesture-handler';
 import ModalPublicDonate from '../../../../../components/Modals/request__tab/foryou/publicDonate/ModalPublicDonate';
 import PreSreening from './components/PreScreening'
 import UseFetchDonationCount from '../../../../../hooks/blood_donation/fetchDonationUnitCount';
+import UseFetchNextDonation from '../../../../../hooks/blood_donation/fetchNextDonationDays';
+import useFetchUser from '../../../../../hooks/user/useFetchUser'
 const SheetViewRequest = forwardRef(({request_data}, ref) => {
 const [isDonate, setDonate] = useState(false);
-  
+const {user} = useAuth();
+const {nextDonation, FetchNextDonation} = UseFetchNextDonation();
+
+useEffect(()=>{
+  FetchNextDonation(user?.id)
+},[user])
+
+
    const donate=()=>{
       snapeToIndex(1)
       setDonate(true)
    };
 
-    const snapPoints = useMemo(() => ['80%','96%'], []);
+  
+    const snapPoints = useMemo(() => ['75%','96%'], []);
     const snapeToIndex = (index) => ref.current?.snapToIndex(index);
     const renderBackdrop = useCallback(
         (props) => <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1} {...props} />,
@@ -49,6 +59,9 @@ const [isDonate, setDonate] = useState(false);
         </View>
       </View>
     );
+
+  const [month, day, year] = nextDonation.split('/').map(Number);
+  const parsedDate = nextDonation !== '--' ? new Date(year, month - 1, day) : new Date;
   
     return (
       <BottomSheetModal ref={ref} snapPoints={snapPoints} backdropComponent={renderBackdrop}
@@ -62,15 +75,31 @@ const [isDonate, setDonate] = useState(false);
               )}
             
                 <Animatable.View  animation = 'zoomIn' duration={200} easing={'ease-in-out'} delay={400}>
+                  { new Date() < parsedDate.getTime()
+                  ?
+                  <View>
                     <TouchableOpacity
-                        style={isDonate ? { display: 'none' } : {}}
-                        onPress={() => donate()}
-                        accessible={true}
-                        accessibilityLabel="Donate blood button"
-                        className="w-[310px] h-[50px] mx-auto rounded-2xl bg-white justify-center items-center shadow-md mt-4"
-                      >
-                        <Text className="text-primary_red font-bold text-xl">Donate</Text>
-                    </TouchableOpacity>
+                      accessible={true}
+                      accessibilityLabel="Donate blood button"
+                      className="w-[310px] h-[50px] mx-auto rounded-2xl bg-white opacity-35 justify-center items-center shadow-md mt-4"
+                    >
+                      <Text className="text-white font-bold text-lg">Next donation starting {nextDonation}</Text>
+                  </TouchableOpacity>
+                  <Text className="text-center py-2 text-white font-bold">Why is this happening?</Text>
+                  </View>
+                  
+                  :
+                  <TouchableOpacity
+                      style={isDonate ? { display: 'none' } : {}}
+                      onPress={() => donate()}
+                      accessible={true}
+                      accessibilityLabel="Donate blood button"
+                      className="w-[310px] h-[50px] mx-auto rounded-2xl bg-white justify-center items-center shadow-md mt-4"
+                    >
+                      <Text className="text-primary_red font-bold text-xl">Donate</Text>
+                  </TouchableOpacity>
+                  }
+                    
                 </Animatable.View>
             </BottomSheetView>
       </BottomSheetModal>
@@ -120,25 +149,29 @@ const currentPercent = totalUnits / request_data?.units;
 
 {/* PREVIEW PAGE*/}
 const Preview = ({request_data}) =>{
-  const {user} = useAuth();
+  const {user,fetchUser} = useFetchUser();
+useEffect(()=>{
+  fetchUser(request_data?.user_id);
+},[request_data])
+
+  const profile ={
+    Male: require('../../../../../assets/icon/maleProfile.png'),
+    Female: require('../../../../../assets/icon/female.png')
+  }
  return(
   <View className="bg-primary_red  "> 
-      < View className="w-full flex items-center pt-11 px-4 " >
+      < View className="w-full flex items-center pt-11 px-4" >
 
           <Animatable.View  animation = 'zoomIn' duration={200} easing={'ease-in-out'} delay={100}>
-              <Image source={require('../../../../../assets/icon/profilePic2.jpg')} 
+              <Image source={profile[user?.gender]} 
                 resizeMode='contain' className="h-32 w-32 rounded-full border-2 border-white"/> 
           </Animatable.View>
-          <Animatable.View className=" flex items-center justify-center" animation = 'zoomIn' duration={200} easing={'ease-in'} delay={200}>
-              <Text className="text-3xl font-bold text-white mt-5 mb-2">{request_data?.userName}</Text>
-              <Text className="text-center text-white">I need a blood donation of {request_data?.blood_type} as soon as possible. Please consider helping.</Text>
-           </Animatable.View>  
-      </View>
-    <RequestStatus request_data={request_data} />
-        <Animatable.Text animation = 'zoomIn' duration={200} easing={'ease-in-out'} delay={400}
-          className="text-white px-4 text-base text-center font-bold">
-            Your blood type {user?.blood_type} is compatible with patients having A+ and AB+ blood types.
+          <Animatable.Text animation = 'zoomIn' duration={200} easing={'ease-in-out'} delay={200}
+              className="text-white px-4 text-base text-center font-bold mt-5">
+                Your blood type {user?.blood_type} is compatible with patients having a {request_data?.blood_type} blood type.
         </Animatable.Text>
+      </View>
+    <RequestStatus request_data={request_data} />   
     </View>
  );
 }

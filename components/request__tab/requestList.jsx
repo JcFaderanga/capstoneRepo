@@ -13,7 +13,7 @@ const ProfileList = ({ bloodTypeFilterResult }) => {//get filters of data from f
   const [selectedRequest, setSelectedRequest] = useState(null);
   //console.log(JSON.stringify(requestList, null, 4) )
 
-    
+    console.log(requestList)
   const ViewRequestBottomSheetRef = useRef(null);
   const getRequestList = async(limit)=>{
     const requests = await fetchRequests({ bloodTypeFilterResult }, limit);//pass seletected types to query to filter list result 

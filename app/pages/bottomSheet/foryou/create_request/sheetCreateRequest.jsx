@@ -12,7 +12,7 @@ const sheetCreateRequest = forwardRef(({user}, ref) => {
     const [isSubmitSuccess, setSubmitSuccess] = useState(false);
     const [modalMyRequest, setModalMyRequest] = useState(false);
     const [recentRequestData, setRecentRequestData] = useState(null);
-    const snapPoints = useMemo(() => ['90%'], []);
+    const snapPoints = useMemo(() => ['95%'], []);
     const renderBackdrop = useCallback(
         (props) => <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1} {...props} />,
         []

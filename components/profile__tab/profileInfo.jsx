@@ -10,7 +10,7 @@ const _layout=()=>{
       );
 }
 
-const ProfileInfo = ({setProfile,profile, unit,nextDonation}) => {
+const ProfileInfo = ({setProfile, unit,nextDonation}) => {
     const { setAuth, user } = useAuth();
     const formatDate = (timestamp) => {
       // Check if timestamp is valid
@@ -24,12 +24,17 @@ const ProfileInfo = ({setProfile,profile, unit,nextDonation}) => {
     
     const userCreatedAt = user?.created_at;
     const formattedDate = formatDate(userCreatedAt);
+
+    const profile ={
+      Male: require('../../assets/icon/maleProfile.png'),
+      Female: require('../../assets/icon/female.png')
+    }
   return (
     <>
         <View className="w-full flex bg-primary_red h-52 rounded-b-2xl">
             <View className=" h-[130px] flex-row items-center justify-center">
                 <View className="">
-                    <Image source={require('../../assets/icon/profilePic2.jpg')}
+                    <Image source={profile[user?.gender]}
                               style={styles.profileImage}
                               className="border"
                               resizeMethod='retain'/>

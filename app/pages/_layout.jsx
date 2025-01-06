@@ -1,108 +1,60 @@
-import { Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { router, Stack, usePathname, useRouter } from "expo-router";
-import { AuthProvider,useAuth } from '../../context/authContext';
-import { supabase } from '../../lib/supabase';
+import { Stack } from 'expo-router';
+import React from 'react';
+
+const screenOptions = {
+  headerStyle: { backgroundColor: '#F42F47' },
+  headerTintColor: '#fff',
+  headerTitleAlign: 'center',
+  headerTitleStyle: { fontWeight: 'bold', color: 'white' },
+};
+
+const customTitles = {
+  profile__tab: "Update Profile",
+  findDonor: "Find a Donor",
+  FAQs: "FAQs",
+};
+
+const capitalizeTitle = (title) => {
+  return title
+    .replace(/_/g, ' ')
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/^./, (str) => str.toUpperCase());
+};
+
+const getScreenTitle = (screen) => customTitles[screen] || capitalizeTitle(screen);
 
 const _layout = () => {
-  return ( 
-      <Stack>
-        <Stack.Screen name="profile__tab"options={{
-          title: 'Update Profile',
-          headerStyle: {
-            backgroundColor: '#F42F47',
-          },
-          headerTintColor: '#fff',
-          headerTitleAlign: 'center',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-            }}/>
-            <Stack.Screen name="findDonor"
-          options={{
-            title: 'Find Donor',
-            headerStyle: {
-              backgroundColor: '#F42F47',
-            },
-            headerTintColor: '#fff',
-            headerTitleAlign: 'center',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              color: 'white',
-            },
-          }}/>
-           <Stack.Screen name="FAQs"
-          options={{
-            title: 'FAQs',
-            headerStyle: {
-              backgroundColor: '#F42F47',
-            },
-            headerTintColor: '#fff',
-            headerTitleAlign: 'center',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              color: 'white',
-            },
-          }}/>
-          <Stack.Screen name="myRequestList"
-            options={{
-              title: 'My Requests',
-              headerStyle: {
-                backgroundColor: '#F42F47',
-              },
-              headerTintColor: '#fff',
-              headerTitleAlign: 'center',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white',
-              },
-          }}/>
+  const stacks = [
+    'profile__tab',
+    'findDonor',
+    'FAQs',
+    'myRequestList',
+    'donate',
+    'donationHistory',
+    'donationSettings',
+    'bloodBank',
+    'donationDrive',
+  ];
 
-      <Stack.Screen name="donate"
-            options={{
-              title: '',
-              headerStyle: {
-                backgroundColor: '#F42F47',
-              },
-              headerTintColor: '#fff',
-              headerTitleAlign: 'center',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white',
-              },
-          }}/>
-          <Stack.Screen name="donationHistory"
-            options={{
-              title: 'My Donation',
-              headerStyle: {
-                backgroundColor: '#F42F47',
-              },
-              headerTintColor: '#fff',
-              headerTitleAlign: 'center',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white',
-              },
-          }}/>
-          <Stack.Screen name="donationSettings"
-            options={{
-              title: 'Donation Settings',
-              headerStyle: {
-                backgroundColor: '#F42F47',
-              },
-              headerTintColor: '#fff',
-              headerTitleAlign: 'center',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-                color: 'white',
-              },
-          }}/>
-        <Stack.Screen name="request_materialtop" options={{ headerShown: false }} /> 
-        <Stack.Screen name="viewRequest" options={{ headerShown: false }} /> 
-        <Stack.Screen name="FAQsPages" options={{ headerShown: false }} /> 
-     
-      </Stack>  
-  )
-}
+  return (
+    <Stack>
+      {stacks.map((screen) => (
+        <Stack.Screen
+          key={screen}
+          name={screen}
+          options={{
+            title: getScreenTitle(screen),
+            ...screenOptions,
+          }}
+        />
+      ))}
+      <Stack.Screen name="request_materialtop" options={{ headerShown: false }} />
+      <Stack.Screen name="viewRequest" options={{ headerShown: false }} />
+      <Stack.Screen name="FAQsPages" options={{ headerShown: false }} />
+    </Stack>
+  );
+};
 
-export default _layout
+export default _layout;

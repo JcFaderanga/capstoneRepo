@@ -11,10 +11,15 @@ if(donor){
         first_name,
         last_name,
         blood_type,
-        anonymous_donor
+        anonymous_donor,
+        gender
     } = donor;
 }
 
+const profile ={
+    Male: require('../../assets/icon/maleProfile.png'),
+    Female: require('../../assets/icon/femaleProfile.png')
+  }
   return (
     <Animatable.View className="w-full h-[100px] flex justify-center items-center border-t-2 border-gray-200 "
          animation = 'zoomIn'
@@ -33,7 +38,7 @@ if(donor){
     >
         <View className="w-full h-14 pl-2 pr-4 flex-row justify-between items-center" >
             <View className="flex-row items-center">
-                <Image source={ require('../../assets/icon/profilePic2.jpg')} className="w-12 h-12 rounded-full mx-3" resizeMode='contain'/>
+                <Image source={ profile[gender]} className="w-12 h-12 rounded-full mx-3" resizeMode='contain'/>
                     <View>
                         <Text className="text-lg h-7 font-bold">
                             {first_name + ' ' + last_name} 

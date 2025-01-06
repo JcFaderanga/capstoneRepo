@@ -16,7 +16,7 @@ useEffect(()=>{
 },[user])
 
   return (
-    <View className="h-full w-full bg-white px-4">
+    <View className="h-full w-full bg-white ">
       <FlatList
         data={donationData || []}
         keyExtractor={(item)=> item?.blood_donation_id?.toString()}
@@ -30,7 +30,6 @@ useEffect(()=>{
 export default DonationHistory
 
 const DonationBox = ({donationData})=>{
-
 const {user, fetchUser}= useFetchUser();
 useEffect(()=>{
   fetchUser(donationData?.recipient)
@@ -49,7 +48,16 @@ const recipient = donationData?.anonymous_donation
     pending: require('../../assets/icon/pending.png'),
   };
   
+  const formattedDate = (sched_date) => {
+    const dateObj = new Date(sched_date);
+    return dateObj.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  };
   return(
+  <View className="px-4">
     <View className="bg-slate-100 w-full rounded-3xl px-4 py-2 my-2 overflow-hidden">
         <View className="flex-row h-28">
             <View className=" flex justify-center">
@@ -59,7 +67,9 @@ const recipient = donationData?.anonymous_donation
                   {donationData.units_donated >= 1 ? 'units' : 'unit'} ({unitDonatedVolume}ml)
                   </Text>
                 </Text>
-                <Text className="font-bold text-base pt-1">Date: <Text className="font-normal">January 1, 2025</Text></Text>
+                <Text className="font-bold text-base pt-1">Schedule: <Text className="font-normal">
+                  {formattedDate(donationData.schedule_date)}</Text>
+                </Text>
             </View>
             <View>
                 <Image source={statusImages[donationData?.status]}
@@ -74,5 +84,6 @@ const recipient = donationData?.anonymous_donation
             <Text className="font-bold text-2xl text-primary_red">{blood_type}</Text>
         </View>
     </View>
+  </View>
   ) 
 }

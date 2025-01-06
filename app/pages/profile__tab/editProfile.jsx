@@ -102,8 +102,6 @@ const EditProfileInfo = () => {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   }
   
-  const text = "hello WORLD";
-  console.log(capitalizeFirstLetter(text)); 
   return (
     <View className="w-full h-full bg-[#f0f0f0]">
       <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>

@@ -3,7 +3,7 @@ import { View, Text, Pressable } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Require from '../../require';
 
-const InputBoxDate = ({ selectedDate, setSelectedDate, borderWidth, borderColor, detail, message,validationError }) => {
+const InputBoxDate = ({ selectedDate, setSelectedDate, detail, validationError, min }) => {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -24,9 +24,12 @@ const InputBoxDate = ({ selectedDate, setSelectedDate, borderWidth, borderColor,
             year: 'numeric', 
             month: 'short', 
             day: 'numeric' 
-        }) : 'Set your birthday';
+        }) : 'Select date';
     };
 
+    const today = new Date();
+    const maxDate = new Date();
+    maxDate.setMonth(maxDate.getMonth() + 1);
     return (
         <View>
             <View className="mt-5 flex items-center w-full">
@@ -54,7 +57,8 @@ const InputBoxDate = ({ selectedDate, setSelectedDate, borderWidth, borderColor,
                 onConfirm={handleConfirm}
                 onCancel={hideDatePicker}
                 date={selectedDate || new Date()}
-                maximumDate={new Date()}
+                minimumDate={min ? today : undefined}
+                maximumDate={min? maxDate : today}
                 customHeaderIOS={<Text style={{ fontSize: 18, fontWeight: 'bold' }}>Pick a Date</Text>}
             />
         </View>

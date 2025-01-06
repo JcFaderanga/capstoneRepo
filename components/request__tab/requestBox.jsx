@@ -4,7 +4,7 @@ import Elevated from '../elevated'
 import { homeIcons  } from '../../constant'
 import * as Animatable from 'react-native-animatable'
 import { color } from '@rneui/themed/dist/config'
-const RequestBox = ({name,description,bloodType,units,anonymous, timePosted,userId, onPress, index}) => {
+const RequestBox = ({name,description,bloodType,units,anonymous, timePosted,userId, onPress, index, gender}) => {
     const [avatar_image, setAvatarImage] = useState(null);
     //console.log("this requestbox = ",userId)
     useEffect(() => {
@@ -15,6 +15,9 @@ const RequestBox = ({name,description,bloodType,units,anonymous, timePosted,user
         fetchAvatar();
       }, []);
     
+
+
+
   return (
     <View className="w-full px-2">
             <Animatable.View className="my-2 border rounded-lg border-gray-200"
@@ -27,7 +30,12 @@ const RequestBox = ({name,description,bloodType,units,anonymous, timePosted,user
                 <View className="w-full h-16">
                     <View className="flex-1 h-14 pt-2">
                         <View className=" h-14 px-1 py flex-row  items-center">
-                            <Image source={ require('../../assets/icon/anonymouseIcon.png')} className="w-12 h-12 rounded-full mx-3" resizeMode='contain'/>
+                            <Image source={
+                                anonymous 
+                                ? require('../../assets/icon/anonymouseIcon.png')
+                                : require('../../assets/icon/maleProfile.png')
+                                } 
+                            className="w-12 h-12 rounded-full mx-3" resizeMode='contain'/>
                                 <View>
                                     <Text className="text-[16px] h-7 font-bold">
                                         {(anonymous)? 'Anonymous': name} •

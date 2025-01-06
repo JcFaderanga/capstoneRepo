@@ -13,7 +13,8 @@ const UseFetchDonation = () => {
       const { data, error } = await supabase
         .from('blood_donation')
         .select('*')
-        .eq('donor', user_id);
+        .eq('donor', user_id)
+        .order('created_at', { ascending: false }) ;
 
       if (error) {
         setError(error.message);
