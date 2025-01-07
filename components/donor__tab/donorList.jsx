@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import Unavailable from '../../components/unavailable'
-const DonationDrive = () => {
+
+const DonorList = () => {
   return (
     <View>
-      <Unavailable/>
+      <Text>DonorList</Text>
     </View>
   )
 }
 
-export default DonationDrive
+export default DonorList
 
 const styles = StyleSheet.create({})

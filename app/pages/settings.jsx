@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Unavailable from '../../components/unavailable'
-const DonationDrive = () => {
+const Settings = () => {
   return (
     <View>
       <Unavailable/>
@@ -9,6 +9,6 @@ const DonationDrive = () => {
   )
 }
 
-export default DonationDrive
+export default Settings
 
 const styles = StyleSheet.create({})

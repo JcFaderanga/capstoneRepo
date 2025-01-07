@@ -14,8 +14,8 @@ const FindDonor = () => {
   const [selectedDonor, setSelectedDonor] = useState(null);
   const [compatibility, setCompatibility] = useState(null);
   const [typeFilter, setTypeFilter] = useState(null);
-  const [recipientFilter, setRecipientFilter] = useState(null);
-
+  const [anonymousFilter, setAnonymousFilter] = useState(null);
+console.log('selected filter', typeFilter, anonymousFilter)
   const { user } = useAuth();
   const { donor, loading, error, fetchDonors } = useFetchDonors();
   const ViewDonorBottomSheetRef = useRef(null);
@@ -28,9 +28,10 @@ const FindDonor = () => {
 
   useEffect(() => {
     if (compatibility?.canReceiveFrom?.length > 0) {
-      fetchDonors(compatibility.canReceiveFrom);
+      const {canReceiveFrom} =compatibility;
+      fetchDonors({canReceiveFrom,typeFilter,anonymousFilter});
     }
-  }, [compatibility]);
+  }, [compatibility,typeFilter,anonymousFilter ]);
 
 
 
@@ -71,7 +72,7 @@ const FindDonor = () => {
               { label: 'Anonymous', value: 'Anonymous' },
               { label: 'Not Anonymous', value: 'Not Anonymous' },
             ]}
-            onValueChange={(value) => setRecipientFilter(value)}
+            onValueChange={(value) => setAnonymousFilter(value)}
           />
         </View>
 
@@ -92,9 +93,7 @@ const FindDonor = () => {
           <Text>No donor found.</Text>
         )}
 
-        <SheetRequestDonation
-          ref={ViewDonorBottomSheetRef}
-          donor_data={selectedDonor}
+        <SheetRequestDonation ref={ViewDonorBottomSheetRef} donor_data={selectedDonor}
         />
       </View>
     </ThemeContainer>

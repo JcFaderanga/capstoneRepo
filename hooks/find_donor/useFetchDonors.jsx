@@ -1,37 +1,49 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 
 const useFetchDonors = () => {
-const [donor, setDonors] = useState();
-const [loading, setLoading] = useState(false);
-const [error, setError] = useState(false);
+  const [donor, setDonors] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-    const fetchDonors = async (blood_type) => {
-      setLoading(true); 
-      setError(null); 
-      try {
-        const { data, error } = await supabase
-          .from('profile')
-          .select('*')
-          .in('blood_type', blood_type)
-          .is('donation_availability', true);
+  const blood_types = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 
-        if (error) {
-          throw new Error(error.message);
-        }
-        setDonors(data);
-      } catch (e) {
-        setError(e.message); 
-      } finally {
-        setLoading(false); 
+  const fetchDonors = async ({ canReceiveFrom, typeFilter, anonymousFilter }) => {
+    setLoading(true); 
+    setError(null); 
+    try {
+      let query = supabase
+        .from('profile')
+        .select('*')
+        .in('blood_type', blood_types)
+        .is('donation_availability', true);
+
+      if (typeFilter === 'Compatible') {
+        query = query.in('blood_type', canReceiveFrom);
+      } else if (typeFilter === 'All') {
+        query = query.in('blood_type', blood_types);
       }
-    };
 
-  return {donor,loading,error, fetchDonors}
+      if (anonymousFilter) {
+        query = query.eq('anonymous', anonymousFilter === 'Anonymous');
+      }
 
-}
+      const { data, error } = await query;
+      if (error) {
+        throw new Error(error.message);
+      }
+      setDonors(data);
+    } catch (e) {
+      setError(e.message); 
+    } finally {
+      setLoading(false); 
+    }
+  };
 
-export default useFetchDonors
+  return { donor, loading, error, fetchDonors };
+};
 
-const styles = StyleSheet.create({})
+export default useFetchDonors;
+
+const styles = StyleSheet.create({});

@@ -44,10 +44,10 @@ const Myrequest = () => {
               </Pressable>
           </View>
           <View className="p-4 rounded-t-lg">
-            <Text className="text-center text-xl font-bold">Your most recent request</Text>
+            <Text className="text-center text-xl font-bold"></Text>
           </View>
           <View className="px-4">
-             <View className="w-full h-80 rounded-3xl border border-[#F6B300]"></View>
+             <View className="w-full h-80 rounded-3xl"></View>
           </View>
       </View>
   )}

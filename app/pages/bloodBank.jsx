@@ -1,14 +1,13 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
-
+import Unavailable from '../../components/unavailable'
 const BloodBank = () => {
   return (
     <View>
-      <Text>BloodBank</Text>
+      <Unavailable/>
     </View>
   )
 }
 
 export default BloodBank
 
-const styles = StyleSheet.create({})
