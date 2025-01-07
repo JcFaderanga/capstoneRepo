@@ -1,25 +1,32 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { supabase } from '../../lib/supabase';
 
-const UseFetchDonation = () => {
+const UseFetchDonation = (recent_donation) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [donationData, setDonationData] = useState(null); 
+  const [donationData, setDonationData] = useState(null);
 
   const FetchDonation = async (user_id) => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
+      // Create the initial query
+      let query = supabase
         .from('blood_donation')
         .select('*')
         .eq('donor', user_id)
-        .order('created_at', { ascending: false }) ;
+        .order('created_at', { ascending: false });
 
+      // Apply limit for recent donations if required
+      if (recent_donation) {
+        query = query.limit(1);
+      }
+
+      const { data, error } = await query; 
+      
       if (error) {
         setError(error.message);
       } else {
-        setDonationData(data); 
+        setDonationData(recent_donation ? data[0] : data);
       }
     } catch (e) {
       setError(e.message);

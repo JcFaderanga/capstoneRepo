@@ -56,8 +56,8 @@ const ProfileInfo = ({setProfile, unit,nextDonation}) => {
                   <Text className="float-left text-sm font-bold text-white">ID: {user&&user.id}</Text>
                 </View>
             </View>
-            <View className="w-72 mx-auto mt-[-10px]">
-              <Elevated width={'100%'} height={100}>
+            <View className="w-full mx-auto mt-[-10px]">
+              <Elevated width={'100%'} height={100} radius={0} elevated={10}>
                 <View className="flex-row h-full">
                   <View className="flex-1 justify-center items-center ">
                     <Text className="text-sm font-bold">Unit Donated</Text>
@@ -65,7 +65,6 @@ const ProfileInfo = ({setProfile, unit,nextDonation}) => {
                       <Text className="font-bold text-[20px]">{unit === 0 ? '--' : unit}</Text>
                     </View>
                   </View>
-
                   <View className="flex-1 justify-center items-center ">
                     <Text className="text-sm font-bold">Next Donation</Text>
                     <View className="flex-row items-center h-[60]">

@@ -1,4 +1,4 @@
-import { Image, ScrollView, Text, TouchableOpacity, View, ActivityIndicator, Pressable } from 'react-native';
+import { Image, ScrollView, Text, TouchableOpacity, View, ActivityIndicator, Pressable,RefreshControl  } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useRef, useMemo, useCallback, useEffect } from 'react';
@@ -9,6 +9,7 @@ import DonationDrive from '../../components/donationDrive';
 import { useAuth } from '../../context/authContext';
 import ModalBloodBank from '../../components/Modals/modalBloodBank';
 import ThemeContainer from '../../components/UI/themeContainer';
+import ThemeButton from '../../components/UI/button/themeButton';
 import { TimeAgo } from '../../constant/timeStamp';
 import { ProfileInfo } from '../../components/profile__tab';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'; 
@@ -17,24 +18,44 @@ import UseFetchDonationCount from '../../hooks/blood_donation/fetchUnitDonated';
 import UseFetchNextDonation from '../../hooks/blood_donation/fetchNextDonationDays';
 import ContentTitleButton from '../../components/contentTitle';
 import { supabase } from '../../lib/supabase';
-
+import UseFetchDonation from '../../hooks/blood_donation/fetchDonation';
+import { TimeToGo, LongDateFormat } from '../../constant/timeStamp';
+import Elevated from '../../components/elevated';
+import * as Animatable from 'react-native-animatable'
 const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const { user } = useAuth();
   const { totalUnitDonated, FetchUnitCount } = UseFetchDonationCount();
   const {nextDonation, error,FetchNextDonation} = UseFetchNextDonation();
+  const {donationData, loading ,FetchDonation} = UseFetchDonation(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const bottomSheetRef = useRef(null);
   const modalRef = useRef(null);
 
-  const snapPoints = useMemo(() => ['59%', '95%'], []);
+  const snapPoints = useMemo(() => {
+    if (donationData) {
+      return ['25%', '95%'];
+    }
+    return ['61%', '95%'];
+  }, [donationData]);
   const modalSnapPoints = useMemo(() => ['35%'], []);
+
   useEffect(() => {
     if (user) {
       FetchUnitCount(user?.id);
       FetchNextDonation(user?.id);
+      FetchDonation(user?.id);
     }
   }, [user]);
-
+  const onRefresh = async () => {
+    setIsRefreshing(true);
+    setTimeout(() => {
+      FetchUnitCount(user?.id);
+      FetchNextDonation(user?.id);
+      FetchDonation(user?.id);
+      setIsRefreshing(false);
+    }, 1000); 
+  };
   const handleLogout = async () => {
     try {
       const { error } = await supabase.auth.signOut(); 
@@ -52,7 +73,7 @@ const Home = () => {
   }, []);
 
   const renderCustomHandle = () => (
-    <View className="p-2 rounded-t-lg">
+    <View className="px-2 py-1 rounded-t-lg">
       <Text className="text-center text-xl font-bold"></Text>
     </View>
   );
@@ -80,10 +101,20 @@ const Home = () => {
     );
   }
 
+  
   return (
     <ThemeContainer bgColor={'white'}>
       <GestureHandlerRootView style={{ flex: 1 }}> 
-        <View className="w-full h-[40px] flex-row justify-between items-center bg-primary_red">
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={onRefresh}
+            colors={['#F42F47']} // Change the color of the refresh indicator
+          />
+        }
+      >
+        <View className="w-full h-[40px] flex-row justify-between items-center bg-primary_red ">
           <View className="px-4">
             <Text className="text-white font-bold">Blood Group: {user?.blood_type}</Text>
           </View>
@@ -96,6 +127,8 @@ const Home = () => {
           </TouchableOpacity>
         </View>
         <ProfileInfo unit={totalUnitDonated} nextDonation={nextDonation}/>    
+        <UpComingDonation upComingDonation={donationData}/>
+      </ScrollView>
         <BottomSheet 
           index={0} 
           snapPoints={snapPoints} 
@@ -185,4 +218,47 @@ const FeatureBox = ({ icon, title, description, tintColor,onPress }) => {
   );
 };
 
+const UpComingDonation = ({ upComingDonation }) => {
+
+  console.log(upComingDonation?.schedule_date)
+  if (!upComingDonation) {
+    return (
+      <View className="mt-20 w-full px-4"></View>
+    );
+  }
+
+  const handleReviewAppointment = ()=>{
+    router.push('../pages/donationReview')
+  }
+  return (
+      <Animatable.View 
+            animation = 'zoomIn'
+            duration={100}
+            easing={'ease-in-out'}
+            delay={100}
+            className="mt-[65px] w-full px-5 ">
+        <View className="w-full rounded-sm ">
+          <Text className="font-bold text-xl text-center">
+            Upcoming Appointment
+          </Text>
+          <View className="w-full my-2 rounded-2xl border border-stone-50">  
+            <View className="w-full flex-row items-center justify-center py-2">
+              <Image source={require('../../assets/icon/appointment.png')} resizeMode='contain' className="w-6 h-7 mr-2"/>      
+              <Text className="font-bold text-lg">{LongDateFormat(new Date(upComingDonation?.schedule_date))}</Text>
+              <Text className="font-bold text-lg"> - {TimeToGo(upComingDonation?.schedule_date)}</Text>
+            </View>   
+              <View className=" mx-4 mb-3 rounded-xl py-5 px-3">
+                <Text className="text-center text-gray-500">Red Cross Center Centennial Lane, Filinvest Corporate City, Alabang, Muntinlupa</Text>
+              </View>
+              <Pressable className="bg-primary_red mx-4 mb-7 rounded-xl py-4" onPress={handleReviewAppointment}>
+                <Text className="text-center text-white font-bold">View Appointment</Text>
+              </Pressable>
+          </View>
+        </View>
+      </Animatable.View>
+     
+  );
+};
+
 export default Home;
+

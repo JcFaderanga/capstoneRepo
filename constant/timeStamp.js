@@ -14,6 +14,39 @@ export const TimeAgo = (timestamp) => {
   return 'just now';
 };
 
+export const TimeToGo = (isoString) => {
+  if (!isoString) {
+    return "Date not valid";
+  }
+
+  const targetDate = new Date(isoString);
+  if (isNaN(targetDate.getTime())) {
+    return "Invalid date format.";
+  }
+
+  const now = new Date();
+  const timeDiff = targetDate - now;
+
+  if (timeDiff <= 0) {
+    return "It's time!";
+  }
+
+  const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((timeDiff / (1000 * 60 * 60)) % 24);
+  if (days > 0) return `${days} ${days === 1 ? "day to go" : "days to go"}`;
+  if (hours > 0 || days > 0) return `${hours} ${hours === 1 ? "hour to go" : "hours to go"} `;
+  return 'MM/DD/YYYY';
+
+
+};
+
+export const LongDateFormat = (date) => {
+    return date ? date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    }) : 'Select Date';
+  };
 // 1year (365 days x 24 hours x 60 minutes x 60 seconds)
 // 1 month (30 days x 24 hours x 60 minutes x 60 seconds)
 // 1 week (7 days x 24 hours x 60 minutes x 60 seconds)

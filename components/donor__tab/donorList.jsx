@@ -26,7 +26,9 @@ const ViewDonorBottomSheetRef = useRef(null);
             )}
           />
         ) : (
-          <Text>No donor found.</Text>
+          <Text className="text-center font-bold py-10 text-2xl text-gray-300">
+              No donor found.
+          </Text>
         )}
         <SheetRequestDonation ref={ViewDonorBottomSheetRef} donor_data={selectedDonor}/>
     </View>
