@@ -1,24 +1,19 @@
 import { Image, Pressable, StyleSheet, Text, View, FlatList } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
-import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/authContext';
 import useFetchDonors from '../../hooks/find_donor/useFetchDonors';
-import DonorBox from '../../components/find_donor/donorBox';
-import SheetRequestDonation from '../pages/bottomSheet/findDonor/sheetRequestDonation';
 import ThemeContainer from '../../components/UI/themeContainer';
 import { ShowCompatibility } from '../../hooks/blood_validation/useBloodCopatibilty';
 import RNPickerSelect from 'react-native-picker-select';
-
+import DonorList from '../../components/donor__tab/donorList';
 const FindDonor = () => {
   const [viewDonor, setViewDonor] = useState(false);
-  const [selectedDonor, setSelectedDonor] = useState(null);
   const [compatibility, setCompatibility] = useState(null);
   const [typeFilter, setTypeFilter] = useState(null);
   const [anonymousFilter, setAnonymousFilter] = useState(null);
 console.log('selected filter', typeFilter, anonymousFilter)
   const { user } = useAuth();
   const { donor, loading, error, fetchDonors } = useFetchDonors();
-  const ViewDonorBottomSheetRef = useRef(null);
 
   useEffect(() => {
     if (!user) return;
@@ -34,13 +29,7 @@ console.log('selected filter', typeFilter, anonymousFilter)
   }, [compatibility,typeFilter,anonymousFilter ]);
 
 
-
-  const viewDonorProfile = (data) => {
-    setSelectedDonor(data);
-    ViewDonorBottomSheetRef.current?.present();
-  };
-
-  if (!user || loading) {
+  if (!user) {
     return (
       <ThemeContainer>
         <View className="flex-1 items-center justify-center bg-white">
@@ -52,7 +41,6 @@ console.log('selected filter', typeFilter, anonymousFilter)
       </ThemeContainer>
     );
   }
-
   return (
     <ThemeContainer>
       <View className="h-full w-full bg-white">
@@ -75,26 +63,7 @@ console.log('selected filter', typeFilter, anonymousFilter)
             onValueChange={(value) => setAnonymousFilter(value)}
           />
         </View>
-
-        {donor?.length > 0 ? (
-          <FlatList
-            className="h-full w-full"
-            data={donor}
-            keyExtractor={(item) => item.id?.toString() || `${item.index}`}
-            renderItem={({ item, index }) => (
-              <DonorBox
-                donor={item}
-                index={index}
-                onPress={() => viewDonorProfile(item)}
-              />
-            )}
-          />
-        ) : (
-          <Text>No donor found.</Text>
-        )}
-
-        <SheetRequestDonation ref={ViewDonorBottomSheetRef} donor_data={selectedDonor}
-        />
+        <DonorList donor={donor}/>      
       </View>
     </ThemeContainer>
   );
