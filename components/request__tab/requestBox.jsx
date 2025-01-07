@@ -14,9 +14,6 @@ const RequestBox = ({name,description,bloodType,units,anonymous, timePosted,user
           }
         fetchAvatar();
       }, []);
-    
-
-
 
   return (
     <View className="w-full bg-white py-2 my-1">

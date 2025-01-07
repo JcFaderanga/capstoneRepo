@@ -6,10 +6,14 @@ import ModalFilterRequest from '../../../components/Modals/request__tab/foryou/m
 import { useAuth } from '../../../context/authContext'
 import SheetCreateRequest from '../bottomSheet/foryou/create_request/sheetCreateRequest'
 import RNPickerSelect from 'react-native-picker-select';
+import { ShowCompatibility } from '../../../hooks/blood_validation/useBloodCopatibilty'
 const Foryou = () => {
     const [modalVisible, setModalVisible] = useState(false); 
     const [modalFilterVisible, setModalFilterVisible] = useState(false); 
     const [selectedTypes, setSelectedTypes] = useState([]);//store type request to show on the list and pass data to RequestList.jsx
+    const [typeFilter, setTypeFilter] = useState(null);
+    const [anonymousFilter, setAnonymousFilter] = useState(null);
+    const [compatibility, setCompatibility] = useState(null);
     const [listRefresh,setListOnRefresh] = useState(false);  
     const [filter, setFilter] = useState(null)
     const {user} = useAuth();
@@ -18,7 +22,12 @@ const Foryou = () => {
       id: user?.id,
       blood_type: user?.blood_type,
     }
-    
+      useEffect(() => {
+        if (!user) return;
+        const bloodCompatibility = ShowCompatibility(user?.blood_type);
+        setCompatibility(bloodCompatibility);
+      }, [user]);
+
     const handleSelectedBloodTypes = (types) => {
       setListOnRefresh(true);
       setSelectedTypes(types); // get data in array from ModalFilterRequest.jsx and store in selectedTypes
@@ -56,14 +65,19 @@ const Foryou = () => {
             placeholder={'Recipient'}
             list = {[
                     { label: 'All', value: 'All'},
-                    { label: 'Anonymouse', value: 'Anonymouse' },
-                    { label: 'Not Anonymouse', value: 'Not Anonymouse'},
+                    { label: 'Anonymouse', value: 'true' },
+                    { label: 'Not Anonymouse', value: 'false'},
                     ]}
             onValueChange={value => setFilter(value)}
           />
         </View>
       
-        <RequestList bloodTypeFilterResult = {selectedTypes} onRefresh={listRefresh} />
+        <RequestList 
+          bloodTypeFilterResult = {selectedTypes} 
+          typeFilter={typeFilter} 
+          anonymousFilter={anonymousFilter} 
+          compatibility={compatibility}
+        />
 
         <Pressable onPress={openCreatRequestSheet}
           className=" h-16 w-16 rounded-full bg-primary_red flex items-center justify-center absolute bottom-0 right-0 m-5 border border-white">

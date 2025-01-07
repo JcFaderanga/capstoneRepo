@@ -5,18 +5,17 @@ import { fetchRequests } from '../../services/userServices';
 import RequestBox from './requestBox';
 import SheetViewRequest from '../../app/pages/bottomSheet/foryou/blood_donation/sheetViewBloodRequest';
 var limit = 0;
-const ProfileList = ({ bloodTypeFilterResult }) => {//get filters of data from foryou.jsx 
+const ProfileList = ({ bloodTypeFilterResult, typeFilter, anonymousFilter,compatibility }) => {//get filters of data from foryou.jsx 
   const [requestList, setRequestList] = useState([]);//store type request to show on the list
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [refreshing, setRefreshing] = useState(false); 
   const [selectedRequest, setSelectedRequest] = useState(null);
   //console.log(JSON.stringify(requestList, null, 4) )
-
-    console.log(requestList)
   const ViewRequestBottomSheetRef = useRef(null);
+
   const getRequestList = async(limit)=>{
-    const requests = await fetchRequests({ bloodTypeFilterResult }, limit);//pass seletected types to query to filter list result 
+    const requests = await fetchRequests({bloodTypeFilterResult},typeFilter, anonymousFilter,compatibility , limit);//pass seletected types to query to filter list result 
     setRequestList(requests);// set filter result to requestList
   }
 
@@ -27,7 +26,7 @@ const ProfileList = ({ bloodTypeFilterResult }) => {//get filters of data from f
       setLoading(false);
     };
     fetchData();
-  }, [bloodTypeFilterResult]);// every time there is an update will automatically reload
+  }, [bloodTypeFilterResult,typeFilter, anonymousFilter ]);// every time there is an update will automatically reload
 
   const handleRefresh = async () => {
     setRefreshing(true);
