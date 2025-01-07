@@ -7,6 +7,7 @@ import useFetchDonors from '../../hooks/find_donor/useFetchDonors';
 import DonorBox from '../../components/find_donor/donorBox';
 import SheetRequestDonation from '../pages/bottomSheet/findDonor/sheetRequestDonation';
 import useFetchUser from '../../hooks/user/useFetchUser';
+import ThemeContainer from '../../components/UI/themeContainer';
 const FindDonor = () => {
   const[viewDonor, setViewDonor] = useState(false);
   const [selectedDonor, setSelectedDonor] = useState(null);
@@ -22,25 +23,27 @@ const viewDonorProfile=(data)=>{
 }
 
     return (
-      <View className="h-full w-full bg-white">
-      {donor?.length !== 0 ? (
+      <ThemeContainer>
+        <View className="h-full w-full bg-white">
+        {donor?.length !== 0 ? (
 
-          <FlatList
-          className="h-full w-full"
-          data={donor}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item, index }) => (
-            <DonorBox donor={item} index={index} onPress={()=>viewDonorProfile(item)}/>
-          )}
-          />
-      ):(
-      <Text>
-          No donor found.
-      </Text>
-    )} 
-      <SheetRequestDonation ref={ViewDonorBottomSheetRef} donor_data={selectedDonor}/>
-    
-    </View>
+            <FlatList
+            className="h-full w-full"
+            data={donor}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item, index }) => (
+              <DonorBox donor={item} index={index} onPress={()=>viewDonorProfile(item)}/>
+            )}
+            />
+        ):(
+        <Text>
+            No donor found.
+        </Text>
+      )} 
+        <SheetRequestDonation ref={ViewDonorBottomSheetRef} donor_data={selectedDonor}/>
+      
+      </View>
+    </ThemeContainer>
   );
 };
 

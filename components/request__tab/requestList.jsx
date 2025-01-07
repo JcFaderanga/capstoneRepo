@@ -49,7 +49,7 @@ const ProfileList = ({ bloodTypeFilterResult }) => {//get filters of data from f
   };
 
   return (
-    <View className="h-full">
+    <View className="h-full pb-40 bg-slate-50">
       {requestList.length === 0 ? (
         <View className="flex-1 items-center">
            <Image source={require('../../assets/icon/noRequestFound.png')} resizeMode="contain" className="w-64"/>

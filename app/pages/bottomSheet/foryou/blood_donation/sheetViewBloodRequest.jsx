@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,  Image, ImageBackground, Pressable, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View,  Image, ImageBackground, Pressable, TouchableOpacity,Alert } from 'react-native'
 import React,{useState, useCallback, useMemo, useRef, forwardRef, useEffect} from 'react'
 import { BottomSheetView, BottomSheetBackdrop,BottomSheetModal  } from '@gorhom/bottom-sheet';
 import { TimeAgo } from '../../../../../constant/timeStamp';
@@ -11,7 +11,7 @@ import ModalPublicDonate from '../../../../../components/Modals/request__tab/for
 import PreSreening from './components/PreScreening'
 import UseFetchDonationCount from '../../../../../hooks/blood_donation/fetchDonationUnitCount';
 import UseFetchNextDonation from '../../../../../hooks/blood_donation/fetchNextDonationDays';
-import useFetchUser from '../../../../../hooks/user/useFetchUser'
+import useFetchUser from '../../../../../hooks/user/useFetchUser';
 const SheetViewRequest = forwardRef(({request_data}, ref) => {
 const [isDonate, setDonate] = useState(false);
 const {user} = useAuth();
@@ -60,6 +60,13 @@ useEffect(()=>{
       </View>
     );
 
+    const ModalDiaglog = () => {
+      Alert.alert(
+        'Why is this happening? ',  
+        "Your body needs time to replenish the blood cells and iron lost during your last donation. For whole blood, you must wait 8 weeks to ensure you're healthy and the donation is safe. Platelets and plasma recover faster, so you can donate sooner.", 
+      );
+    };
+
   const [month, day, year] = nextDonation.split('/').map(Number);
   const parsedDate = nextDonation !== '--' ? new Date(year, month - 1, day) : new Date;
   
@@ -85,9 +92,10 @@ useEffect(()=>{
                     >
                       <Text className="text-white font-bold text-lg">Next donation starting {nextDonation}</Text>
                   </TouchableOpacity>
-                  <Text className="text-center py-2 text-white font-bold">Why is this happening?</Text>
+                  <Pressable onPress={ModalDiaglog}>
+                      <Text className="text-center py-2 text-white font-bold">Why is this happening?</Text>
+                  </Pressable>
                   </View>
-                  
                   :
                   <TouchableOpacity
                       style={isDonate ? { display: 'none' } : {}}
@@ -104,6 +112,7 @@ useEffect(()=>{
             </BottomSheetView>
       </BottomSheetModal>
     );
+
 })
 export default SheetViewRequest
 
@@ -150,13 +159,14 @@ const currentPercent = totalUnits / request_data?.units;
 {/* PREVIEW PAGE*/}
 const Preview = ({request_data}) =>{
   const {user,fetchUser} = useFetchUser();
+  const {user: currentUser} = useAuth();
 useEffect(()=>{
   fetchUser(request_data?.user_id);
 },[request_data])
 
   const profile ={
     Male: require('../../../../../assets/icon/maleProfile.png'),
-    Female: require('../../../../../assets/icon/female.png')
+    Female: require('../../../../../assets/icon/femaleProfile.png')
   }
  return(
   <View className="bg-primary_red  "> 
@@ -168,7 +178,7 @@ useEffect(()=>{
           </Animatable.View>
           <Animatable.Text animation = 'zoomIn' duration={200} easing={'ease-in-out'} delay={200}
               className="text-white px-4 text-base text-center font-bold mt-5">
-                Your blood type {user?.blood_type} is compatible with patients having a {request_data?.blood_type} blood type.
+                Your blood type {currentUser?.blood_type} is compatible with this patients having a {request_data?.blood_type} blood type.
         </Animatable.Text>
       </View>
     <RequestStatus request_data={request_data} />   

@@ -19,8 +19,8 @@ const MostRecentRequest = ({recentRequest, onPress}) => {
   const color = recentRequest?.approve ? 'green' : '#f97316';
     return (
         <View>
-            <Elevated width={'100%'} height={"auto"} elevated={2}>
-                <View className="px-6 pt-7 pb-6">
+
+                <View className="px-6 pt-10 pb-9 my-1 bg-white">
                     <View className="flex-row">
                         <QRCode value={JSON.stringify(recentRequest?.blood_request_id)} size={90} color="black" backgroundColor="white"/>
                           <View className="px-3">
@@ -37,7 +37,7 @@ const MostRecentRequest = ({recentRequest, onPress}) => {
                                   {recentRequest?.approve ? 'Approve' : 'Under review'}
                                 </Text>
                             </View>
-                            <Pressable className="flex-row w-32 h-12 justify-center items-center bg-[#DEDEDE] rounded-full" 
+                            <Pressable className="flex-row w-32 h-12 justify-center items-center bg-slate-100 rounded-full" 
                              onPress={onPress}>
                                 <Text className="text-xl text-[#5B5B5B] pb-1">View</Text>
                                 <MaterialIcons name="keyboard-arrow-right" size={30} color="#5B5B5B" className="mr-[-12] "/>
@@ -45,7 +45,7 @@ const MostRecentRequest = ({recentRequest, onPress}) => {
                         </View>
                     </View>
                 </View>
-            </Elevated>
+            
         </View>
     )
 }

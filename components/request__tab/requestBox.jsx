@@ -19,8 +19,8 @@ const RequestBox = ({name,description,bloodType,units,anonymous, timePosted,user
 
 
   return (
-    <View className="w-full px-2">
-            <Animatable.View className="my-2 border rounded-lg border-gray-200"
+    <View className="w-full bg-white py-2 my-1">
+            <Animatable.View className="my-1 bg-white"
             animation = 'zoomIn'
             duration={200}
             easing={'ease-in-out'}

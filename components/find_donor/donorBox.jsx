@@ -21,7 +21,7 @@ const profile ={
     Female: require('../../assets/icon/femaleProfile.png')
   }
   return (
-    <Animatable.View className="w-full h-[100px] flex justify-center items-center border-t-2 border-gray-200 "
+    <Animatable.View className="w-full h-[100px] flex justify-center items-center border-t-2 border-slate-100 "
          animation = 'zoomIn'
         duration={200}
         easing={'ease-in-out'}

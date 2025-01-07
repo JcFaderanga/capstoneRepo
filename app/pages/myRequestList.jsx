@@ -21,9 +21,9 @@ const Request_list = () => {
         });
     }
   return (
-    <View className="bg-white">
+    <View className="bg-slate-100">
         <FlatList
-            className="px-4"
+            className=""
             data={allRequest}
             keyExtractor={(item)=> item.blood_request_id.toString()}
             renderItem={({item, index})=>(
