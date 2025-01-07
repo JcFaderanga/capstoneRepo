@@ -62,7 +62,6 @@ const Foryou = () => {
             onValueChange={value => setFilter(value)}
           />
         </View>
-
       
         <RequestList bloodTypeFilterResult = {selectedTypes} onRefresh={listRefresh} />
 

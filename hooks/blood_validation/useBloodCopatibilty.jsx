@@ -18,21 +18,7 @@ export function ShowCompatibility(bloodType) {
         return `Unknown blood type: ${bloodType}`;
     }
     let bloodCopatiblity =  `Blood type ${bloodType} can donate to: ${compatibility.canDonateTo.join(', ')} and can receive from: ${compatibility.canReceiveFrom.join(', ')}.`;
-    //console.log('can donate' ,compatibility.canDonateTo);
-    //console.log('can receive' ,compatibility.canReceiveFrom);
-
     const canReceiveFrom = compatibility.canReceiveFrom;
     const canDonateTo = compatibility.canDonateTo
     return {canReceiveFrom, canDonateTo} ;
 }
-
-// export const BloodTypeRes = () =>{
-//  const [canDonateTo, setCanDonateTo] = useState('');
-//  const [canReceiveFrom, setCanReceiveFrom] = useState('');
-
-//  const setBloodType=(type)=>{
-    
-//  }
-//     return{}
-// } 
-

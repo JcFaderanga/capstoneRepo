@@ -7,14 +7,14 @@ const [donor, setDonors] = useState();
 const [loading, setLoading] = useState(false);
 const [error, setError] = useState(false);
 
-useEffect(() => {
-    const fetchDonors = async () => {
+    const fetchDonors = async (blood_type) => {
       setLoading(true); 
       setError(null); 
       try {
         const { data, error } = await supabase
           .from('profile')
           .select('*')
+          .in('blood_type', blood_type)
           .is('donation_availability', true);
 
         if (error) {
@@ -27,10 +27,8 @@ useEffect(() => {
         setLoading(false); 
       }
     };
-    fetchDonors();
-  }, []);
 
-  return {donor,loading,error}
+  return {donor,loading,error, fetchDonors}
 
 }
 
