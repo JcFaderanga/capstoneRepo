@@ -87,3 +87,7 @@
 ## ReactNative QR code
 
 - `npm install react-native-qrcode-svg`
+
+## ReactNative Picker
+
+- `npx expo install @react-native-picker/picker`
