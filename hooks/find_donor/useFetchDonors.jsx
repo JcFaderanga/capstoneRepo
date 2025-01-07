@@ -10,8 +10,8 @@ const useFetchDonors = () => {
   const blood_types = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 
   const fetchDonors = async ({ canReceiveFrom, typeFilter, anonymousFilter }) => {
-    setLoading(true); 
-    setError(null); 
+    setLoading(true);
+    setError(null);
     try {
       let query = supabase
         .from('profile')
@@ -25,8 +25,10 @@ const useFetchDonors = () => {
         query = query.in('blood_type', blood_types);
       }
 
-      if (anonymousFilter) {
-        query = query.eq('anonymous', anonymousFilter === 'Anonymous');
+      if (anonymousFilter === 'true') {
+        query = query.eq('anonymous_donor', true);
+      } else if (anonymousFilter === 'false') {
+        query = query.eq('anonymous_donor', false);
       }
 
       const { data, error } = await query;
@@ -35,9 +37,9 @@ const useFetchDonors = () => {
       }
       setDonors(data);
     } catch (e) {
-      setError(e.message); 
+      setError(e.message);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 

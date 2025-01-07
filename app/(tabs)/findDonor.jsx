@@ -11,7 +11,6 @@ const FindDonor = () => {
   const [compatibility, setCompatibility] = useState(null);
   const [typeFilter, setTypeFilter] = useState(null);
   const [anonymousFilter, setAnonymousFilter] = useState(null);
-console.log('selected filter', typeFilter, anonymousFilter)
   const { user } = useAuth();
   const { donor, loading, error, fetchDonors } = useFetchDonors();
 
@@ -57,8 +56,8 @@ console.log('selected filter', typeFilter, anonymousFilter)
             placeholder="Donor"
             list={[
               { label: 'All', value: 'All' },
-              { label: 'Anonymous', value: 'Anonymous' },
-              { label: 'Not Anonymous', value: 'Not Anonymous' },
+              { label: 'Anonymous', value: 'true' },
+              { label: 'Not Anonymous', value: 'false' },
             ]}
             onValueChange={(value) => setAnonymousFilter(value)}
           />

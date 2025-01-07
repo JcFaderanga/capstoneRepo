@@ -20,6 +20,7 @@ const profile ={
     Male: require('../../assets/icon/maleProfile.png'),
     Female: require('../../assets/icon/femaleProfile.png')
   }
+
   return (
     <Animatable.View className="w-full h-[100px] flex justify-center items-center border-t-2 border-slate-100 "
          animation = 'zoomIn'
@@ -38,7 +39,7 @@ const profile ={
     >
         <View className="w-full h-14 pl-2 pr-4 flex-row justify-between items-center" >
             <View className="flex-row items-center">
-                <Image source={ profile[gender]} className="w-12 h-12 rounded-full mx-3" resizeMode='contain'/>
+                <Image source={anonymous_donor ? require('../../assets/icon/anonymouseIcon.png') : profile[gender]} className="w-12 h-12 rounded-full mx-3" resizeMode='contain'/>
                     <View>
                         <Text className="text-lg h-7 font-bold">
                             {first_name + ' ' + last_name} 
