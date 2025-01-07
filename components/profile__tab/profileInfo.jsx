@@ -27,7 +27,7 @@ const ProfileInfo = ({setProfile, unit,nextDonation}) => {
 
     const profile ={
       Male: require('../../assets/icon/maleProfile.png'),
-      Female: require('../../assets/icon/female.png')
+      Female: require('../../assets/icon/femaleProfile.png')
     }
   return (
     <>
