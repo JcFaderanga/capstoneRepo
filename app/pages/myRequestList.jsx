@@ -13,7 +13,7 @@ const Request_list = () => {
         fetchAllRequest(user?.id);
     },[user]);
 
-    console.log(allRequest)
+   // console.log(allRequest)
     const handleViewRequest = (request_data)=>{
         router.push({
             pathname: './viewRequest',

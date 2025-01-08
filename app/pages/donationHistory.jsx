@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View, Image,FlatList } from 'react-native'
+import { StyleSheet, Text, View, Image,FlatList, Pressable } from 'react-native'
 import React, { useEffect } from 'react'
 import UseFetchDonation from '../../hooks/blood_donation/fetchDonation'
 import { useAuth } from '../../context/authContext'
 import useFetchUser from '../../hooks/user/useFetchUser'
-
+import { useRouter } from 'expo-router';
 const DonationHistory = () => {
   const {user} = useAuth();
 const {donationData,error, FetchDonation} = UseFetchDonation();
@@ -30,6 +30,7 @@ useEffect(()=>{
 export default DonationHistory
 
 const DonationBox = ({donationData})=>{
+const router = useRouter();
 const {user, fetchUser}= useFetchUser();
 useEffect(()=>{
   fetchUser(donationData?.recipient)
@@ -56,8 +57,15 @@ const recipient = donationData?.anonymous_donation
       day: 'numeric',
     });
   };
+
+  const handleDonationReview = ()=>{
+    router.push({
+      pathname: '../pages/donationReview',
+      params: { donation_details: JSON.stringify(donationData)},
+    })
+  }
   return(
-  <View className="px-4">
+  <Pressable className="px-4" onPress={handleDonationReview}>
     <View className="bg-slate-100 w-full rounded-3xl px-4 py-2 my-2 overflow-hidden">
         <View className="flex-row h-28">
             <View className=" flex justify-center">
@@ -84,6 +92,6 @@ const recipient = donationData?.anonymous_donation
             <Text className="font-bold text-2xl text-primary_red">{blood_type}</Text>
         </View>
     </View>
-  </View>
+  </Pressable>
   ) 
 }

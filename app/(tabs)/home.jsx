@@ -22,6 +22,7 @@ import UseFetchDonation from '../../hooks/blood_donation/fetchDonation';
 import { TimeToGo, LongDateFormat } from '../../constant/timeStamp';
 import Elevated from '../../components/elevated';
 import * as Animatable from 'react-native-animatable'
+import { useRouter } from 'expo-router';
 const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const { user } = useAuth();
@@ -219,8 +220,9 @@ const FeatureBox = ({ icon, title, description, tintColor,onPress }) => {
 };
 
 const UpComingDonation = ({ upComingDonation }) => {
+  const router = useRouter();
 
-  console.log(upComingDonation?.schedule_date)
+  //console.log(upComingDonation?.schedule_date)
   if (!upComingDonation) {
     return (
       <View className="mt-20 w-full px-4"></View>
@@ -228,7 +230,10 @@ const UpComingDonation = ({ upComingDonation }) => {
   }
 
   const handleReviewAppointment = ()=>{
-    router.push('../pages/donationReview')
+    router.push({
+      pathname: '../pages/donationReview',
+      params: { donation_details: JSON.stringify(upComingDonation)},
+    })
   }
   return (
       <Animatable.View 

@@ -57,7 +57,7 @@ const ProfileInfo = ({setProfile, unit,nextDonation}) => {
                 </View>
             </View>
             <View className="w-full mx-auto mt-[-10px]">
-              <Elevated width={'100%'} height={100} radius={0} elevated={10}>
+              <Elevated width={'100%'} height={100} radius={0} elevated={2}>
                 <View className="flex-row h-full">
                   <View className="flex-1 justify-center items-center ">
                     <Text className="text-sm font-bold">Unit Donated</Text>
