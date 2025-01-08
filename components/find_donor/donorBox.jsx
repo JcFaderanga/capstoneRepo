@@ -42,8 +42,8 @@ const profile ={
                 <Image source={anonymous_donor ? require('../../assets/icon/anonymouseIcon.png') : profile[gender]} className="w-12 h-12 rounded-full mx-3" resizeMode='contain'/>
                     <View>
                         <Text className="text-lg h-7 font-bold">
-                            {first_name + ' ' + last_name} 
-                            {/* <Text className="text-primary_red text-lg" > • {blood_type}</Text> */}
+                            {anonymous_donor ? 'Anonymous' : `${first_name} ${last_name}`}
+
                         </Text>
                     <Text className="text-lg leading-[16px] ">Blood Type:
                         <Text className="text-primary_red font-bold"> {blood_type}</Text></Text>

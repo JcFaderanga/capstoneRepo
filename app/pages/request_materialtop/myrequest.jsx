@@ -7,7 +7,7 @@ import MostRecentRequest from '../../../components/request__tab/myrequest/reques
 import {FetchRequestCount, FetchMostRecentRequest, FetchUnitRecieved} from '../../../hooks/my_request_hooks';
 import { useAuth } from '../../../context/authContext';
 import { router } from 'expo-router';
-
+import ThemeButton from '../../../components/UI/button/themeButton';
 const Myrequest = () => {
   const {user} = useAuth();
   const { count, loading: loadingCount, fetchRequestCount } = FetchRequestCount();
@@ -43,11 +43,16 @@ const Myrequest = () => {
                   <MaterialIcons name="keyboard-arrow-right" size={40} color="#94a3b8" />
               </Pressable>
           </View>
-          <View className="p-4 rounded-t-lg">
-            <Text className="text-center text-xl font-bold"></Text>
+          <View className="p-4 mt-2 bg-slate-100">
+            <Text className="text-xl font-bold text-center"><Text className="text-primary_red">Urgent: </Text>Someone needs your help! </Text>
+            <Text className="text-lg pt-4 pb-5 border-b border-gray-300 text-center">2 individuals need your blood donation. </Text>
+            <Text className="text-base text-gray-500 text-center">
+              Your generosity can save lives. Consider donating blood and making a difference today.
+            </Text>
+            <ThemeButton title={'Donate Now'}/>
           </View>
-          <View className="px-4">
-             <View className="w-full h-80 rounded-3xl"></View>
+          <View className="p-4 mt-2">
+             <View className="w-full h-40 rounded-3xl"></View>
           </View>
       </View>
   )}
