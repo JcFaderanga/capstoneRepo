@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import Require from '../../require';
 
 const InputBoxDate = ({ selectedDate, setSelectedDate, detail, validationError, min }) => {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);

@@ -16,11 +16,11 @@ const ProfileInfo = ({setProfile, unit,nextDonation}) => {
     const [showId, setShowId] = useState(false);
     useEffect(() => {
       if (user) {
-        setLoading(false); // Set loading to false once user data is available
+        setLoading(false);
         const timer = setTimeout(() => {
-          setShowId(true); // After 1 second, set showId to true
-        }, 500); // Delay of 1000ms
-        return () => clearTimeout(timer); // Clean up the timeout when the component unmounts
+          setShowId(true); 
+        }, 500); 
+        return () => clearTimeout(timer);
       }
     }, [user]); 
 

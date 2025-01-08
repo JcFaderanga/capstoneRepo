@@ -4,9 +4,21 @@ import Unavailable from '../../components/unavailable'
 import * as Progress from 'react-native-progress';
 import { useAuth } from '../../context/authContext';
 import { LongDateFormat } from '../../constant/timeStamp';
+
+import { useRouter ,router } from 'expo-router';
 const BloodBank = () => {
   const {user} = useAuth();
   const bloodTypes = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
+  const bloodStock = [.8, .4, .6, .7, .2, .6, .9, .3];
+  const router = useRouter();
+
+  const handleViewBloodType =(type)=>{
+    router.push({
+      pathname: './bloodTypeInfo',
+      params: { blood_type: type},
+    })
+  }
+
 
   return (
   <ScrollView className="w-full h-full bg-white">
@@ -39,16 +51,21 @@ const BloodBank = () => {
         <Text className="font-bold py-4 text-lg text-center">Current Blood Stocks as of {LongDateFormat(new Date)}</Text> 
     </View>
       <View className="w-full h-full bg-white flex-row justify-center items-center flex-wrap">
-        <ProgressType type={'A+'} stocks={.4} stocks_label={'Medium'}/>
-        <ProgressType type={'B+'} stocks={.7} stocks_label={'High'}/>
-        <ProgressType type={'O+'} stocks={.7} stocks_label={'High'}/>
-        <ProgressType type={'AB+'} stocks={.2} stocks_label={'Low'}/>
-        <ProgressType type={'O-'} stocks={.9} stocks_label={'High'}/>
-        <ProgressType type={'A-'} stocks={.3} stocks_label={'Low'}/>
-        <ProgressType type={'B-'} stocks={.5} stocks_label={'Meduim'}/>
-        <ProgressType type={'AB-'} stocks={.6} stocks_label={'Medium'}/>
+
+        { bloodTypes.map((type, index)=>{
+            return(
+              <ProgressType
+                key={index}
+                type={type}
+                stocks={bloodStock[index]} 
+                stocks_label={bloodStock[index] >= 0.7 ? 'High' : bloodStock[index] >= 0.4 ? 'Medium' : 'Low'}
+                onPress={()=>handleViewBloodType(type)}
+              />
+            )
+          })
+        }
       </View>
-      <View className="my-20">
+      <View className="my-4">
         <Text></Text>
       </View>
   </ScrollView>
@@ -56,16 +73,18 @@ const BloodBank = () => {
 }
 export default BloodBank
 
-const ProgressType = ({type, stocks, stocks_label})=>{
+const ProgressType = ({type, stocks, stocks_label, onPress})=>{
   return(
     <View className="pt-8 px-9 border rounded-xl border-slate-300 m-1">
-      <Progress.Circle
-          progress={stocks} size={100} borderWidth={0}
-          color="#F42F47" thickness={9} showsText={true} 
-          formatText={()=> type} 
-          textStyle={styles.progressText} unfilledColor="#E5E5E5" 
-          animated={true} 
-      />
+      <Pressable onPress={onPress}>
+          <Progress.Circle
+              progress={stocks} size={100} borderWidth={0}
+              color="#F42F47" thickness={9} showsText={true} 
+              formatText={()=> type} 
+              textStyle={styles.progressText} unfilledColor="#E5E5E5" 
+              animated={true} 
+          />
+      </Pressable>
       <Text className="text-center pt-2 pb-7">{stocks_label}</Text>
     </View>
   )

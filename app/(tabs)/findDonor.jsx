@@ -11,6 +11,7 @@ const FindDonor = () => {
   const [compatibility, setCompatibility] = useState(null);
   const [typeFilter, setTypeFilter] = useState(null);
   const [anonymousFilter, setAnonymousFilter] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
   const { user } = useAuth();
   const { donor, loading, error, fetchDonors } = useFetchDonors();
 
@@ -22,11 +23,24 @@ const FindDonor = () => {
 
   useEffect(() => {
     if (compatibility?.canReceiveFrom?.length > 0) {
-      const {canReceiveFrom} =compatibility;
-      fetchDonors({canReceiveFrom,typeFilter,anonymousFilter});
+      const { canReceiveFrom } = compatibility;
+      fetchDonors({ canReceiveFrom, typeFilter, anonymousFilter });
     }
-  }, [compatibility,typeFilter,anonymousFilter ]);
+  }, [compatibility, typeFilter, anonymousFilter]);
 
+  const onRefreshDonors = async () => {
+    setRefreshing(true);
+    try {
+      if (compatibility?.canReceiveFrom?.length > 0) {
+        const { canReceiveFrom } = compatibility;
+        await fetchDonors({ canReceiveFrom, typeFilter, anonymousFilter });
+      }
+    } catch (error) {
+      console.error('Error refreshing donors:', error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   if (!user) {
     return (
@@ -62,7 +76,7 @@ const FindDonor = () => {
             onValueChange={(value) => setAnonymousFilter(value)}
           />
         </View>
-        <DonorList donor={donor}/>      
+        <DonorList donor={donor} onRefreshDonors={onRefreshDonors} refreshing={refreshing} />      
       </View>
     </ThemeContainer>
   );
