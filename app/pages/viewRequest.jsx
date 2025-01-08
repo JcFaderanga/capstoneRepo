@@ -4,8 +4,8 @@ import QRCode from 'react-native-qrcode-svg';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'; 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BottomSheet ,{ BottomSheetView,BottomSheetBackdrop } from '@gorhom/bottom-sheet';
-
 import { useLocalSearchParams,router } from 'expo-router';
+import Unavailable from '../../components/unavailable';
 const ViewRequest = ({request_data}) => {
 
    const params = useLocalSearchParams();
@@ -62,7 +62,7 @@ const ViewRequest = ({request_data}) => {
                        >
                     <BottomSheetView>
                         <View className="px-4">
-                          <Text>Try</Text>
+                          <Unavailable/>
                         </View>
                     </BottomSheetView>
                 </BottomSheet>

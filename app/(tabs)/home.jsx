@@ -37,7 +37,7 @@ const Home = () => {
     if (donationData) {
       return ['25%', '95%'];
     }
-    return ['61%', '95%'];
+    return ['33%', '95%'];
   }, [donationData]);
   const modalSnapPoints = useMemo(() => ['35%'], []);
 
@@ -223,17 +223,35 @@ const UpComingDonation = ({ upComingDonation }) => {
   const router = useRouter();
 
   //console.log(upComingDonation?.schedule_date)
-  if (!upComingDonation) {
-    return (
-      <View className="mt-20 w-full px-4"></View>
-    );
-  }
+  
 
   const handleReviewAppointment = ()=>{
     router.push({
       pathname: '../pages/donationReview',
       params: { donation_details: JSON.stringify(upComingDonation)},
     })
+  }
+
+  if (!upComingDonation) {
+    return (
+      <View className="mt-20 w-full px-4">
+        <View className="w-full rounded-sm ">
+          <Text className="font-bold text-xl text-center">
+          Make a Life-Saving Contribution
+          </Text>
+          <View className="w-full my-2 rounded-2xl border border-stone-50">
+            <View className="mx-4 mb-3 rounded-xl p-3 px-3">
+              <Text className="text-center text-gray-500">
+                Every donation has the potential to save multiple lives. Be a part of it!
+              </Text>
+            </View>
+            <Pressable className="bg-primary_red mx-4 mb-7 rounded-xl py-4" >
+              <Text className="text-center text-white font-bold">Set Up Your Donation</Text>
+            </Pressable>
+          </View>
+        </View>
+      </View>
+    );
   }
   return (
       <Animatable.View 

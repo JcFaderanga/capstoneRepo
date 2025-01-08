@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View,Image, Pressable } from 'react-native'
-import React from 'react'
+import React,{useState, useEffect} from 'react'
 import { useAuth } from '../../context/authContext';
 import Elevated from '../elevated';
 const _layout=()=>{
@@ -12,6 +12,18 @@ const _layout=()=>{
 
 const ProfileInfo = ({setProfile, unit,nextDonation}) => {
     const { setAuth, user } = useAuth();
+    const [loading, setLoading] = useState(true);
+    const [showId, setShowId] = useState(false);
+    useEffect(() => {
+      if (user) {
+        setLoading(false); // Set loading to false once user data is available
+        const timer = setTimeout(() => {
+          setShowId(true); // After 1 second, set showId to true
+        }, 500); // Delay of 1000ms
+        return () => clearTimeout(timer); // Clean up the timeout when the component unmounts
+      }
+    }, [user]); 
+
     const formatDate = (timestamp) => {
       // Check if timestamp is valid
       if (!timestamp || isNaN(new Date(timestamp).getTime())) {
@@ -52,8 +64,16 @@ const ProfileInfo = ({setProfile, unit,nextDonation}) => {
                       </Pressable>
                 </View>  
                 <View className="float-left h-full ml-2 justify-center">
-                  <Text className="float-left text-2xl font-bold text-white">{user && user.first_name + ' '+ user.last_name}</Text>
-                  <Text className="float-left text-sm font-bold text-white">ID: {user&&user.id}</Text>
+                <Text className="float-left text-2xl font-bold text-white">
+                    {user && user.first_name && user.last_name
+                      ? `${user.first_name} ${user.last_name}`
+                      : ''}
+                  </Text>
+                  {showId && (
+                    <Text className="float-left text-sm font-bold text-white">
+                      ID: {user?.id || ''}
+                    </Text>
+                  )}
                 </View>
             </View>
             <View className="w-full mx-auto mt-[-10px]">

@@ -49,18 +49,16 @@ const sheetRequestDonation = forwardRef(({ donor_data }, ref) => {
         </View>
         {/* Donor Information */}
         <View className="mt-4">
-          {user?.anonymous_donor
-          ? <KeyValueRow label="Blood Type" value={donor_data?.blood_type} />
-          :(<>
-            <KeyValueRow label="Email" value={donor_data?.email} />
-            <KeyValueRow label="Phone Number" value={donor_data?.phone_number} />
+        {user?.anonymous_donor || !user?.public_contact ? (
             <KeyValueRow label="Blood Type" value={donor_data?.blood_type} />
-        </>)
-          }
-          
-          
+          ) : (
+            <>
+              <KeyValueRow label="Email" value={donor_data?.email} />
+              <KeyValueRow label="Phone Number" value={donor_data?.phone_number} />
+              <KeyValueRow label="Blood Type" value={donor_data?.blood_type} />
+            </>
+          )}
         </View>
-
         {/* Action Button */}
         <View className="mt-6">
           <ThemeButton title="Send Request" />
