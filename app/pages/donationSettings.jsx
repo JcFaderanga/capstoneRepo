@@ -1,14 +1,13 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import ToggleButton from '../../components/UI/button/toggleBtn';
 import { useAuth } from '../../context/authContext';
 import { supabase } from '../../lib/supabase';
 
 const DonationSettings = () => {
-  const [availability, setAvailability] = useState();
-  const [anonymous, setAnonymous] = useState();
-
+  const [availability, setAvailability] = useState(false);
+  const [anonymous, setAnonymous] = useState(false);
+  const [contacts, setContacts] = useState(false);
   const { user } = useAuth();
 
   // Fetch data when component loads or user changes
@@ -17,7 +16,7 @@ const DonationSettings = () => {
       const fetchData = async () => {
         const { data, error } = await supabase
           .from('profile')
-          .select('donation_availability, anonymous_donor')
+          .select('donation_availability, anonymous_donor, public_contact')
           .eq('id', user.id)
           .single();
 
@@ -26,6 +25,7 @@ const DonationSettings = () => {
         } else {
           setAvailability(data.donation_availability);
           setAnonymous(data.anonymous_donor);
+          setContacts(data.public_contact);
         }
       };
 
@@ -33,19 +33,9 @@ const DonationSettings = () => {
     }
   }, [user]);
 
-  let alert_title = '';
-  let alert_description = '';
-  if (user && user.blood_type === '--') {
-    alert_title = 'Invalid Blood Group';
-    alert_description = 'Please visit the nearest blood center to confirm your blood type or update your records to be eligible as a donor.';
-  } else {
-    alert_title = 'Available to Donate';
-    alert_description = 'Turning on Available to Donate will display your profile in the list of available donors.';
-  }
-
   const handleDonorAvailability = async (val) => {
     if (user.blood_type === '--') {
-      console.log(user.blood_type, "is invalid blood type", user.donation_availability);
+      console.log('Invalid blood type');
       return setAvailability(false);
     }
     const { error } = await supabase
@@ -59,7 +49,6 @@ const DonationSettings = () => {
     } else {
       setAvailability(val);
     }
-    console.log(user.blood_type, "set as true and donor avail is =", user.donation_availability);
   };
 
   const handleAnonymousDonor = async (val) => {
@@ -76,44 +65,56 @@ const DonationSettings = () => {
     }
   };
 
+  const handleContact = async (val) => {
+    const { error } = await supabase
+      .from('profile')
+      .update({ public_contact: val })
+      .eq('id', user.id);
+
+    if (error) {
+      console.error('Error updating contact visibility:', error);
+      setContacts(!val);
+    } else {
+      setContacts(val);
+    }
+  };
+
   return (
     <View className="h-full w-full bg-white">
-      <View className="w-full h-28 bg-slate-100 border-gray-500 px-6 my-1 flex-row items-center">
+      <View className="w-full h-28 bg-slate-100 px-6 my-1 flex-row items-center">
         <View className="flex-1">
           <Text className="font-bold text-lg">Available to Donate</Text>
           <Text>Set your availability status for donations.</Text>
         </View>
         <ToggleButton
-          AlertTitle={alert_title}
-          AlterDescription={alert_description}
+          AlertTitle="Available to Donate"
+          AlterDescription="Turning this on will display your profile in the donor list."
           onPress={handleDonorAvailability}
           status={availability}
         />
       </View>
-      <View className="w-full h-28 bg-slate-100 border-gray-500 px-6 my-1 flex-row items-center">
+
+      <View className="w-full h-28 bg-slate-100 px-6 my-1 flex-row items-center">
         <View className="flex-1">
           <Text className="font-bold text-lg">Show Contacts</Text>
           <Text>Share your contact details with recipients.</Text>
         </View>
         <ToggleButton
-          AlertTitle={'Show Contact'}
-          AlterDescription={
-            'By sharing your contact information publicly, you allow recipients to reach out to you privately.'
-          }
-          onPress={handleAnonymousDonor}
-          status={anonymous}
+          AlertTitle="Show Contact"
+          AlterDescription="Allow recipients to reach out to you directly."
+          onPress={handleContact}
+          status={contacts}
         />
       </View>
-      <View className="w-full h-28 bg-slate-100 border-gray-500 px-6 my-1 flex-row items-center">
+
+      <View className="w-full h-28 bg-slate-100 px-6 my-1 flex-row items-center">
         <View className="flex-1">
           <Text className="font-bold text-lg">Anonymous Donor</Text>
           <Text>Donate without revealing your identity.</Text>
         </View>
         <ToggleButton
-          AlertTitle={'Anonymous Donor'}
-          AlterDescription={
-            'Turning on Anonymous Donor will hide your name and profile from the donor list.'
-          }
+          AlertTitle="Anonymous Donor"
+          AlterDescription="Hide your name and profile in the donor list."
           onPress={handleAnonymousDonor}
           status={anonymous}
         />
