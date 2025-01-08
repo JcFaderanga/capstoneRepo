@@ -94,11 +94,11 @@ useEffect(() => {
                 </ScrollView>
             </View>
             <View style={{ elevation: 15 }} className=" h-40 pt-8 rounded-t-[40px] bg-white">
-                    <ThemeButton
-                        title={'Submit'}
-                        onPress={handleSubmit}
-                        isLoading={isLoading}
-                    />
+                     { condition1 && condition2 ? 
+                        <ThemeButton title={'Submit'} onPress={handleSubmit} isLoading={isLoading}/> 
+                        :
+                        <ThemeButton title={'Submit'} disable={true} /> 
+                      }
             </View>
         </View>
     </View>
