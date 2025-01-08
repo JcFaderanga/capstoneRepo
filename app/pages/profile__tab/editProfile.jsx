@@ -41,6 +41,30 @@ const EditProfileInfo = () => {
     phone_number: ''
   });
 
+
+  function validateAddress(address) {
+    // Check if address is a string
+    if (typeof address === 'string') {
+      try {
+        // Try parsing the string as JSON
+        const parsedAddress = JSON.parse(address);
+        
+        // Check if the parsed result is an object
+        if (typeof parsedAddress === 'object' && parsedAddress !== null) {
+          return parsedAddress; // Valid stringified JSON
+        }
+      } catch (error) {
+        console.error('Invalid JSON string:', error.message);
+        return null; // Invalid JSON
+      }
+    } else if (typeof address === 'object' && address !== null) {
+      // Address is already an object
+      return address;
+    }
+  }
+
+  const parsedAddress = validateAddress(user.address);
+  
   useEffect(() => {
     if (user) {
       setProfile({
@@ -49,11 +73,11 @@ const EditProfileInfo = () => {
         middle_name: user.middle_name || '',
         last_name: user.last_name || '',
         address: {
-          street: user.address?.street || '',
-          region: user.address?.region || '',
-          province: user.address?.province || '',
-          city: user.address?.city || '',
-          barangay: user.address?.barangay || '',
+          street: parsedAddress?.street || '',
+          region: parsedAddress?.region || '',
+          province: parsedAddress?.province || '',
+          city: parsedAddress?.city || '',
+          barangay: parsedAddress?.barangay || '',
         },
         birth_date: user.birth_date || '',
         gender: user.gender || '',
@@ -62,6 +86,11 @@ const EditProfileInfo = () => {
       });
     }
   }, [user]);
+  console.log(parsedAddress?.street)
+  console.log(user.address)
+  console.log(profile.address)
+  console.log('street',profile.address?.street)
+
 
   const updateProfile = async () => {
     let userData = {...profile};
@@ -95,7 +124,7 @@ const EditProfileInfo = () => {
     }) : 'Select Date';
   };
   const DOB = new Date(user.birth_date);
-  console.log("editProfile check date format:",formatDate(DOB))
+  //console.log("editProfile check date format:",formatDate(DOB))
 
   function capitalizeFirstLetter(str) {
     if (!str) return "";
