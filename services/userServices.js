@@ -30,14 +30,31 @@ export const getProfile = async (userId )=>{
   }
 }
 
-export const fetchRequests = async ({ bloodTypeFilterResult }, limit=10) => {
+export const fetchRequests = async ({ bloodTypeFilterResult }, typeFilter, anonymousFilter, compatibility, limit = 10) => {
+  console.log('Filter',{ bloodTypeFilterResult }, typeFilter, anonymousFilter, compatibility)
+  const allType = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
     try {
-      let query = supabase.from('blood_request').select('*').eq('public_request', true).eq('approve', true); //get data only if public and approved
+      //get data only if public and approved
+      let query = supabase.from('blood_request').select('*').eq('public_request', true).eq('approve', true); 
       if (bloodTypeFilterResult && bloodTypeFilterResult.length > 0) {
-        query = query.in('blood_type', bloodTypeFilterResult);//if filterRequest !empty will return list of selected type
+        //if filterRequest !empty will return list of selected type
+        query = query.in('blood_type', bloodTypeFilterResult);
       }
+      if (typeFilter === true) {
+        query = query.in('blood_type', compatibility.canDonateTo);
+      } else if(typeFilter === 'All'){
+        query = query.in('blood_type', allType);
+      }
+
+      if (anonymousFilter === true) {
+        query = query.eq('anonymous', true);
+      } else if (anonymousFilter === 'not') {
+        query = query.eq('anonymous', false);
+      }
+
       const { data: requests, error: requestError } = await 
-        query.limit(limit).order('created_at', { ascending: false });;//if filterRequest is empty will set list to all 
+      //if filterRequest is empty will set list to all 
+        query.limit(limit).order('created_at', { ascending: false });
         
       if (requestError) {
         throw new Error(requestError.message);

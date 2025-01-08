@@ -12,8 +12,8 @@ const Foryou = () => {
     const [modalFilterVisible, setModalFilterVisible] = useState(false); 
     const [selectedTypes, setSelectedTypes] = useState([]);//store type request to show on the list and pass data to RequestList.jsx
     const [typeFilter, setTypeFilter] = useState(null);
-    const [anonymousFilter, setAnonymousFilter] = useState(null);
-    const [compatibility, setCompatibility] = useState(null);
+    const [anonymousFilter, setAnonymousFilter] = useState('All');
+    const [compatibility, setCompatibility] = useState([]);
     const [listRefresh,setListOnRefresh] = useState(false);  
     const [filter, setFilter] = useState(null)
     const {user} = useAuth();
@@ -58,17 +58,18 @@ const Foryou = () => {
         <View className="w-full flex-row border border-transparent mb-4">
           <DropDown
             placeholder={'Type'}
-            list = {[{ label: 'All', value: 'All' },{ label: 'Compatible', value: 'Complatible' },]}
-            onValueChange={value => setFilter(value)}
+            list = {[{ label: 'All', value: 'All' },
+                  { label: 'Compatible', value: true },]}
+            onValueChange={value => setTypeFilter(value)}
           />
           <DropDown
             placeholder={'Recipient'}
             list = {[
                     { label: 'All', value: 'All'},
-                    { label: 'Anonymouse', value: 'true' },
-                    { label: 'Not Anonymouse', value: 'false'},
+                    { label: 'Anonymouse', value: true },
+                    { label: 'Not Anonymouse', value: 'not'},
                     ]}
-            onValueChange={value => setFilter(value)}
+            onValueChange={value => setAnonymousFilter(value)}
           />
         </View>
       

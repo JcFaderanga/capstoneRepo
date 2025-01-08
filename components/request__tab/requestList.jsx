@@ -13,12 +13,6 @@ const ProfileList = ({ bloodTypeFilterResult, typeFilter, anonymousFilter,compat
   const [selectedRequest, setSelectedRequest] = useState(null);
   //console.log(JSON.stringify(requestList, null, 4) )
   const ViewRequestBottomSheetRef = useRef(null);
-
-  const getRequestList = async(limit)=>{
-    const requests = await fetchRequests({bloodTypeFilterResult},typeFilter, anonymousFilter,compatibility , limit);//pass seletected types to query to filter list result 
-    setRequestList(requests);// set filter result to requestList
-  }
-
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -27,6 +21,13 @@ const ProfileList = ({ bloodTypeFilterResult, typeFilter, anonymousFilter,compat
     };
     fetchData();
   }, [bloodTypeFilterResult,typeFilter, anonymousFilter ]);// every time there is an update will automatically reload
+
+  const getRequestList = async(limit)=>{
+    const requests = await fetchRequests({bloodTypeFilterResult},typeFilter, anonymousFilter,compatibility , limit);//pass seletected types to query to filter list result 
+    setRequestList(requests);// set filter result to requestList
+  }
+
+ 
 
   const handleRefresh = async () => {
     setRefreshing(true);
