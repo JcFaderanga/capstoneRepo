@@ -15,19 +15,23 @@ import * as Animatable from "react-native-animatable";
 import InputBox from "../../../../components/UI/inputs/inputBox";
 import ThemeButton from "../../../../components/UI/button/themeButton";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { DayAndDate } from "../../../../constant/timeStamp";
+import { DayAndDate, CalculateAge } from "../../../../constant/timeStamp";
+import { useAuth } from "../../../../context/authContext";
 const PreRegister = forwardRef(({ props }, ref) => {
+  const { user } = useAuth();
   const [isSubmitSuccess, setSubmitSuccess] = useState(false);
   const [bgColor1, setBgColor1] = useState("transparent");
   const [condition, setCondition] = useState(false);
   const [isWeightValid, setWeightValid] = useState(true);
+  const [isAgeValid, setValidAge] = useState(true);
   const [weight, setWeight] = useState("");
+  const age = CalculateAge(user?.birth_date);
 
   useEffect(() => {
     setBgColor1(condition ? "#F42F47" : "transparent");
   }, [condition]);
 
-  const snapPoints = useMemo(() => ["60%", "70%"], []);
+  const snapPoints = useMemo(() => ["65%", "80%"], []);
   const renderBackdrop = useCallback(
     (props) => (
       <BottomSheetBackdrop
@@ -40,20 +44,38 @@ const PreRegister = forwardRef(({ props }, ref) => {
   );
 
   const submitPreRegistration = () => {
-    if (Number(weight) <= 49 || isNaN(Number(weight))) {
-      console.log("invalid");
+    const weightNum = Number(weight); // Convert weight to a number
+
+    let valid = true;
+
+    if (isNaN(weightNum) || weightNum <= 49) {
+      console.log("Invalid weight");
       setWeightValid(false);
-      return;
+      valid = false;
+    } else {
+      setWeightValid(true);
     }
-    console.log("valid");
-    setWeightValid(true);
+
+    if (age <= 18) {
+      console.log("Invalid age");
+      setValidAge(false);
+      setCondition(false);
+      valid = false;
+    } else {
+      setValidAge(true);
+    }
+
+    if (!valid) return; // Exit if either validation fails
+
+    console.log("Valid");
     setSubmitSuccess(true);
+
     setTimeout(() => {
-      ref.current?.close();
+      ref.current?.close(); // Close modal or sheet
       setSubmitSuccess(false);
       setCondition(false);
       setBgColor1("transparent");
-      setWeight("");
+      setWeight(""); // Reset weight
     }, 1700);
   };
 
@@ -66,7 +88,7 @@ const PreRegister = forwardRef(({ props }, ref) => {
   return (
     <BottomSheetModal
       ref={ref}
-      index={0}
+      index={1}
       snapPoints={snapPoints}
       handleComponent={renderCustomHandle}
       backdropComponent={renderBackdrop}
@@ -118,6 +140,19 @@ const PreRegister = forwardRef(({ props }, ref) => {
                 <Text className="text-primary_red font-bold text-center mt-2">
                   You must weigh at least 50 kg to be eligible for donation.
                 </Text>
+              )}
+              {!isAgeValid && (
+                <View>
+                  <Text className="text-primary_red font-bold text-center mt-2">
+                    You must be at least 18 years old to be eligible for blood
+                    donations.
+                  </Text>
+                  <Pressable>
+                    <Text className="text-center pt-4 font-extrabold text-primary_red">
+                      How to be eligible?
+                    </Text>
+                  </Pressable>
+                </View>
               )}
               <View className="flex-row px-4 pt-10">
                 <Pressable

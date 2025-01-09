@@ -13,9 +13,10 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Elevated from "./elevated";
 import PreRegister from "../app/pages/bottomSheet/donationDrvie/sheetPreRegister";
-import { TimeAgo, DayAndDate } from "../constant/timeStamp";
+import { TimeAgo, DayAndDate, CalculateAge } from "../constant/timeStamp";
+
 const screenWidth = Dimensions.get("window").width;
-const DonationDrive = ({ details, onPress }) => {
+const DonationDrive = ({ details, onPress, user }) => {
   return (
     <>
       <View className="px-3" style={{ width: screenWidth }}>

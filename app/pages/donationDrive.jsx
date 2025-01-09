@@ -5,8 +5,10 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import DonationDriveBox from "../../components/donationDrive";
 import PreRegister from "./bottomSheet/donationDrvie/sheetPreRegister";
 import useDonationDrive from "../../hooks/donation_drive/fetchDonationDrive";
-
+import { useAuth } from "../../context/authContext";
+import { CalculateAge } from "../../constant/timeStamp";
 const DonationDrive = () => {
+  const { user } = useAuth();
   const [selectedDrive, setSelectedDrive] = useState(null);
   const [filter, setFilter] = useState(null);
 
@@ -36,6 +38,7 @@ const DonationDrive = () => {
           <DonationDriveBox
             index={index}
             details={item}
+            user={user}
             onPress={() => viewPreRegisterForm(item)}
           />
         )}
