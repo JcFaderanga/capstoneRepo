@@ -31,7 +31,7 @@ const DonationDrive = () => {
       <FlatList
         className="h-full w-full"
         data={donationDrive}
-        keyExtractor={(item) => item.donation_id}
+        keyExtractor={(item) => item.drive_id.toString()}
         renderItem={({ item, index }) => (
           <DonationDriveBox
             index={index}

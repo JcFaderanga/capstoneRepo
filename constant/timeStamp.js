@@ -7,6 +7,7 @@
 
 
 export const TimeAgo = (timestamp) => {
+  if(!timestamp) return;
   const time = [31536000, 2592000, 604800, 86400, 3600, 60];
   const date = ['year', 'month', 'week', 'day', 'hour', 'minute'];
   const now = new Date();
@@ -58,6 +59,9 @@ export const LongDateFormat = (date) => {
 
 
   export const DayAndDate =(inputDate)=> {
+    if (!inputDate) {
+      return "Date not valid";
+    }
     const date = new Date(inputDate);
   
     const formatter = new Intl.DateTimeFormat('en-US', {
