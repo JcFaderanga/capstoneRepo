@@ -4,8 +4,8 @@ import Unavailable from '../../components/unavailable'
 import * as Progress from 'react-native-progress';
 import { useAuth } from '../../context/authContext';
 import { LongDateFormat } from '../../constant/timeStamp';
-
 import { useRouter ,router } from 'expo-router';
+
 const BloodBank = () => {
   const {user} = useAuth();
   const bloodTypes = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
@@ -41,7 +41,7 @@ const BloodBank = () => {
               Every donation has the potential to save multiple lives. Be a part of it!
             </Text>
           </View>
-          <Pressable className="bg-primary_red mx-4 mb-7 rounded-xl py-4" >
+          <Pressable className="bg-primary_red mx-4 mb-7 rounded-xl py-4" onPress={()=>router.push('./setDonation')}>
             <Text className="text-center text-white font-bold">Set Up Your Donation</Text>
           </Pressable>
         </View>

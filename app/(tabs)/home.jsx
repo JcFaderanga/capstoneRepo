@@ -231,6 +231,9 @@ const UpComingDonation = ({ upComingDonation }) => {
       params: { donation_details: JSON.stringify(upComingDonation)},
     })
   }
+  const setDonation = ()=>{
+      router.push('../pages/setDonation')
+  }
 
   if (!upComingDonation) {
     return (
@@ -245,7 +248,7 @@ const UpComingDonation = ({ upComingDonation }) => {
                 Every donation has the potential to save multiple lives. Be a part of it!
               </Text>
             </View>
-            <Pressable className="bg-primary_red mx-4 mb-7 rounded-xl py-4" >
+            <Pressable className="bg-primary_red mx-4 mb-7 rounded-xl py-4" onPress={setDonation}>
               <Text className="text-center text-white font-bold">Set Up Your Donation</Text>
             </Pressable>
           </View>

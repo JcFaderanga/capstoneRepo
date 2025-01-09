@@ -36,6 +36,7 @@ const _layout = () => {
     'donationSettings',
     'bloodBank',
     'donationDrive',
+    'setDonation',
   ];
 
   return (
