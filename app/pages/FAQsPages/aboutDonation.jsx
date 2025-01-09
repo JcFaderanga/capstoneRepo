@@ -12,21 +12,21 @@ const aboutDonation = () => {
           size= {{width: 28, hieght:25}}
           icon = {FAQsIcons.whyDonate}
           backIcon={FAQsIcons.arrow}
-          onPress={() => router.push('')}
+         //  onPress={() => router.push('')}
        />
        <ContentTitleButton
           title={"Am I Eligible?"}
           size= {{width: 27, hieght:25}}
           icon = {FAQsIcons.eligible}
           backIcon={FAQsIcons.arrow}
-          onPress={() => router.push('')}
+         //  onPress={() => router.push('')}
        />
        <ContentTitleButton
           title={"Donation Process"}
           size= {{width: 27, hieght:25}}
           icon = {FAQsIcons.donationProcess}
           backIcon={FAQsIcons.arrow}
-          onPress={() => router.push('')}
+         //  onPress={() => router.push('')}
        />
     </View>
   )
