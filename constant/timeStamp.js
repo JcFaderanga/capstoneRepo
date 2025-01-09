@@ -1,3 +1,11 @@
+// 1year (365 days x 24 hours x 60 minutes x 60 seconds)
+// 1 month (30 days x 24 hours x 60 minutes x 60 seconds)
+// 1 week (7 days x 24 hours x 60 minutes x 60 seconds)
+// 1 day (24 hours x 60 minutes x 60 seconds)
+// 1hour (60 minutes x 60 seconds)
+
+
+
 export const TimeAgo = (timestamp) => {
   const time = [31536000, 2592000, 604800, 86400, 3600, 60];
   const date = ['year', 'month', 'week', 'day', 'hour', 'minute'];
@@ -47,9 +55,18 @@ export const LongDateFormat = (date) => {
       day: 'numeric' 
     }) : 'Select Date';
   };
-// 1year (365 days x 24 hours x 60 minutes x 60 seconds)
-// 1 month (30 days x 24 hours x 60 minutes x 60 seconds)
-// 1 week (7 days x 24 hours x 60 minutes x 60 seconds)
-// 1 day (24 hours x 60 minutes x 60 seconds)
-// 1hour (60 minutes x 60 seconds)
 
+
+  export const DayAndDate =(inputDate)=> {
+    const date = new Date(inputDate);
+  
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      weekday: 'long', 
+      month: 'long',   
+      day: 'numeric'   
+    });
+  
+    return formatter.format(date); 
+  }
+
+  
