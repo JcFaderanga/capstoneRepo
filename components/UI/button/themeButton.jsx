@@ -12,7 +12,7 @@ const ThemeButton = ({ title, onPress, disable, isLoading }) => {
     <View>
       <View className="mx-auto mt-5 mb-5">
         <TouchableOpacity className="text-white text-base"
-          style={[style.button, disable && { backgroundColor: 'gray', opacity: 0.5 }]} 
+          style={[style.button, disable && { backgroundColor: 'gray', opacity: 0.3 }]} 
           onPress={onPress} 
           disabled={disable}
         >
