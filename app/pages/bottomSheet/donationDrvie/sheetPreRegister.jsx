@@ -31,7 +31,7 @@ const PreRegister = forwardRef(({ props }, ref) => {
     setBgColor1(condition ? "#F42F47" : "transparent");
   }, [condition]);
 
-  const snapPoints = useMemo(() => ["65%", "80%"], []);
+  const snapPoints = useMemo(() => ["64%", "80%"], []);
   const renderBackdrop = useCallback(
     (props) => (
       <BottomSheetBackdrop

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabase";
 
-const useDonationDrive = (sortBy) => {
+const useDonationDrive = (sortBy, limit) => {
   const [donationDrive, setDonationDrive] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -16,6 +16,10 @@ const useDonationDrive = (sortBy) => {
         query = query.order("created_at", { ascending: false });
       } else if (sortBy === "eventDate") {
         query = query.order("date", { ascending: false });
+      }
+
+      if (limit) {
+        query = query.limit(limit);
       }
 
       const { data, error } = await query;
