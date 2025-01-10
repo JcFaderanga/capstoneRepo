@@ -1,12 +1,12 @@
-import { View, FlatList, Text, Image, StyleSheet } from 'react-native';
-import React from 'react';
-import DonorBox from '../find_donor/donorBox';
-import SheetRequestDonation from '../../app/pages/bottomSheet/findDonor/sheetRequestDonation';
+import { View, FlatList, Text, Image, StyleSheet } from "react-native";
+import React from "react";
+import DonorBox from "../find_donor/donorBox";
+import SheetRequestDonation from "../../app/pages/bottomSheet/findDonor/sheetRequestDonation";
 
 const DonorList = ({ donor, onRefreshDonors, refreshing }) => {
   const [selectedDonor, setSelectedDonor] = React.useState(null);
 
-  const details = {selectedDonor,onRefreshDonors,refreshing}
+  const details = { selectedDonor, refreshing };
   const ViewDonorBottomSheetRef = React.useRef(null);
   const viewDonorProfile = (data) => {
     setSelectedDonor(data);
@@ -21,7 +21,11 @@ const DonorList = ({ donor, onRefreshDonors, refreshing }) => {
           data={donor}
           keyExtractor={(item) => item.id?.toString() || `${item.index}`}
           renderItem={({ item, index }) => (
-            <DonorBox donor={item} index={index} onPress={() => viewDonorProfile(item)} />
+            <DonorBox
+              donor={item}
+              index={index}
+              onPress={() => viewDonorProfile(item)}
+            />
           )}
           refreshing={refreshing}
           onRefresh={onRefreshDonors}
@@ -31,7 +35,10 @@ const DonorList = ({ donor, onRefreshDonors, refreshing }) => {
           No donor found.
         </Text>
       )}
-      <SheetRequestDonation ref={ViewDonorBottomSheetRef} donor_data={details} />
+      <SheetRequestDonation
+        ref={ViewDonorBottomSheetRef}
+        donor_data={details}
+      />
     </View>
   );
 };
