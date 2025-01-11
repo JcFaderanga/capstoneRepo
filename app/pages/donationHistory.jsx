@@ -12,12 +12,13 @@ import { useAuth } from "../../context/authContext";
 import useFetchUser from "../../hooks/user/useFetchUser";
 import { useRouter } from "expo-router";
 import Elevated from "../../components/elevated";
+import { router } from "expo-router";
 const DonationHistory = () => {
   const { user } = useAuth();
   const { donationData, error, FetchDonation } = UseFetchDonation();
 
   console.log("donation data", donationData);
-  console.log("donation data error", error);
+  //console.log("donation data error", error);
 
   useEffect(() => {
     FetchDonation(user?.id);
@@ -25,11 +26,38 @@ const DonationHistory = () => {
 
   return (
     <View className="h-full w-full bg-white ">
-      <FlatList
-        data={donationData || []}
-        keyExtractor={(item) => item?.blood_donation_id?.toString()}
-        renderItem={({ item }) => <DonationBox donationData={item} />}
-      />
+      {donationData?.length >= 0 ? (
+        <>
+          <View className="mt-12 w-full px-4">
+            <View className="w-full rounded-sm ">
+              <Text className="font-bold text-xl text-center">
+                Take your first step in donating
+              </Text>
+              <View className="w-full my-2 rounded-2xl border border-stone-50">
+                <View className="mx-4 mb-3 rounded-xl p-3 px-3">
+                  <Text className="text-center text-gray-500">
+                    Every donation can save 3 lives.
+                  </Text>
+                </View>
+                <Pressable
+                  className="bg-primary_red mx-4 mb-7 rounded-xl py-4"
+                  onPress={() => router.push("./setDonation")}
+                >
+                  <Text className="text-center text-white font-bold">
+                    Set Up Your Donation
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </>
+      ) : (
+        <FlatList
+          data={donationData || []}
+          keyExtractor={(item) => item?.blood_donation_id?.toString()}
+          renderItem={({ item }) => <DonationBox donationData={item} />}
+        />
+      )}
     </View>
   );
 };
@@ -47,7 +75,7 @@ const DonationBox = ({ donationData }) => {
   const unitDonatedVolume = donationData.units_donated * 450;
   const recipient = donationData?.anonymous_donation
     ? "Anonymous"
-    : first_name + "" + last_name;
+    : `${first_name} ${last_name}`;
 
   // const statusImages = {
   //   complete: require("../../assets/icon/complete.png"),

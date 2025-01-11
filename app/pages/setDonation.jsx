@@ -8,6 +8,8 @@ import DonationDriveBox from "../../components/donationDrive";
 import { useAuth } from "../../context/authContext";
 import Elevated from "../../components/elevated";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+
 import { router } from "expo-router";
 const SetDonation = () => {
   const { user } = useAuth();
@@ -57,6 +59,26 @@ const SetDonation = () => {
             <View className="flex-1 mx-4">
               <Text className="font-bold text-xl">Next week</Text>
               <Text className="">{dateDayNextWeek}</Text>
+            </View>
+          </Pressable>
+        </Elevated>
+      </View>
+      <View className="px-3">
+        <Elevated radius={10} elevated={2}>
+          <Pressable
+            className="w-full h-24 px-6 flex-row items-center "
+            onPress={() => router.replace("/request")}
+          >
+            <View className=" p-4 rounded-xl bg-slate-100 ">
+              <MaterialIcons name="person" size={20} color="#F42F47" />
+            </View>
+            <View className="flex-1 flex-row border justify-between border-white ml-4">
+              <Text className="font-bold text-xl ">Aid someone</Text>
+              <MaterialIcons
+                name="arrow-forward-ios"
+                size={24}
+                color="#F42F47"
+              />
             </View>
           </Pressable>
         </Elevated>

@@ -12,14 +12,14 @@ const DonorList = ({ donor, onRefreshDonors, refreshing }) => {
     setSelectedDonor(data);
     ViewDonorBottomSheetRef.current?.present();
   };
-
+  console.log(donor);
   return (
     <View>
       {donor?.length > 0 ? (
         <FlatList
           className="h-full w-full"
           data={donor}
-          keyExtractor={(item) => item.id?.toString() || `${item.index}`}
+          keyExtractor={(item) => item?.user_id?.toString() || `${item.index}`}
           renderItem={({ item, index }) => (
             <DonorBox
               donor={item}

@@ -24,13 +24,13 @@ const sheetRequestDonation = forwardRef(({ donor_data }, ref) => {
   //console.log("isBloodCompatible", isBloodCompatible);
   useEffect(() => {
     if (selectedDonor?.id) {
-      fetchUser(selectedDonor.id);
+      fetchUser(selectedDonor?.id);
     }
   }, [selectedDonor?.id]);
 
   useEffect(() => {
     if (refreshing) {
-      fetchUser(selectedDonor.id);
+      fetchUser(selectedDonor?.id);
     }
   }, [refreshing]);
 
@@ -76,7 +76,7 @@ const sheetRequestDonation = forwardRef(({ donor_data }, ref) => {
     const recipientBloodType = currentUser?.blood_type || "";
     const recipientTypes = ShowCompatibility(recipientBloodType) || [];
     const canReceiveFrom =
-      recipientTypes.canReceiveFrom.includes(donorBloodType);
+      recipientTypes?.canReceiveFrom.includes(donorBloodType)||[];
     if (canReceiveFrom) {
       setBloodCompatible(true);
     } else if (!canReceiveFrom) {
