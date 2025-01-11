@@ -1,11 +1,19 @@
-import { Image, Pressable, StyleSheet, Text, View, FlatList } from 'react-native';
-import React, { useEffect, useState, useRef } from 'react';
-import { useAuth } from '../../context/authContext';
-import useFetchDonors from '../../hooks/find_donor/useFetchDonors';
-import ThemeContainer from '../../components/UI/themeContainer';
-import { ShowCompatibility } from '../../hooks/blood_validation/useBloodCopatibilty';
-import RNPickerSelect from 'react-native-picker-select';
-import DonorList from '../../components/donor__tab/donorList';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
+import React, { useEffect, useState, useRef } from "react";
+import { useAuth } from "../../context/authContext";
+import useFetchDonors from "../../hooks/find_donor/useFetchDonors";
+import ThemeContainer from "../../components/UI/themeContainer";
+import { ShowCompatibility } from "../../hooks/blood_validation/useBloodCopatibilty";
+import RNPickerSelect from "react-native-picker-select";
+import DonorList from "../../components/donor__tab/donorList";
 const FindDonor = () => {
   const [viewDonor, setViewDonor] = useState(false);
   const [compatibility, setCompatibility] = useState(null);
@@ -36,24 +44,12 @@ const FindDonor = () => {
         await fetchDonors({ canReceiveFrom, typeFilter, anonymousFilter });
       }
     } catch (error) {
-      console.error('Error refreshing donors:', error);
+      console.error("Error refreshing donors:", error);
     } finally {
       setRefreshing(false);
     }
   };
 
-  if (!user) {
-    return (
-      <ThemeContainer>
-        <View className="flex-1 items-center justify-center bg-white">
-         <Image 
-            source={require("../../assets/icon/loading1.gif")}  
-            style={{ width: 30, height: 30, tintColor:"#F42F47" }}              
-          />
-        </View>
-      </ThemeContainer>
-    );
-  }
   return (
     <ThemeContainer>
       <View className="h-full w-full bg-white">
@@ -61,22 +57,35 @@ const FindDonor = () => {
           <DropDown
             placeholder="Type"
             list={[
-              { label: 'All', value: 'All' },
-              { label: 'Compatible', value: 'Compatible' },
+              { label: "All", value: "All" },
+              { label: "Compatible", value: "Compatible" },
             ]}
             onValueChange={(value) => setTypeFilter(value)}
           />
           <DropDown
             placeholder="Donor"
             list={[
-              { label: 'All', value: 'All' },
-              { label: 'Anonymous', value: 'true' },
-              { label: 'Not Anonymous', value: 'false' },
+              { label: "All", value: "All" },
+              { label: "Anonymous", value: "true" },
+              { label: "Not Anonymous", value: "false" },
             ]}
             onValueChange={(value) => setAnonymousFilter(value)}
           />
         </View>
-        <DonorList donor={donor} onRefreshDonors={onRefreshDonors} refreshing={refreshing} />      
+        {loading ? (
+          <View className="flex-1 justify-center items-center">
+            <ActivityIndicator size="large" color="red" />
+            <Text className="text-gray-500 mt-4">
+              Searching available donors...
+            </Text>
+          </View>
+        ) : (
+          <DonorList
+            donor={donor}
+            onRefreshDonors={onRefreshDonors}
+            refreshing={refreshing}
+          />
+        )}
       </View>
     </ThemeContainer>
   );
@@ -97,7 +106,7 @@ const DropDown = ({ title, placeholder, list, onValueChange }) => {
           placeholder={{
             label: placeholder,
             value: null,
-            color: 'gray',
+            color: "gray",
           }}
           items={list}
         />

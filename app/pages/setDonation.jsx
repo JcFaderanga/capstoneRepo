@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 import React, { useState, useRef } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Unavailable from "../../components/unavailable";
@@ -14,7 +21,11 @@ import { router } from "expo-router";
 const SetDonation = () => {
   const { user } = useAuth();
   const [selectedDrive, setSelectedDrive] = useState(null);
-  const { donationDrive, error, loading } = useDonationDrive("eventDate", 2);
+  const {
+    donationDrive,
+    error,
+    loading: donationDriveLoading,
+  } = useDonationDrive("eventDate", 2);
   const expandRegistrationFormRef = useRef(null);
   const viewPreRegisterForm = (data) => {
     setSelectedDrive(data);
@@ -88,23 +99,35 @@ const SetDonation = () => {
           Donate through a Donation Drive
         </Text>
       </View>
-      {donationDrive.map((item, index) => (
-        <DonationDriveBox
-          key={item.drive_id.toString()} // Unique key for each item
-          index={index}
-          details={item}
-          user={user}
-          onPress={() => viewPreRegisterForm(item)}
-        />
-      ))}
-      <Pressable
-        className="h-20 py-2"
-        onPress={() => router.push("./donationDrive")}
-      >
-        <Text className="text-center text-primary_red font-bold">
-          View More Donation Drives
-        </Text>
-      </Pressable>
+      {donationDriveLoading ? (
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator size="large" color="red" />
+          <Text className="text-gray-500 mt-4">
+            Searching available donors...
+          </Text>
+        </View>
+      ) : (
+        <>
+          {donationDrive.map((item, index) => (
+            <DonationDriveBox
+              key={item.drive_id.toString()} // Unique key for each item
+              index={index}
+              details={item}
+              user={user}
+              onPress={() => viewPreRegisterForm(item)}
+            />
+          ))}
+          <Pressable
+            className="h-20 py-2"
+            onPress={() => router.push("./donationDrive")}
+          >
+            <Text className="text-center text-primary_red font-bold">
+              View More Donation Drives
+            </Text>
+          </Pressable>
+        </>
+      )}
+
       <PreRegister ref={expandRegistrationFormRef} props={selectedDrive} />
     </ScrollView>
   );
