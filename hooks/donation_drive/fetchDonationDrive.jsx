@@ -14,7 +14,7 @@ const useDonationDrive = (sortBy, limit) => {
 
       if (sortBy === "timePosted") {
         query = query.order("created_at", { ascending: false });
-      } else if (sortBy === "eventDate") {
+      } else if (sortBy === "donationDate") {
         query = query.order("date", { ascending: false });
       }
 
