@@ -12,6 +12,7 @@ const customTitles = {
   profile__tab: "Update Profile",
   findDonor: "Find a Donor",
   FAQs: "FAQs",
+  setDonation: "Set Appointment",
 };
 
 const capitalizeTitle = (title) => {

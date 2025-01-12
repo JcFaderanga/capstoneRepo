@@ -53,7 +53,9 @@ const DonationDrive = ({ details, onPress, user }) => {
                 </View>
                 <View className="px-2">
                   <Text className="text-[16px] ">
-                    {DayAndDate(details?.date)}
+                    {details?.date
+                      ? DayAndDate(details?.date)
+                      : "Monday - Saturday"}
                   </Text>
                   <Text className="text-[12px] ">{details?.time}</Text>
                 </View>

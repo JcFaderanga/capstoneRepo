@@ -113,7 +113,7 @@ const DonationSettings = () => {
         </View>
         <ToggleButton
           AlertTitle="Show Contact"
-          AlterDescription="Allow recipients to reach out to you directly."
+          AlterDescription="Enabling 'Show Contact' will display your contact details in the donor list, allowing recipients to reach out to you directly."
           onPress={handleContact}
           status={contacts}
         />

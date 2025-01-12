@@ -36,11 +36,14 @@ import { ShowCompatibility } from "../../../../../hooks/blood_validation/useBloo
 import PreRegister from "../../donationDrvie/sheetPreRegister";
 import { router } from "expo-router";
 import { ToTitleCase } from "../../../../../constant/textFormat";
+
 const SheetViewRequest = forwardRef(({ request_data }, ref) => {
   const [isDonate, setDonate] = useState(false);
   const [isBloodCompatible, setBloodCompatible] = useState(null);
   const { user } = useAuth();
   const { nextDonation, FetchNextDonation } = UseFetchNextDonation();
+
+  console.log("request_data", request_data?.anonymous);
 
   useEffect(() => {
     FetchNextDonation(user?.id);
@@ -58,6 +61,13 @@ const SheetViewRequest = forwardRef(({ request_data }, ref) => {
     // ref.current?.close();
   };
 
+  const viewMyRequest = () => {
+    router.push({
+      pathname: "../../../pages/viewRequest",
+      params: { request_data: JSON.stringify(request_data) },
+    });
+    ref.current?.close();
+  };
   const snapPoints = useMemo(() => ["75%", "96%"], []);
   const snapeToIndex = (index) => ref.current?.snapToIndex(index);
   const renderBackdrop = useCallback(
@@ -94,7 +104,9 @@ const SheetViewRequest = forwardRef(({ request_data }, ref) => {
             <AntDesign name="arrowleft" size={24} color="white" />
           </Pressable>
           <Text className="text-white font-bold text-xl">
-            {ToTitleCase(`${user?.first_name} ${user?.last_name}`)}
+            {request_data?.anonymous
+              ? "Anonymous"
+              : ToTitleCase(`${user?.first_name} ${user?.last_name}`)}
           </Text>
         </>
       ) : (
@@ -162,49 +174,62 @@ const SheetViewRequest = forwardRef(({ request_data }, ref) => {
             isBloodCompatible={isBloodCompatible}
           />
         )}
-
-        <Animatable.View
-          animation="zoomIn"
-          duration={200}
-          easing={"ease-in-out"}
-          delay={400}
-        >
-          {new Date() < parsedDate.getTime() ||
-          age <= 18 ||
-          !isBloodCompatible ? (
-            <View>
+        {user?.id === request_data?.user_id ? (
+          <TouchableOpacity
+            onPress={viewMyRequest}
+            accessible={true}
+            accessibilityLabel="Donate blood button"
+            className="w-[310px] h-[50px] mx-auto rounded-2xl bg-white justify-center items-center shadow-md mt-4"
+          >
+            <Text className="text-primary_red font-bold text-xl">
+              View My Request
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <Animatable.View
+            animation="zoomIn"
+            duration={200}
+            easing={"ease-in-out"}
+            delay={400}
+          >
+            {new Date() < parsedDate.getTime() ||
+            age <= 18 ||
+            !isBloodCompatible ? (
+              <View>
+                <TouchableOpacity
+                  accessible={true}
+                  accessibilityLabel="Donate blood button"
+                  className="w-[310px] h-[50px] mx-auto rounded-2xl bg-white opacity-35 justify-center items-center shadow-md mt-4"
+                >
+                  <Text className="text-white font-bold text-lg">
+                    {age <= 18
+                      ? `Age Under 18`
+                      : !isBloodCompatible
+                      ? `Not Compatible`
+                      : `Next donation starting ${nextDonation}`}
+                  </Text>
+                </TouchableOpacity>
+                <Pressable onPress={ModalDiaglog}>
+                  <Text className="text-center py-2 text-white font-bold">
+                    Why is this happening?
+                  </Text>
+                </Pressable>
+              </View>
+            ) : (
               <TouchableOpacity
+                style={isDonate ? { display: "none" } : {}}
+                onPress={() => donate()}
                 accessible={true}
                 accessibilityLabel="Donate blood button"
-                className="w-[310px] h-[50px] mx-auto rounded-2xl bg-white opacity-35 justify-center items-center shadow-md mt-4"
+                className="w-[310px] h-[50px] mx-auto rounded-2xl bg-white justify-center items-center shadow-md mt-4"
               >
-                <Text className="text-white font-bold text-lg">
-                  {age <= 18
-                    ? `Age Under 18`
-                    : !isBloodCompatible
-                    ? `Not Compatible`
-                    : `Next donation starting ${nextDonation}`}
+                <Text className="text-primary_red font-bold text-xl">
+                  Donate
                 </Text>
               </TouchableOpacity>
-              <Pressable onPress={ModalDiaglog}>
-                <Text className="text-center py-2 text-white font-bold">
-                  Why is this happening?
-                </Text>
-              </Pressable>
-            </View>
-          ) : (
-            <TouchableOpacity
-              style={isDonate ? { display: "none" } : {}}
-              onPress={() => donate()}
-              accessible={true}
-              accessibilityLabel="Donate blood button"
-              className="w-[310px] h-[50px] mx-auto rounded-2xl bg-white justify-center items-center shadow-md mt-4"
-            >
-              <Text className="text-primary_red font-bold text-xl">Donate</Text>
-            </TouchableOpacity>
-          )}
-        </Animatable.View>
-        {/* <PreRegister ref={expandRegistrationFormRef} props={request_data} /> */}
+            )}
+          </Animatable.View>
+        )}
       </BottomSheetView>
     </BottomSheetModal>
   );
@@ -292,13 +317,19 @@ const Preview = ({ request_data, isBloodCompatible }) => {
           delay={100}
         >
           <Image
-            source={profile[user?.gender]}
+            source={
+              request_data?.anonymous
+                ? require("../../../../../assets/icon/anonymouseIcon.png")
+                : profile[user?.gender]
+            }
             resizeMode="contain"
             className="h-32 w-32 rounded-full border-2 border-white"
           />
         </Animatable.View>
         <Text className="text-white font-bold text-xl mt-1">
-          {ToTitleCase(`${user?.first_name} ${user?.last_name}`)}
+          {request_data?.anonymous
+            ? "Anonymous"
+            : ToTitleCase(`${user?.first_name} ${user?.last_name}`)}
         </Text>
         <Animatable.Text
           animation="zoomIn"

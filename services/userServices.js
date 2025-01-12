@@ -35,7 +35,7 @@ export const fetchRequests = async ({ bloodTypeFilterResult }, typeFilter, anony
   const allType = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
     try {
       //get data only if public and approved
-      let query = supabase.from('blood_request').select('*').eq('public_request', true).eq('approve', true); 
+      let query = supabase.from('blood_request').select('*').eq('public_request', true); 
       if (bloodTypeFilterResult && bloodTypeFilterResult.length > 0) {
         //if filterRequest !empty will return list of selected type
         query = query.in('blood_type', bloodTypeFilterResult);

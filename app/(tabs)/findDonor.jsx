@@ -14,6 +14,8 @@ import ThemeContainer from "../../components/UI/themeContainer";
 import { ShowCompatibility } from "../../hooks/blood_validation/useBloodCopatibilty";
 import RNPickerSelect from "react-native-picker-select";
 import DonorList from "../../components/donor__tab/donorList";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { router } from "expo-router";
 const FindDonor = () => {
   const [viewDonor, setViewDonor] = useState(false);
   const [compatibility, setCompatibility] = useState(null);
@@ -72,6 +74,13 @@ const FindDonor = () => {
             onValueChange={(value) => setAnonymousFilter(value)}
           />
         </View>
+        <Pressable
+          className="px-5 w-full bg-red-100 flex-row justify-between items-center"
+          onPress={() => router.push("../pages/donationDrive")}
+        >
+          <Text className="py-4 font-bold ">Find Nearby Donation Center</Text>
+          <MaterialIcons name="arrow-forward-ios" size={20} color="#F42F47" />
+        </Pressable>
         {loading ? (
           <View className="flex-1 justify-center items-center">
             <ActivityIndicator size="large" color="red" />

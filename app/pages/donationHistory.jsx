@@ -26,7 +26,7 @@ const DonationHistory = () => {
 
   return (
     <View className="h-full w-full bg-white ">
-      {donationData?.length >= 0 ? (
+      {donationData?.length === 0 ? (
         <>
           <View className="mt-12 w-full px-4">
             <View className="w-full rounded-sm ">
