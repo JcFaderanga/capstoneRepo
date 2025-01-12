@@ -17,6 +17,7 @@ import ThemeButton from "../../../../components/UI/button/themeButton";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { DayAndDate, CalculateAge } from "../../../../constant/timeStamp";
 import { useAuth } from "../../../../context/authContext";
+import { router } from "expo-router";
 const PreRegister = forwardRef(({ props }, ref) => {
   const { user } = useAuth();
   const [isSubmitSuccess, setSubmitSuccess] = useState(false);
@@ -72,6 +73,10 @@ const PreRegister = forwardRef(({ props }, ref) => {
 
     setTimeout(() => {
       ref.current?.close(); // Close modal or sheet
+      router.push({
+        pathname: "../../pages/prescreening",
+        params: { request_data: JSON.stringify(props) },
+      });
       setSubmitSuccess(false);
       setCondition(false);
       setBgColor1("transparent");

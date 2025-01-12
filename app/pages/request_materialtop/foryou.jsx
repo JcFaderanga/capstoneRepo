@@ -95,12 +95,12 @@ const Foryou = () => {
           onValueChange={(value) => setAnonymousFilter(value)}
         />
       </View>
-
       <RequestList
         bloodTypeFilterResult={selectedTypes}
         typeFilter={typeFilter}
         anonymousFilter={anonymousFilter}
         compatibility={compatibility}
+        user={userData}
       />
 
       <Pressable
@@ -134,10 +134,6 @@ const DropDown = ({ title, placeholder, list, onValueChange }) => {
       <View className="border border-[#EAEAEA] rounded-xl bg-white">
         <RNPickerSelect
           onValueChange={onValueChange}
-          style={{
-            inputIOS: styles.pickerSelect, // for iOS styling
-            inputAndroid: styles.pickerSelect, // for Android styling
-          }}
           placeholder={{
             label: placeholder,
             value: null,
@@ -149,10 +145,3 @@ const DropDown = ({ title, placeholder, list, onValueChange }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  pickerSelect: {
-    borderWidth: 1,
-    borderRadius: 300,
-  },
-});

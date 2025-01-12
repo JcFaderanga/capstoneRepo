@@ -1,11 +1,11 @@
-import { Stack } from 'expo-router';
-import React from 'react';
+import { Stack } from "expo-router";
+import React from "react";
 
 const screenOptions = {
-  headerStyle: { backgroundColor: '#F42F47' },
-  headerTintColor: '#fff',
-  headerTitleAlign: 'center',
-  headerTitleStyle: { fontWeight: 'bold', color: 'white' },
+  headerStyle: { backgroundColor: "#F42F47" },
+  headerTintColor: "#fff",
+  headerTitleAlign: "center",
+  headerTitleStyle: { fontWeight: "bold", color: "white" },
 };
 
 const customTitles = {
@@ -16,27 +16,29 @@ const customTitles = {
 
 const capitalizeTitle = (title) => {
   return title
-    .replace(/_/g, ' ')
-    .replace(/([A-Z])/g, ' $1')
-    .replace(/\s+/g, ' ')
+    .replace(/_/g, " ")
+    .replace(/([A-Z])/g, " $1")
+    .replace(/\s+/g, " ")
     .trim()
     .replace(/^./, (str) => str.toUpperCase());
 };
 
-const getScreenTitle = (screen) => customTitles[screen] || capitalizeTitle(screen);
+const getScreenTitle = (screen) =>
+  customTitles[screen] || capitalizeTitle(screen);
 
 const _layout = () => {
   const stacks = [
-    'profile__tab',
-    'findDonor',
-    'FAQs',
-    'myRequestList',
-    'donate',
-    'donationHistory',
-    'donationSettings',
-    'bloodBank',
-    'donationDrive',
-    'setDonation',
+    "profile__tab",
+    "findDonor",
+    "FAQs",
+    "myRequestList",
+    "donate",
+    "donationHistory",
+    "donationSettings",
+    "bloodBank",
+    "donationDrive",
+    "setDonation",
+    "prescreening",
   ];
 
   return (
@@ -53,7 +55,10 @@ const _layout = () => {
       ))}
       <Stack.Screen name="donationReview" options={{ headerShown: false }} />
       <Stack.Screen name="bloodTypeInfo" options={{ headerShown: false }} />
-      <Stack.Screen name="request_materialtop" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="request_materialtop"
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name="viewRequest" options={{ headerShown: false }} />
       <Stack.Screen name="FAQsPages" options={{ headerShown: false }} />
     </Stack>

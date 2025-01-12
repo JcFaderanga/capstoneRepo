@@ -33,6 +33,9 @@ import UseFetchDonationCount from "../../../../../hooks/blood_donation/fetchDona
 import UseFetchNextDonation from "../../../../../hooks/blood_donation/fetchNextDonationDays";
 import useFetchUser from "../../../../../hooks/user/useFetchUser";
 import { ShowCompatibility } from "../../../../../hooks/blood_validation/useBloodCopatibilty";
+import PreRegister from "../../donationDrvie/sheetPreRegister";
+import { router } from "expo-router";
+import { ToTitleCase } from "../../../../../constant/textFormat";
 const SheetViewRequest = forwardRef(({ request_data }, ref) => {
   const [isDonate, setDonate] = useState(false);
   const [isBloodCompatible, setBloodCompatible] = useState(null);
@@ -43,9 +46,16 @@ const SheetViewRequest = forwardRef(({ request_data }, ref) => {
     FetchNextDonation(user?.id);
   }, [user]);
 
+  //ref.current?.close();
+  const expandRegistrationFormRef = useRef(null);
   const donate = () => {
     snapeToIndex(1);
     setDonate(true);
+    // router.push({
+    //   pathname: "../../../../pages/prescreening",
+    //   params: { request_data: JSON.stringify(request_data) },
+    // });
+    // ref.current?.close();
   };
 
   const snapPoints = useMemo(() => ["75%", "96%"], []);
@@ -74,14 +84,19 @@ const SheetViewRequest = forwardRef(({ request_data }, ref) => {
   const renderCustomHandle = () => (
     <View className="h-14 rounded-t-xl bg-primary_red  items-center flex-row justify-between px-4">
       {isDonate ? (
-        <Pressable
-          onPress={() => {
-            setDonate(false);
-            snapeToIndex(0);
-          }}
-        >
-          <AntDesign name="arrowleft" size={24} color="white" />
-        </Pressable>
+        <>
+          <Pressable
+            onPress={() => {
+              setDonate(false);
+              snapeToIndex(0);
+            }}
+          >
+            <AntDesign name="arrowleft" size={24} color="white" />
+          </Pressable>
+          <Text className="text-white font-bold text-xl">
+            {ToTitleCase(`${user?.first_name} ${user?.last_name}`)}
+          </Text>
+        </>
       ) : (
         <Text className="text-white">
           Posted {TimeAgo(request_data?.created_at)}
@@ -189,6 +204,7 @@ const SheetViewRequest = forwardRef(({ request_data }, ref) => {
             </TouchableOpacity>
           )}
         </Animatable.View>
+        {/* <PreRegister ref={expandRegistrationFormRef} props={request_data} /> */}
       </BottomSheetView>
     </BottomSheetModal>
   );
@@ -281,12 +297,15 @@ const Preview = ({ request_data, isBloodCompatible }) => {
             className="h-32 w-32 rounded-full border-2 border-white"
           />
         </Animatable.View>
+        <Text className="text-white font-bold text-xl mt-1">
+          {ToTitleCase(`${user?.first_name} ${user?.last_name}`)}
+        </Text>
         <Animatable.Text
           animation="zoomIn"
           duration={200}
           easing={"ease-in-out"}
           delay={200}
-          className="text-white px-4 text-base text-center font-bold mt-5"
+          className="text-white px-4 text-base text-center font-bold mt-2"
         >
           Your blood type {currentUser?.blood_type}{" "}
           {isBloodCompatible ? "is" : "in not"} compatible with this patients

@@ -12,6 +12,7 @@ const ProfileList = ({
   typeFilter,
   anonymousFilter,
   compatibility,
+  user,
 }) => {
   const [requestList, setRequestList] = useState([]); // Store type request to show on the list
   const [loading, setLoading] = useState(true); // Set initial loading state to true
@@ -90,6 +91,7 @@ const ProfileList = ({
         keyExtractor={(item) => item.blood_request_id.toString()}
         renderItem={({ item, index }) => (
           <RequestBox
+            user={user}
             index={index}
             userId={item.user_id}
             name={item.userName}
