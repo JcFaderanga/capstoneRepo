@@ -111,8 +111,12 @@ const DonationReview = () => {
               <Text className="text-center font-bold text-lg text-primary_gray">
                 Philippine Red Cross Muntinlupa
               </Text>
-              <Text className="text-center text-primary_gray">
-                {DayAndDate(donationData?.schedule_date)}
+              <Text className="text-center ext-lg text-primary_gray">
+                Red Cross Center Centennial Lane, Filinvest Corporate City,
+                Alabang, Muntinlupa, Rizal
+              </Text>
+              <Text className="text-center text-primary_gray pt-4">
+                Scheduled date: {DayAndDate(donationData?.schedule_date)}
               </Text>
             </View>
             <View className=" px-4 py-6 space-y-4">
@@ -140,9 +144,13 @@ const DonationReview = () => {
               <KeyValueRow label="Status" value={donationData?.status} />
             </View>
             <View className="px-4">
-              <Text className="text-center font-bold text-primary_red text-lg py-4">
-                What to do day before donation?
-              </Text>
+              <Pressable
+                onPress={() => router.replace("./FAQsPages/beforeDonation")}
+              >
+                <Text className="text-center font-bold text-primary_red text-lg py-4">
+                  What to do day before donation?
+                </Text>
+              </Pressable>
               <ThemeButton title="Done" onPress={() => router.back()} />
             </View>
           </BottomSheetView>

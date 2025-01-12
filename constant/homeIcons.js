@@ -15,8 +15,9 @@ import lowStock from "../assets/icon/lowStock.png"
 import mediumStock from "../assets/icon/mediumStock.png"
 import highStock from "../assets/icon/highStock.png"
 import profile from "../assets/icon/profilePic.png"
+import blood from "../assets/icon/bloodType.png"
 export default{
     donate, findDonor, settings, FAQs, appointment,trash, clock, calendar,
     target, mailSeen,mailUnseen,arrowNoCircle,edit,lowStock,mediumStock,
-    highStock,profile,
+    highStock,profile,blood
 }

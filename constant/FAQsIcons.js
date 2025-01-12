@@ -4,8 +4,8 @@ import termAndCon from "../assets/icon/Term and Con.png"
 import whyDonate from "../assets/icon/why donate.png"
 import aboutDonation from "../assets/icon/about donation.png"
 import aboutApp from "../assets/icon/about app.png"
-import arrow from "../assets/icon/arrow.png"
-
+import arrow from "../assets/icon/smallArrow.png"
+import blood from "../assets/icon/bloodType.png"
 export default{
-    donationProcess,eligible,termAndCon,whyDonate,aboutDonation,aboutApp,arrow,
+    donationProcess,eligible,termAndCon,whyDonate,aboutDonation,aboutApp,arrow,blood
 }
