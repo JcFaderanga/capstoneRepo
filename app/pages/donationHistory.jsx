@@ -5,6 +5,7 @@ import {
   Image,
   FlatList,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 import React, { useEffect } from "react";
 import UseFetchDonation from "../../hooks/blood_donation/fetchDonation";
@@ -15,7 +16,7 @@ import Elevated from "../../components/elevated";
 import { router } from "expo-router";
 const DonationHistory = () => {
   const { user } = useAuth();
-  const { donationData, error, FetchDonation } = UseFetchDonation();
+  const { donationData, error, loading, FetchDonation } = UseFetchDonation();
 
   console.log("donation data", donationData);
   //console.log("donation data error", error);
@@ -24,6 +25,14 @@ const DonationHistory = () => {
     FetchDonation(user?.id);
   }, [user]);
 
+  if (loading) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <ActivityIndicator size={24} color={"red"} />
+        <Text>Getting donation history...</Text>
+      </View>
+    );
+  }
   return (
     <View className="h-full w-full bg-white ">
       {donationData?.length === 0 ? (

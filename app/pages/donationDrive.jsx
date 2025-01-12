@@ -28,6 +28,7 @@ import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetModal,
 } from "@gorhom/bottom-sheet";
+import { ToTitleCase } from "../../constant/textFormat";
 const DonationDrive = () => {
   const { user } = useAuth();
   const [selectedDrive, setSelectedDrive] = useState(null);
@@ -72,7 +73,8 @@ const DonationDrive = () => {
         <View className="w-full border border-slate-200 h-16 items-center justify-center">
           <Pressable className="flex-row p-2" onPress={onFilterPressed}>
             <Text className="text-primary_red font-bold text-base px-3">
-              Ordered by Time Posted
+              Ordered by{" "}
+              {filter === "donationDate" ? "Donation Date" : "Time Posted"}
             </Text>
             <Ionicons name="filter" size={20} color="#F42F47" />
           </Pressable>
@@ -133,7 +135,7 @@ const DonationDrive = () => {
             <Pressable
               className="px-4 py-4 "
               onPress={() => {
-                setFilter("DonationDate");
+                setFilter("donationDate");
                 modalRef.current?.close();
               }}
             >

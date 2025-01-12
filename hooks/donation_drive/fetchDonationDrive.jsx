@@ -13,9 +13,11 @@ const useDonationDrive = (sortBy, limit) => {
       let query = supabase.from("donation_drive").select("*");
 
       if (sortBy === "timePosted") {
+        console.log("timePosted");
         query = query.order("created_at", { ascending: false });
       } else if (sortBy === "donationDate") {
-        query = query.order("date", { ascending: false });
+        console.log("donationDate");
+        query = query.order("date", { descending: false });
       }
 
       if (limit) {
