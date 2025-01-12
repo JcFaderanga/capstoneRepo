@@ -33,26 +33,24 @@ const DonationReview = () => {
   const { request, fetchRequest } = FetchRequest();
   const bottomSheetRef = useRef(null);
   const snapPoints = useMemo(() => ["45%", "85%"], []);
+
   const renderBackdrop = useCallback(
-    (props) => (
-      <BottomSheetBackdrop
-        appearsOnIndex={2}
-        disappearsOnIndex={1}
-        {...props}
-      />
-    ),
+    (props) => <BottomSheetBackdrop {...props} pressBehavior="collapse" />,
     []
   );
+
   const handleSheetChange = (index) => {
     if (index < 0) {
-      bottomSheetRef.current?.snapToIndex(1);
+      bottomSheetRef.current?.snapToIndex(0);
     }
   };
+
   const renderCustomHandle = () => (
     <View className="p-4 rounded-t-lg">
       <Text className="text-center text-xl font-bold">Donation Details</Text>
     </View>
   );
+
   useEffect(() => {
     if (current_user) {
       fetchUser(donationData?.recipient);
@@ -61,23 +59,6 @@ const DonationReview = () => {
   }, [current_user]);
 
   if (!current_user) return null;
-
-  const {
-    blood_donation_id,
-    anonymous_donation,
-    blood_request_id,
-    created_at,
-    donor,
-    recipient,
-    schedule_date,
-    status,
-    units_donated,
-  } = donationData || {};
-
-  const { first_name = "Unknown", last_name = "Recipient" } =
-    user_recipient || {};
-
-  const { blood_type, units, urgent } = request || {};
 
   return (
     <ThemeContainer bgColor={"#F42F47"}>
@@ -93,7 +74,11 @@ const DonationReview = () => {
             />
           </Pressable>
           <Text className="text-center font-bold text-xl text-white ">
-            {ToTitleCase(`${first_name} ${last_name}`)}
+            {ToTitleCase(
+              `${user_recipient?.first_name || "Unknown"} ${
+                user_recipient?.last_name || "Recipient"
+              }`
+            )}
           </Text>
         </View>
         <View className="px-7">
@@ -113,6 +98,7 @@ const DonationReview = () => {
           </View>
         </View>
         <BottomSheet
+          ref={bottomSheetRef}
           index={0}
           snapPoints={snapPoints}
           handleComponent={renderCustomHandle}
@@ -120,33 +106,39 @@ const DonationReview = () => {
           onChange={handleSheetChange}
         >
           <BottomSheetView>
+            {/* Sheet Content */}
             <View className="bg-slate-100 py-5 px-4">
               <Text className="text-center font-bold text-lg text-primary_gray">
                 Philippine Red Cross Muntinlupa
               </Text>
               <Text className="text-center text-primary_gray">
-                {DayAndDate(schedule_date)}
+                {DayAndDate(donationData?.schedule_date)}
               </Text>
             </View>
-            {/* Organized Data */}
             <View className=" px-4 py-6 space-y-4">
-              <KeyValueRow label="Recipient Blood Type" value={blood_type} />
-
-              {/* Blood Request Details */}
-              <KeyValueRow label="Blood Request ID" value={blood_request_id} />
-              <KeyValueRow label="Units Needed" value={units} />
-              <KeyValueRow label="Units Donated" value={units_donated} />
+              <KeyValueRow
+                label="Recipient Blood Type"
+                value={request?.blood_type}
+              />
+              <KeyValueRow
+                label="Blood Request ID"
+                value={donationData?.blood_request_id}
+              />
+              <KeyValueRow label="Units Needed" value={request?.units} />
+              <KeyValueRow
+                label="Units Donated"
+                value={donationData?.units_donated}
+              />
               <KeyValueRow
                 label="Anonymous Request"
-                value={anonymous_donation ? "Yes" : "No"}
+                value={donationData?.anonymous_donation ? "Yes" : "No"}
               />
-              <KeyValueRow label="Anonymous Donation" value={"Unknown"} />
-
-              {/* Additional Info */}
-              <KeyValueRow label="Urgent" value={urgent ? "Yes" : "No"} />
-              <KeyValueRow label="Status" value={status} />
+              <KeyValueRow
+                label="Urgent"
+                value={request?.urgent ? "Yes" : "No"}
+              />
+              <KeyValueRow label="Status" value={donationData?.status} />
             </View>
-            {/* Button */}
             <View className="px-4">
               <Text className="text-center font-bold text-primary_red text-lg py-4">
                 What to do day before donation?

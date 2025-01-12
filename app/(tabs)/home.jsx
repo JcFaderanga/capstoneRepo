@@ -105,13 +105,7 @@ const Home = () => {
   );
 
   const renderBackdrop = useCallback(
-    (props) => (
-      <BottomSheetBackdrop
-        appearsOnIndex={2}
-        disappearsOnIndex={1}
-        {...props}
-      />
-    ),
+    (props) => <BottomSheetBackdrop pressBehavior="collapse" {...props} />,
     []
   );
 
