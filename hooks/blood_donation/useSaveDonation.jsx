@@ -1,30 +1,28 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
-import { supabase } from '../../lib/supabase';
+import { StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import { supabase } from "../../lib/supabase";
 const UseSaveDonation = () => {
- const [error, setError] = useState(null);
- const [loading, setLoading] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(null);
 
-const InsertDoation =async(data)=>{
+  const InsertDoation = async (data) => {
     setLoading(true);
-
-    try{
-        const { error,data: donation_data } = await supabase
-        .from('blood_donation')
+    try {
+      const { error, data: donation_data } = await supabase
+        .from("blood_donation")
         .insert(data)
         .select()
-        .single(); 
-        if(error) console.log('error')
-    }catch(e){
-        setError(e);
-        
+        .single();
+      if (error) console.log("error");
+      console.log("drive donatino data", data);
+    } catch (e) {
+      setError(e);
     }
-   
-    setLoading(false)
-}
 
-return {error, loading, InsertDoation}
+    setLoading(false);
+  };
 
-}
+  return { error, loading, InsertDoation };
+};
 
-export default UseSaveDonation
+export default UseSaveDonation;

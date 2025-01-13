@@ -18,6 +18,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { DayAndDate, CalculateAge } from "../../../../constant/timeStamp";
 import { useAuth } from "../../../../context/authContext";
 import { router } from "expo-router";
+import useSaveDonation from "../../../../hooks/blood_donation/useSaveDonation";
 const PreRegister = forwardRef(({ props }, ref) => {
   const { user } = useAuth();
   const [isSubmitSuccess, setSubmitSuccess] = useState(false);
@@ -27,7 +28,8 @@ const PreRegister = forwardRef(({ props }, ref) => {
   const [isAgeValid, setValidAge] = useState(true);
   const [weight, setWeight] = useState("");
   const age = CalculateAge(user?.birth_date);
-
+  const { error, loading, InsertDoation } = useSaveDonation();
+  console.log("donation error", error);
   useEffect(() => {
     setBgColor1(condition ? "#F42F47" : "transparent");
   }, [condition]);
@@ -70,13 +72,22 @@ const PreRegister = forwardRef(({ props }, ref) => {
 
     console.log("Valid");
     setSubmitSuccess(true);
+    const donation_data = {
+      donor: user?.id,
+      recipient: props?.drive_id,
+      units_donated: 1,
+      schedule_date: props?.date,
+      drive_donation: true,
+    };
+    InsertDoation(donation_data);
 
+    if (error) return;
     setTimeout(() => {
-      ref.current?.close(); // Close modal or sheet
-      router.push({
-        pathname: "../../pages/prescreening",
-        params: { request_data: JSON.stringify(props) },
-      });
+      ref.current?.close();
+      // router.push({
+      //   pathname: "../../pages/prescreening",
+      //   params: { request_data: JSON.stringify(props) },
+      // });
       setSubmitSuccess(false);
       setCondition(false);
       setBgColor1("transparent");
@@ -129,6 +140,7 @@ const PreRegister = forwardRef(({ props }, ref) => {
                   props?.date
                 )} ${props?.time}`}</Text>
               </View>
+
               <View>
                 <InputBox
                   detail={

@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, Pressable, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import React, { useMemo, useCallback, useRef, useEffect } from "react";
 import ThemeContainer from "../../components/UI/themeContainer";
 import ThemeButton from "../../components/UI/button/themeButton";
@@ -10,6 +17,7 @@ import QRCode from "react-native-qrcode-svg";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Entypo from "@expo/vector-icons/Entypo";
 import { TimeAgo, DayAndDate } from "../../constant/timeStamp";
+import useFetchSelectedDrive from "../../hooks/donation_drive/fetchSelectedDrive";
 import BottomSheet, {
   BottomSheetView,
   BottomSheetBackdrop,
@@ -30,31 +38,56 @@ const DonationReview = () => {
   const donationData = JSON.parse(params?.donation_details);
 
   const { user: user_recipient, fetchUser } = useFetchUser();
+  const {
+    donationDrive,
+    loading: driveLoading,
+    fetchSelectedDrive,
+  } = useFetchSelectedDrive();
   const { request, fetchRequest } = FetchRequest();
-  const bottomSheetRef = useRef(null);
-  const snapPoints = useMemo(() => ["45%", "85%"], []);
 
+  const bottomSheetRef = useRef(null);
+  const snapPoints = useMemo(
+    () => (donationData?.drive_donation ? ["45%", "50%"] : ["45%", "85%"]),
+    []
+  );
   const renderBackdrop = useCallback(
     (props) => <BottomSheetBackdrop {...props} pressBehavior="collapse" />,
     []
   );
-
+  const renderCustomHandle = () => (
+    <View className="p-4 rounded-t-lg">
+      <Text className="text-center text-xl font-bold">Donation Details</Text>
+    </View>
+  );
   const handleSheetChange = (index) => {
     if (index < 0) {
       bottomSheetRef.current?.snapToIndex(0);
     }
   };
 
-  const renderCustomHandle = () => (
-    <View className="p-4 rounded-t-lg">
-      <Text className="text-center text-xl font-bold">Donation Details</Text>
-    </View>
-  );
+  useEffect(() => {
+    if (current_user) {
+      fetchUser(donationData?.recipient);
+      fetchRequest(donationData?.blood_request_id);
+      fetchSelectedDrive(donationData?.recipient);
+    }
+  }, [current_user]);
+
+  if (!current_user) return null;
+
+  const HeaderTitle = donationData?.drive_donation
+    ? "Donation Drive"
+    : ToTitleCase(
+        `${user_recipient?.first_name || "Unknown"} ${
+          user_recipient?.last_name || "Recipient"
+        }`
+      );
 
   useEffect(() => {
     if (current_user) {
       fetchUser(donationData?.recipient);
       fetchRequest(donationData?.blood_request_id);
+      fetchSelectedDrive(donationData?.recipient);
     }
   }, [current_user]);
 
@@ -73,13 +106,7 @@ const DonationReview = () => {
               resizeMode="contain"
             />
           </Pressable>
-          <Text className="text-center font-bold text-xl text-white ">
-            {ToTitleCase(
-              `${user_recipient?.first_name || "Unknown"} ${
-                user_recipient?.last_name || "Recipient"
-              }`
-            )}
-          </Text>
+          <Text className=" font-bold text-xl text-white ">{HeaderTitle}</Text>
         </View>
         <View className="px-7">
           <View className="w-full flex justify-center items-center bg-white rounded-3xl">
@@ -107,42 +134,53 @@ const DonationReview = () => {
         >
           <BottomSheetView>
             {/* Sheet Content */}
-            <View className="bg-slate-100 py-5 px-4">
-              <Text className="text-center font-bold text-lg text-primary_gray">
-                Philippine Red Cross Muntinlupa
-              </Text>
-              <Text className="text-center ext-lg text-primary_gray">
-                Red Cross Center Centennial Lane, Filinvest Corporate City,
-                Alabang, Muntinlupa, Rizal
-              </Text>
-              <Text className="text-center text-primary_gray pt-4">
-                Scheduled date: {DayAndDate(donationData?.schedule_date)}
-              </Text>
-            </View>
-            <View className=" px-4 py-6 space-y-4">
-              <KeyValueRow
-                label="Recipient Blood Type"
-                value={request?.blood_type}
-              />
-              <KeyValueRow
-                label="Blood Request ID"
-                value={donationData?.blood_request_id}
-              />
-              <KeyValueRow label="Units Needed" value={request?.units} />
-              <KeyValueRow
-                label="Units Donated"
-                value={donationData?.units_donated}
-              />
-              <KeyValueRow
-                label="Anonymous Request"
-                value={donationData?.anonymous_donation ? "Yes" : "No"}
-              />
-              <KeyValueRow
-                label="Urgent"
-                value={request?.urgent ? "Yes" : "No"}
-              />
-              <KeyValueRow label="Status" value={donationData?.status} />
-            </View>
+            {driveLoading ? (
+              <ActivityIndicator size={24} color={"red"} />
+            ) : (
+              <View className="bg-slate-100 py-5 px-4">
+                <Text className="text-center font-bold text-lg text-primary_gray">
+                  {donationData?.drive_donation
+                    ? donationDrive?.title
+                    : "Philippine Red Cross Muntinlupa"}
+                </Text>
+                <Text className="text-center ext-lg text-primary_gray">
+                  {donationData?.drive_donation
+                    ? donationDrive?.address
+                    : "Red Cross Center Centennial Lane, Filinvest Corporate City,Alabang, Muntinlupa, Rizal"}
+                </Text>
+                <Text className="text-center text-primary_gray pt-4">
+                  Scheduled date: {DayAndDate(donationData?.schedule_date)}
+                </Text>
+              </View>
+            )}
+
+            {!donationData?.drive_donation && (
+              <View className=" px-4 py-6 space-y-4">
+                <KeyValueRow
+                  label="Recipient Blood Type"
+                  value={request?.blood_type}
+                />
+                <KeyValueRow
+                  label="Blood Request ID"
+                  value={donationData?.blood_request_id}
+                />
+                <KeyValueRow label="Units Needed" value={request?.units} />
+                <KeyValueRow
+                  label="Units Donated"
+                  value={donationData?.units_donated}
+                />
+                <KeyValueRow
+                  label="Anonymous Request"
+                  value={donationData?.anonymous_donation ? "Yes" : "No"}
+                />
+                <KeyValueRow
+                  label="Urgent"
+                  value={request?.urgent ? "Yes" : "No"}
+                />
+                <KeyValueRow label="Status" value={donationData?.status} />
+              </View>
+            )}
+
             <View className="px-4">
               <Pressable
                 onPress={() => router.replace("./FAQsPages/beforeDonation")}
