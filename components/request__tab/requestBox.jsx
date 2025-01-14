@@ -18,6 +18,11 @@ const RequestBox = ({
   index,
   gender,
 }) => {
+  const profile = {
+    Male: require("../../assets/icon/maleProfile.png"),
+    Female: require("../../assets/icon/femaleProfile.png"),
+  };
+
   return (
     <View className="w-full bg-white py-2 my-1">
       <Animatable.View
@@ -35,7 +40,7 @@ const RequestBox = ({
                 source={
                   anonymous
                     ? require("../../assets/icon/anonymouseIcon.png")
-                    : require("../../assets/icon/maleProfile.png")
+                    : profile[gender]
                 }
                 className="w-12 h-12 rounded-full mx-3"
                 resizeMode="contain"

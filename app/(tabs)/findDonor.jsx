@@ -75,11 +75,11 @@ const FindDonor = () => {
           />
         </View>
         <Pressable
-          className="px-5 w-full bg-red-100 flex-row justify-between items-center"
+          className="px-5 w-full bg-blue-100 flex-row justify-between items-center"
           onPress={() => router.push("../pages/donationDrive")}
         >
           <Text className="py-4 font-bold ">Find Nearby Donation Center</Text>
-          <MaterialIcons name="arrow-forward-ios" size={20} color="#F42F47" />
+          <MaterialIcons name="arrow-forward-ios" size={20} color="black" />
         </Pressable>
         {loading ? (
           <View className="flex-1 justify-center items-center">

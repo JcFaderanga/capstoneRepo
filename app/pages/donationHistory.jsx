@@ -16,9 +16,8 @@ import Elevated from "../../components/elevated";
 import { router } from "expo-router";
 const DonationHistory = () => {
   const { user } = useAuth();
-  const { donationData, error, loading, FetchDonation } = UseFetchDonation();
+  const { donationData, error, loading, FetchDonation } = UseFetchDonation({});
 
-  console.log("donation data", donationData);
   //console.log("donation data error", error);
 
   useEffect(() => {

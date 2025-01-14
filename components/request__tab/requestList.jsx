@@ -19,7 +19,6 @@ const ProfileList = ({
   const [refreshing, setRefreshing] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const ViewRequestBottomSheetRef = useRef(null);
-
   const getRequestList = async (limit) => {
     try {
       const requests = await fetchRequests(
@@ -100,6 +99,7 @@ const ProfileList = ({
             units={item.units}
             anonymous={item.anonymous}
             timePosted={TimeAgo(item.created_at)}
+            gender={item.userGender}
             onPress={() => viewSelectedRequest(item)}
           />
         )}

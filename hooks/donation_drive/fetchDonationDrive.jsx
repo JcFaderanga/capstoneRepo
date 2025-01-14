@@ -7,16 +7,19 @@ const useDonationDrive = (sortBy, limit) => {
   const [error, setError] = useState(null);
 
   const fetchDonationDrive = async () => {
+    let today = new Date();
+    today.setHours(0, 0, 0, 0);
     setLoading(true);
     setError(null);
     try {
-      let query = supabase.from("donation_drive").select("*");
+      let query = supabase
+        .from("donation_drive")
+        .select("*")
+        .gte("date", today.toISOString());
 
       if (sortBy === "timePosted") {
-        console.log("timePosted");
         query = query.order("created_at", { ascending: false });
       } else if (sortBy === "donationDate") {
-        console.log("donationDate");
         query = query.order("date", { descending: false });
       }
 
@@ -25,7 +28,7 @@ const useDonationDrive = (sortBy, limit) => {
       }
 
       const { data, error } = await query;
-      if (error) console.log("success");
+      if (error) console.log("donation drive bad request", error.message);
       console.log("success");
       setDonationDrive(data);
     } catch (e) {
