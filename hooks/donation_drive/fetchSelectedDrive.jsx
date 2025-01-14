@@ -17,7 +17,10 @@ const useFetchSelectedDrive = (sortBy, limit) => {
         .single();
 
       const { data, error } = await query;
-      if (error) console.log("bad request");
+      if (error) {
+        console.log("donation_drive bad request");
+        return;
+      }
       console.log("success");
       setDonationDrive(data);
     } catch (e) {

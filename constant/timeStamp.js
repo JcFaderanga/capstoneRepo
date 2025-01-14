@@ -33,18 +33,21 @@ export const TimeToGo = (isoString) => {
     return "Invalid date format.";
   }
 
+
   const now = new Date();
+    
+  if (now > targetDate){
+    return "Missed Schedule";
+  } 
+
   const timeDiff = targetDate - now;
 
-  if (timeDiff <= 0) {
-    return "It's time!";
-  }
+ 
 
   const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
   const hours = Math.floor((timeDiff / (1000 * 60 * 60)) % 24);
   if (days > 0) return `${days} ${days === 1 ? "day to go" : "days to go"}`;
   if (hours > 0 || days > 0) return `${hours} ${hours === 1 ? "hour to go" : "hours to go"} `;
-  return 'MM/DD/YYYY';
 
 
 };

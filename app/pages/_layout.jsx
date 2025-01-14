@@ -13,6 +13,7 @@ const customTitles = {
   findDonor: "Find a Donor",
   FAQs: "FAQs",
   setDonation: "Set Appointment",
+  viewAppointment: "Appointments",
 };
 
 const capitalizeTitle = (title) => {
@@ -40,6 +41,7 @@ const _layout = () => {
     "donationDrive",
     "setDonation",
     "prescreening",
+    "viewAppointment",
   ];
 
   return (

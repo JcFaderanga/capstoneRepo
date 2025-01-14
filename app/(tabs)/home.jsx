@@ -44,7 +44,10 @@ const Home = () => {
   const { user } = useAuth();
   const { totalUnitDonated, FetchUnitCount } = UseFetchDonationCount();
   const { nextDonation, error, FetchNextDonation } = UseFetchNextDonation();
-  const { donationData, loading, FetchDonation } = UseFetchDonation(true);
+  const { donationData, loading, FetchDonation } = UseFetchDonation({
+    recentDonation: true,
+    activeSched: true,
+  });
   const [isRefreshing, setIsRefreshing] = useState(false);
   const bottomSheetRef = useRef(null);
   const modalRef = useRef(null);
@@ -270,11 +273,19 @@ const UpComingDonation = ({ upComingDonation }) => {
 
   //console.log(upComingDonation?.schedule_date)
 
+  // router.push({
+  //   pathname: "../pages/donationReview",
+  //   params: { donation_details: JSON.stringify(upComingDonation) },
+  // });
   const handleReviewAppointment = () => {
     router.push({
-      pathname: "../pages/donationReview",
+      pathname: "../pages/viewAppointment",
       params: { donation_details: JSON.stringify(upComingDonation) },
     });
+    // router.push({
+    //   pathname: "../pages/donationReview",
+    //   params: { donation_details: JSON.stringify(upComingDonation) },
+    // });
   };
   const setDonation = () => {
     router.push("../pages/setDonation");
