@@ -81,6 +81,28 @@ const ViewAppointment = () => {
             />
           </View>
         ))}
+        <View className="mt-12 w-full px-4 pt-5 bg-white">
+          <View className="w-full rounded-sm">
+            <Text className="font-bold text-xl text-center">
+              Be a Lifeline for Someone in Need
+            </Text>
+            <View className="w-full my-2 rounded-2xl border border-stone-50">
+              <View className="mx-4 mb-3 rounded-xl p-3 px-3">
+                <Text className="text-center text-gray-500">
+                  Each contribution counts. Help us save lives and spread hope!
+                </Text>
+              </View>
+              <Pressable
+                className="bg-primary_red mx-4 mb-7 rounded-xl py-4"
+                onPress={() => router.push("./setDonation")}
+              >
+                <Text className="text-center text-white font-bold">
+                  Set Up Another Donation
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
       </ScrollView>
     </View>
   );
