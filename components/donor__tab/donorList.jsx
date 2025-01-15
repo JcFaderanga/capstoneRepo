@@ -12,7 +12,7 @@ const DonorList = ({ donor, onRefreshDonors, refreshing }) => {
     setSelectedDonor(data);
     ViewDonorBottomSheetRef.current?.present();
   };
-  console.log(donor);
+
   return (
     <View>
       {donor?.length > 0 ? (

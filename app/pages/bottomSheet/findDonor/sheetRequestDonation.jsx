@@ -11,16 +11,22 @@ import {
   BottomSheetBackdrop,
   BottomSheetModal,
 } from "@gorhom/bottom-sheet";
+import ToggleButton from "../../../../components/UI/button/toggleBtn";
 import useFetchUser from "../../../../hooks/user/useFetchUser";
 import ThemeButton from "../../../../components/UI/button/themeButton";
 import { useAuth } from "../../../../context/authContext";
 import { ShowCompatibility } from "../../../../hooks/blood_validation/useBloodCopatibilty";
+import * as Animatable from "react-native-animatable";
+import { createPublicRequest } from "../../../../services/requestServices";
 const sheetRequestDonation = forwardRef(({ donor_data }, ref) => {
   const [isBloodCompatible, setBloodCompatible] = useState(null);
+  const [isRequestSubmit, setRequestSubmit] = useState(false);
+  const [isRequestAnonymous, setRequestAnonymous] = useState(false);
+  const [urgent, setUrgent] = useState(false);
   const { user: currentUser } = useAuth();
   if (!donor_data) return null;
   const { refreshing, selectedDonor } = donor_data;
-  const { user, fetchUser } = useFetchUser();
+  const { user: selected_donor, fetchUser } = useFetchUser();
   //console.log("isBloodCompatible", isBloodCompatible);
   useEffect(() => {
     if (selectedDonor?.id) {
@@ -35,7 +41,7 @@ const sheetRequestDonation = forwardRef(({ donor_data }, ref) => {
   }, [refreshing]);
 
   const snapPoints = useMemo(
-    () => (selectedDonor?.public_contact ? ["65%", "80%"] : ["50%", "60%"]),
+    () => (selectedDonor?.public_contact ? ["85%"] : ["67%"]),
     [selectedDonor]
   );
 
@@ -50,6 +56,25 @@ const sheetRequestDonation = forwardRef(({ donor_data }, ref) => {
     []
   );
 
+  const handleSubmitRequest = async () => {
+    const request_details = {
+      user_id: currentUser?.id,
+      blood_type: currentUser?.blood_type,
+      units: 1,
+      anonymous: isRequestAnonymous,
+      anonymous_donor: selected_donor?.anonymous_donor,
+      direct_request: true,
+      requested_to: selected_donor?.id,
+      urgent: urgent,
+    };
+    const reqData = await createPublicRequest(request_details);
+    console.log("newest request", reqData);
+    setRequestSubmit(true);
+    setTimeout(() => {
+      ref.current?.close();
+      setTimeout(() => setRequestSubmit(false), 500);
+    }, 1400);
+  };
   // Profile image options
   const profile = {
     Male: require("../../../../assets/icon/maleProfile.png"),
@@ -57,26 +82,30 @@ const sheetRequestDonation = forwardRef(({ donor_data }, ref) => {
   };
 
   // Custom handle for the bottom sheet
-  const renderCustomHandle = () => (
-    <View className="h-14 w-full px-4 rounded-t-xl flex-row items-center justify-center">
-      <Image
-        source={
-          selectedDonor?.anonymous_donor
-            ? require("../../../../assets/icon/anonymouseIcon.png")
-            : profile[selectedDonor?.gender] || null
-        } // Fallback for missing gender
-        className="w-44 h-44 rounded-full"
-        resizeMode="contain"
-      />
-    </View>
-  );
+  const renderCustomHandle = () => {
+    if (!isRequestSubmit) {
+      return (
+        <View className="h-14 w-full px-4 rounded-t-xl flex-row items-center justify-center">
+          <Image
+            source={
+              selectedDonor?.anonymous_donor
+                ? require("../../../../assets/icon/anonymouseIcon.png")
+                : profile[selectedDonor?.gender] || null
+            }
+            className="w-44 h-44 rounded-full"
+            resizeMode="contain"
+          />
+        </View>
+      );
+    }
+  };
 
   useEffect(() => {
     const donorBloodType = selectedDonor?.blood_type || "";
     const recipientBloodType = currentUser?.blood_type || "";
     const recipientTypes = ShowCompatibility(recipientBloodType) || [];
     const canReceiveFrom =
-      recipientTypes?.canReceiveFrom.includes(donorBloodType)||[];
+      recipientTypes?.canReceiveFrom.includes(donorBloodType) || [];
     if (canReceiveFrom) {
       setBloodCompatible(true);
     } else if (!canReceiveFrom) {
@@ -94,47 +123,110 @@ const sheetRequestDonation = forwardRef(({ donor_data }, ref) => {
     >
       <BottomSheetView className="w-full h-full px-4 py-6">
         {/* Donor Name */}
-        <View className="flex-row items-center justify-center w-full mt-16">
-          <Text className="font-bold text-2xl text-center">
-            {user?.anonymous_donor
-              ? "Anonymous"
-              : `${user?.first_name} ${user?.last_name}`}
-          </Text>
-        </View>
-        {!isBloodCompatible ? (
-          <Text className="text-center text-primary_red font-bold text-base">
-            Your Blood type is not compatible with this donor
-          </Text>
+        {isRequestSubmit ? (
+          <Animatable.View
+            animation="bounceIn"
+            duration={500}
+            easing={"ease-in"}
+            interationCount="infinity"
+            className="my-14 justify-center items-center "
+          >
+            <Image
+              source={require("../../../../assets/icon/check.png")}
+              resizeMode="contain"
+              className=" h-[120px]"
+            />
+            <View>
+              <Text className="font-bold text-xl text-[#4CAF50]">
+                Request Sent
+              </Text>
+            </View>
+          </Animatable.View>
         ) : (
-          ""
-        )}
-        {/* Donor Information */}
-        <View className="mt-4">
-          {user?.anonymous_donor || !user?.public_contact ? (
-            <KeyValueRow label="Blood Type" value={selectedDonor?.blood_type} />
-          ) : (
-            <>
-              <KeyValueRow label="Email" value={selectedDonor?.email} />
-              <KeyValueRow
-                label="Phone Number"
-                value={selectedDonor?.phone_number}
-              />
-              <KeyValueRow
-                label="Blood Type"
-                value={selectedDonor?.blood_type}
-              />
-            </>
-          )}
-        </View>
+          <View>
+            <View className="flex-row items-center justify-center w-full mt-16">
+              <Text className="font-bold text-2xl text-center">
+                {selected_donor?.anonymous_donor
+                  ? "Anonymous"
+                  : `${selected_donor?.first_name} ${selected_donor?.last_name}`}
+              </Text>
+            </View>
+            {!isBloodCompatible ? (
+              <Text className="text-center text-primary_red font-bold text-base">
+                Your Blood type is not compatible with this donor
+              </Text>
+            ) : (
+              ""
+            )}
+            {/* Donor Information */}
+            <View className="mt-4">
+              {selected_donor?.anonymous_donor ||
+              !selected_donor?.public_contact ? (
+                <KeyValueRow
+                  label="Blood Type"
+                  value={selectedDonor?.blood_type}
+                />
+              ) : (
+                <>
+                  <KeyValueRow label="Email" value={selectedDonor?.email} />
+                  <KeyValueRow
+                    label="Phone Number"
+                    value={selectedDonor?.phone_number}
+                  />
+                  <KeyValueRow
+                    label="Blood Type"
+                    value={selectedDonor?.blood_type}
+                  />
+                </>
+              )}
+            </View>
 
-        {/* Action Button */}
-        <View className="mt-6">
-          <ThemeButton
-            disable={!isBloodCompatible ? true : false}
-            title="Send Request"
-            onPress={() => console.log("pressed")}
-          />
-        </View>
+            <View className="pt-5">
+              <View className="w-full h-16 border border-[#DCDCDC] flex-row items-center justify-between rounded-xl mb-4">
+                <View className="flex-1 flex-row justify-between items-center px-8 h-20">
+                  <View className="flex-row items-center gap-3">
+                    <Text className="font-bold text-[15px] text-primary_red">
+                      Mark as urgent
+                    </Text>
+                  </View>
+                  <ToggleButton
+                    onPress={(isToggled) => setUrgent(isToggled)}
+                    AlertTitle={"Set as urgent request"}
+                    AlterDescription={
+                      "Urgent request will still be depends on the review."
+                    }
+                  />
+                </View>
+              </View>
+              <View className="w-full h-16 border border-[#DCDCDC] flex-row items-center justify-between rounded-xl mb-4">
+                <View className="flex-1 flex-row justify-between items-center px-8 h-20">
+                  <View className="flex-row items-center gap-3">
+                    {/* <Image source={require('../../../../assets/icon/lock.png')} className="w-7" resizeMode='contain' /> */}
+                    <Text className="font-bold text-[15px]">
+                      Make my request Anonymous{" "}
+                    </Text>
+                  </View>
+                  <ToggleButton
+                    onPress={(isToggled) => setRequestAnonymous(isToggled)}
+                    AlertTitle={"Anonymous Request"}
+                    AlterDescription={
+                      "Turning on Anonymous Request will hide your name and profile from the donor."
+                    }
+                  />
+                </View>
+              </View>
+            </View>
+
+            {/* Action Button */}
+            <View className="mt-6">
+              <ThemeButton
+                disable={!isBloodCompatible ? true : false}
+                title="Send Request"
+                onPress={handleSubmitRequest}
+              />
+            </View>
+          </View>
+        )}
       </BottomSheetView>
     </BottomSheetModal>
   );
