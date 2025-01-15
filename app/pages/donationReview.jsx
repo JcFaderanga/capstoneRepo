@@ -5,6 +5,7 @@ import {
   Pressable,
   Image,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import React, { useMemo, useCallback, useRef, useEffect } from "react";
 import ThemeContainer from "../../components/UI/themeContainer";
@@ -18,6 +19,9 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Entypo from "@expo/vector-icons/Entypo";
 import { TimeAgo, DayAndDate } from "../../constant/timeStamp";
 import useFetchSelectedDrive from "../../hooks/donation_drive/fetchSelectedDrive";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import { supabase } from "../../lib/supabase";
+
 import BottomSheet, {
   BottomSheetView,
   BottomSheetBackdrop,
@@ -54,11 +58,51 @@ const DonationReview = () => {
     (props) => <BottomSheetBackdrop {...props} pressBehavior="collapse" />,
     []
   );
+  const handleCancel = async (donation_id) => {
+    const { error } = await supabase
+      .from("blood_donation")
+      .delete()
+      .eq("blood_donation_id", donation_id);
+
+    if (error) {
+      console.log(error.message);
+    } else {
+      router.replace("../(tabs)/home");
+    }
+  };
+
+  const confirmCancel = (donation_id) => {
+    Alert.alert(
+      "Cancel Donation",
+      "Are you sure you want to cancel this donation?",
+      [
+        {
+          text: "No",
+          onPress: () => console.log("Cancellation aborted"),
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: () => handleCancel(donation_id),
+          style: "destructive",
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
   const renderCustomHandle = () => (
-    <View className="p-4 rounded-t-lg">
-      <Text className="text-center text-xl font-bold">Donation Details</Text>
-    </View>
+    <Pressable className="w-full border border-white py-4 px-5 rounded-t-2xl flex-row items-center justify-between">
+      <Text className="text-xl font-bold">Donation Details</Text>
+      <Pressable
+        className=" px-4"
+        onPress={() => confirmCancel(donationData?.blood_donation_id)}
+      >
+        <FontAwesome6 name="trash-alt" size={17} color="red" />
+      </Pressable>
+    </Pressable>
   );
+
   const handleSheetChange = (index) => {
     if (index < 0) {
       bottomSheetRef.current?.snapToIndex(0);
