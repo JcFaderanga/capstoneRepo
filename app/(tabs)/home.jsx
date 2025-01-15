@@ -38,7 +38,9 @@ import UseFetchDonation from "../../hooks/blood_donation/fetchDonation";
 import { TimeToGo, LongDateFormat } from "../../constant/timeStamp";
 import * as Animatable from "react-native-animatable";
 import { useRouter } from "expo-router";
-
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Feather from "@expo/vector-icons/Feather";
 const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const { user } = useAuth();
@@ -61,7 +63,7 @@ const Home = () => {
 
   const modalSnapPoints = useMemo(
     () => {
-      if (user?.admin) {
+      if (user?.super_user) {
         ["35%"];
       }
     },
@@ -219,26 +221,31 @@ const Home = () => {
           backdropComponent={modalBackDrop}
         >
           <BottomSheetView>
-            <ContentTitleButton
-              title={"Edit"}
-              size={{ width: 22, height: 22 }}
-              icon={require("../../assets/icon/edit.png")}
+            <TouchableOpacity
+              className=" flex-row items-center w-full h-20 border-b-2 border-[#F2F2F2] px-5"
               onPress={handleEdit}
-            />
-            {user?.admin ? (
-              <ContentTitleButton
-                title={"Switch to admin"}
-                size={{ width: 25, height: 25 }}
-                icon={require("../../assets/icon/switch.png")}
-              />
-            ) : null}
+            >
+              <Feather name="edit" size={24} color="black" />
+              <Text className="font-bold text-lg ml-5">Edit</Text>
+            </TouchableOpacity>
 
-            <ContentTitleButton
-              title={"Log out"}
-              size={{ width: 22, height: 22 }}
-              icon={require("../../assets/icon/logout.png")}
+            <TouchableOpacity
+              className=" flex-row items-center w-full h-20 border-b-2 border-[#F2F2F2] px-5"
               onPress={handleLogout}
-            />
+            >
+              <MaterialIcons name="logout" size={24} color="black" />
+              <Text className="font-bold text-lg ml-5">Log out</Text>
+            </TouchableOpacity>
+
+            {user?.super_user ? (
+              <TouchableOpacity
+                className=" flex-row items-center w-full h-20 border-b-2 border-[#F2F2F2] px-5"
+                onPress={handleLogout}
+              >
+                <FontAwesome6 name="arrows-rotate" size={24} color="black" />
+                <Text className="font-bold text-lg ml-5">swith to admin</Text>
+              </TouchableOpacity>
+            ) : null}
           </BottomSheetView>
         </BottomSheetModal>
       </GestureHandlerRootView>
