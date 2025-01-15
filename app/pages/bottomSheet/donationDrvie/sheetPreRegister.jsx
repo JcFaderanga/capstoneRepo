@@ -1,4 +1,3 @@
-import { Text, View, Pressable, Image } from "react-native";
 import React, {
   useState,
   useEffect,
@@ -6,6 +5,7 @@ import React, {
   useCallback,
   forwardRef,
 } from "react";
+import { Text, View, Pressable, Image } from "react-native";
 import {
   BottomSheetView,
   BottomSheetBackdrop,
@@ -17,24 +17,37 @@ import ThemeButton from "../../../../components/UI/button/themeButton";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { DayAndDate, CalculateAge } from "../../../../constant/timeStamp";
 import { useAuth } from "../../../../context/authContext";
-import { router } from "expo-router";
 import useSaveDonation from "../../../../hooks/blood_donation/useSaveDonation";
+import UseFetchDonation from "../../../../hooks/blood_donation/fetchDonation";
+
 const PreRegister = forwardRef(({ props }, ref) => {
   const { user } = useAuth();
   const [isSubmitSuccess, setSubmitSuccess] = useState(false);
-  const [bgColor1, setBgColor1] = useState("transparent");
   const [condition, setCondition] = useState(false);
   const [isWeightValid, setWeightValid] = useState(true);
   const [isAgeValid, setValidAge] = useState(true);
   const [weight, setWeight] = useState("");
   const age = CalculateAge(user?.birth_date);
-  const { error, loading, InsertDoation } = useSaveDonation();
-  console.log("donation error", error);
-  useEffect(() => {
-    setBgColor1(condition ? "#F42F47" : "transparent");
-  }, [condition]);
+  const { error, InsertDoation } = useSaveDonation();
+  const { donationData, loading, FetchDonation } = UseFetchDonation({});
 
-  const snapPoints = useMemo(() => ["64%", "80%"], []);
+  useEffect(() => {
+    FetchDonation(user?.id);
+  }, [props, isSubmitSuccess]);
+
+  const isDrivePending = props
+    ? donationData.some(
+        (d) => d.recipient === props.drive_id && d.status === "pending"
+      )
+    : false;
+
+  const snapPoints = useMemo(() => {
+    if (isDrivePending && loading) {
+      return ["28%"];
+    } else {
+      return ["64%", "80%"];
+    }
+  }, []);
   const renderBackdrop = useCallback(
     (props) => (
       <BottomSheetBackdrop
@@ -47,12 +60,10 @@ const PreRegister = forwardRef(({ props }, ref) => {
   );
 
   const submitPreRegistration = () => {
-    const weightNum = Number(weight); // Convert weight to a number
-
+    const weightNum = Number(weight);
     let valid = true;
 
     if (isNaN(weightNum) || weightNum <= 49) {
-      console.log("Invalid weight");
       setWeightValid(false);
       valid = false;
     } else {
@@ -60,17 +71,14 @@ const PreRegister = forwardRef(({ props }, ref) => {
     }
 
     if (age <= 18) {
-      console.log("Invalid age");
       setValidAge(false);
-      setCondition(false);
       valid = false;
     } else {
       setValidAge(true);
     }
 
-    if (!valid) return; // Exit if either validation fails
+    if (!valid) return;
 
-    console.log("Valid");
     setSubmitSuccess(true);
     const donation_data = {
       donor: user?.id,
@@ -79,19 +87,19 @@ const PreRegister = forwardRef(({ props }, ref) => {
       schedule_date: props?.date,
       drive_donation: true,
     };
+
     InsertDoation(donation_data);
 
-    if (error) return;
+    if (error) {
+      console.error("Donation Insertion Error:", error);
+      return;
+    }
+
     setTimeout(() => {
       ref.current?.close();
-      // router.push({
-      //   pathname: "../../pages/prescreening",
-      //   params: { request_data: JSON.stringify(props) },
-      // });
       setSubmitSuccess(false);
       setCondition(false);
-      setBgColor1("transparent");
-      setWeight(""); // Reset weight
+      setWeight("");
     }, 1700);
   };
 
@@ -116,22 +124,35 @@ const PreRegister = forwardRef(({ props }, ref) => {
               animation="bounceIn"
               duration={500}
               easing={"ease-in"}
-              interationCount="infinity"
-              className="my-14 justify-center items-center "
+              className="my-14 justify-center items-center"
             >
               <Image
                 source={require("../../../../assets/icon/check.png")}
                 resizeMode="contain"
-                className=" h-[120px]"
+                className="h-[120px]"
               />
-              <View>
-                <Text className="font-bold text-xl text-[#4CAF50]">
-                  Registration Success
-                </Text>
-              </View>
+              <Text className="font-bold text-xl text-[#4CAF50]">
+                Registration Success
+              </Text>
             </Animatable.View>
+          ) : isDrivePending ? (
+            <View
+              animation="bounceIn"
+              duration={500}
+              easing={"ease-in"}
+              className="my-14 justify-center items-center"
+            >
+              <Image
+                source={require("../../../../assets/icon/check.png")}
+                resizeMode="contain"
+                className="h-[120px]"
+              />
+              <Text className="font-bold text-xl text-center text-[#4CAF50]">
+                You're already registered for this upcoming donation drive.
+              </Text>
+            </View>
           ) : (
-            <>
+            <View>
               <View className="bg-slate-100 rounded-xl py-5 px-4">
                 <Text className="text-center font-bold text-lg text-primary_gray">
                   {props?.title}
@@ -140,7 +161,6 @@ const PreRegister = forwardRef(({ props }, ref) => {
                   props?.date
                 )} ${props?.time}`}</Text>
               </View>
-
               <View>
                 <InputBox
                   detail={
@@ -173,8 +193,9 @@ const PreRegister = forwardRef(({ props }, ref) => {
               )}
               <View className="flex-row px-4 pt-10">
                 <Pressable
-                  className="w-5 h-5 border mt-1 mr-2 justify-center flex items-center"
-                  style={{ backgroundColor: bgColor1 }}
+                  className={`w-5 h-5 border mt-1 mr-2 justify-center items-center ${
+                    condition ? "bg-[#F42F47]" : "bg-transparent"
+                  }`}
                   onPress={() => setCondition(!condition)}
                 >
                   {condition && (
@@ -194,9 +215,9 @@ const PreRegister = forwardRef(({ props }, ref) => {
               <ThemeButton
                 title="Submit"
                 onPress={submitPreRegistration}
-                disable={!condition}
+                disable={!condition || isDrivePending}
               />
-            </>
+            </View>
           )}
         </View>
       </BottomSheetView>
