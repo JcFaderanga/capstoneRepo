@@ -25,7 +25,9 @@ const sheetRequestDonation = forwardRef(({ donor_data }, ref) => {
   const [urgent, setUrgent] = useState(false);
   const { user: currentUser } = useAuth();
   if (!donor_data) return null;
+
   const { refreshing, selectedDonor } = donor_data;
+
   const { user: selected_donor, fetchUser } = useFetchUser();
   //console.log("isBloodCompatible", isBloodCompatible);
   useEffect(() => {
@@ -40,10 +42,11 @@ const sheetRequestDonation = forwardRef(({ donor_data }, ref) => {
     }
   }, [refreshing]);
 
-  const snapPoints = useMemo(
-    () => (selectedDonor?.public_contact ? ["85%"] : ["67%"]),
-    [selectedDonor]
-  );
+  const snapPoints = useMemo(() => {
+    if (selectedDonor?.public_contact) return ["85%"];
+    if (!isBloodCompatible) return ["50%"];
+    return ["67%"];
+  }, [selectedDonor, isBloodCompatible]);
 
   const renderBackdrop = useCallback(
     (props) => (
@@ -99,19 +102,26 @@ const sheetRequestDonation = forwardRef(({ donor_data }, ref) => {
       );
     }
   };
-
+  //console.log(donor_data?.selectedDonor?.blood_type);
   useEffect(() => {
-    const donorBloodType = selectedDonor?.blood_type || "";
+    const donorBloodType = donor_data?.selectedDonor?.blood_type || "";
+
     const recipientBloodType = currentUser?.blood_type || "";
+
     const recipientTypes = ShowCompatibility(recipientBloodType) || [];
+
     const canReceiveFrom =
-      recipientTypes?.canReceiveFrom.includes(donorBloodType) || [];
+      recipientTypes.canReceiveFrom.includes(donorBloodType);
+
     if (canReceiveFrom) {
+      console.log("donor compatible");
       setBloodCompatible(true);
-    } else if (!canReceiveFrom) {
+    }
+    if (!canReceiveFrom) {
+      console.log("donor not compatible");
       setBloodCompatible(false);
     }
-  }, [isBloodCompatible, selectedDonor]);
+  }, [isBloodCompatible, donor_data?.selectedDonor]);
 
   return (
     <BottomSheetModal
@@ -151,13 +161,7 @@ const sheetRequestDonation = forwardRef(({ donor_data }, ref) => {
                   : `${selected_donor?.first_name} ${selected_donor?.last_name}`}
               </Text>
             </View>
-            {!isBloodCompatible ? (
-              <Text className="text-center text-primary_red font-bold text-base">
-                Your Blood type is not compatible with this donor
-              </Text>
-            ) : (
-              ""
-            )}
+
             {/* Donor Information */}
             <View className="mt-4">
               {selected_donor?.anonymous_donor ||
@@ -180,51 +184,57 @@ const sheetRequestDonation = forwardRef(({ donor_data }, ref) => {
                 </>
               )}
             </View>
-
-            <View className="pt-5">
-              <View className="w-full h-16 border border-[#DCDCDC] flex-row items-center justify-between rounded-xl mb-4">
-                <View className="flex-1 flex-row justify-between items-center px-8 h-20">
-                  <View className="flex-row items-center gap-3">
-                    <Text className="font-bold text-[15px] text-primary_red">
-                      Mark as urgent
-                    </Text>
+            {!isBloodCompatible ? (
+              <Text className="text-center text-primary_red font-bold text-lg py-10">
+                Your Blood type is not compatible with this donor.
+              </Text>
+            ) : (
+              <>
+                <View className="pt-5">
+                  <View className="w-full h-16 border border-[#DCDCDC] flex-row items-center justify-between rounded-xl mb-4">
+                    <View className="flex-1 flex-row justify-between items-center px-8 h-20">
+                      <View className="flex-row items-center gap-3">
+                        <Text className="font-bold text-[15px] text-primary_red">
+                          Mark as urgent
+                        </Text>
+                      </View>
+                      <ToggleButton
+                        onPress={(isToggled) => setUrgent(isToggled)}
+                        AlertTitle={"Set as urgent request"}
+                        AlterDescription={
+                          "Urgent request will still be depends on the review."
+                        }
+                      />
+                    </View>
                   </View>
-                  <ToggleButton
-                    onPress={(isToggled) => setUrgent(isToggled)}
-                    AlertTitle={"Set as urgent request"}
-                    AlterDescription={
-                      "Urgent request will still be depends on the review."
-                    }
+                  <View className="w-full h-16 border border-[#DCDCDC] flex-row items-center justify-between rounded-xl mb-4">
+                    <View className="flex-1 flex-row justify-between items-center px-8 h-20">
+                      <View className="flex-row items-center gap-3">
+                        {/* <Image source={require('../../../../assets/icon/lock.png')} className="w-7" resizeMode='contain' /> */}
+                        <Text className="font-bold text-[15px]">
+                          Make my request Anonymous{" "}
+                        </Text>
+                      </View>
+                      <ToggleButton
+                        onPress={(isToggled) => setRequestAnonymous(isToggled)}
+                        AlertTitle={"Anonymous Request"}
+                        AlterDescription={
+                          "Turning on Anonymous Request will hide your name and profile from the donor."
+                        }
+                      />
+                    </View>
+                  </View>
+                </View>
+                {/* Action Button */}
+                <View className="mt-6">
+                  <ThemeButton
+                    disable={!isBloodCompatible ? true : false}
+                    title="Send Request"
+                    onPress={handleSubmitRequest}
                   />
                 </View>
-              </View>
-              <View className="w-full h-16 border border-[#DCDCDC] flex-row items-center justify-between rounded-xl mb-4">
-                <View className="flex-1 flex-row justify-between items-center px-8 h-20">
-                  <View className="flex-row items-center gap-3">
-                    {/* <Image source={require('../../../../assets/icon/lock.png')} className="w-7" resizeMode='contain' /> */}
-                    <Text className="font-bold text-[15px]">
-                      Make my request Anonymous{" "}
-                    </Text>
-                  </View>
-                  <ToggleButton
-                    onPress={(isToggled) => setRequestAnonymous(isToggled)}
-                    AlertTitle={"Anonymous Request"}
-                    AlterDescription={
-                      "Turning on Anonymous Request will hide your name and profile from the donor."
-                    }
-                  />
-                </View>
-              </View>
-            </View>
-
-            {/* Action Button */}
-            <View className="mt-6">
-              <ThemeButton
-                disable={!isBloodCompatible ? true : false}
-                title="Send Request"
-                onPress={handleSubmitRequest}
-              />
-            </View>
+              </>
+            )}
           </View>
         )}
       </BottomSheetView>

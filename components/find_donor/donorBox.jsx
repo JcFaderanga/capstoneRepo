@@ -3,25 +3,44 @@ import {
   Text,
   View,
   Image,
-  Pressable,
   TouchableOpacity,
+  Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Animatable from "react-native-animatable";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { ToTitleCase } from "../../constant/textFormat";
-const DonorBox = ({ donor, index, onPress }) => {
-  const [isPressed, setIsPressed] = useState(false);
+import useFetchAllRequest from "../../hooks/my_request_hooks/useFetchAllRequest";
 
-  if (donor) {
-    var { id, first_name, last_name, blood_type, anonymous_donor, gender } =
-      donor;
-  }
+const DonorBox = ({ user_id, donor, index, onPress }) => {
+  const [isPressed, setIsPressed] = useState(false);
+  const { allRequest, error, loading, fetchAllRequest } = useFetchAllRequest();
+
+  useEffect(() => {
+    if (user_id) {
+      fetchAllRequest(user_id); // Fetch all requests for the given user ID
+    }
+  }, [user_id, donor]);
+
+  // Check if there’s any pending request for the given user
+  const isDonrPending = allRequest
+    ? allRequest.some(
+        (request) =>
+          request.user_id === user_id &&
+          request.requested_to === donor?.id &&
+          request.request_status === "pending"
+      )
+    : false;
 
   const profile = {
     Male: require("../../assets/icon/maleProfile.png"),
     Female: require("../../assets/icon/femaleProfile.png"),
   };
+
+  if (donor) {
+    var { id, first_name, last_name, blood_type, anonymous_donor, gender } =
+      donor;
+  }
 
   return (
     <Animatable.View
@@ -30,10 +49,20 @@ const DonorBox = ({ donor, index, onPress }) => {
       duration={200}
       easing={"ease-in-out"}
       delay={index * 10}
-      interationCount="infinity"
     >
       <TouchableOpacity
-        onPress={onPress}
+        onPress={() => {
+          if (isDonrPending) {
+            console.log("There is an active request for this donor.");
+            Alert.alert(
+              "Request Already Sent",
+              "You have already sent a request to this donor. Please wait for their response."
+            );
+          } else {
+            console.log("No active request. Proceeding...");
+            onPress && onPress(); // Call the onPress prop if defined
+          }
+        }}
         onPressIn={() => setIsPressed(true)}
         onPressOut={() => setIsPressed(false)}
         className="h-full flex items-center justify-center"
@@ -66,7 +95,6 @@ const DonorBox = ({ donor, index, onPress }) => {
             </View>
           </View>
           <Ionicons name="arrow-forward-sharp" size={24} color="#F42F47" />
-          {/* <Image source={require('../../assets/icon/arrow.png')} className="w-6" resizeMode='contain'/> */}
         </View>
       </TouchableOpacity>
     </Animatable.View>

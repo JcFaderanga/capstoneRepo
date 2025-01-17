@@ -90,6 +90,7 @@ const FindDonor = () => {
           </View>
         ) : (
           <DonorList
+            user_id={user?.id}
             donor={donor}
             onRefreshDonors={onRefreshDonors}
             refreshing={refreshing}

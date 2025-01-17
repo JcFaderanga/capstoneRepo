@@ -3,7 +3,7 @@ import React from "react";
 import DonorBox from "../find_donor/donorBox";
 import SheetRequestDonation from "../../app/pages/bottomSheet/findDonor/sheetRequestDonation";
 
-const DonorList = ({ donor, onRefreshDonors, refreshing }) => {
+const DonorList = ({ user_id, donor, onRefreshDonors, refreshing }) => {
   const [selectedDonor, setSelectedDonor] = React.useState(null);
 
   const details = { selectedDonor, refreshing };
@@ -22,6 +22,7 @@ const DonorList = ({ donor, onRefreshDonors, refreshing }) => {
           keyExtractor={(item) => item?.user_id?.toString() || `${item.index}`}
           renderItem={({ item, index }) => (
             <DonorBox
+              user_id={user_id}
               donor={item}
               index={index}
               onPress={() => viewDonorProfile(item)}
