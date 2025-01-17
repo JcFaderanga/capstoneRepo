@@ -1,32 +1,35 @@
-import React from 'react';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import Foryou from '../pages/request_materialtop/foryou';
-import Myrequest from '../pages/request_materialtop/myrequest';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React from "react";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import Foryou from "../pages/request_materialtop/foryou";
+import Myrequest from "../pages/request_materialtop/myrequest";
+import { SafeAreaView } from "react-native-safe-area-context";
 const Tab = createMaterialTopTabNavigator();
 
 const Request = () => {
   return (
     <SafeAreaView className="flex-1 h-full ">
-       <Tab.Navigator
-      screenOptions={{
-        tabBarActiveTintColor: '#ffffff',
-        tabBarIndicatorStyle: { backgroundColor: '#F42F47', height: 4, borderRadius: 5 },
-        tabBarStyle: { 
-          backgroundColor: '#F42F47',
-        }, 
-        tabBarLabelStyle: { 
-          fontSize: 16, // Adjust font size here
-          fontWeight: 'bold', // Optional for bold text
-        },
-      }}
-    >
-      <Tab.Screen name="For You" component={Foryou} />
-      <Tab.Screen name="My Request" component={Myrequest} />
-    </Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={{
+          tabBarActiveTintColor: "#F42F47",
+          tabBarIndicatorStyle: {
+            backgroundColor: "#F42F47",
+            height: 4,
+            borderRadius: 5,
+          },
+          tabBarStyle: {
+            backgroundColor: "white",
+          },
+          tabBarLabelStyle: {
+            fontSize: 16, // Adjust font size here
+            fontWeight: "bold", // Optional for bold text
+          },
+        }}
+      >
+        <Tab.Screen name="For You" component={Foryou} />
+        <Tab.Screen name="My Request" component={Myrequest} />
+      </Tab.Navigator>
     </SafeAreaView>
-   
   );
-}
+};
 
 export default Request;
