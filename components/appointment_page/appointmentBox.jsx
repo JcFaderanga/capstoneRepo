@@ -75,7 +75,8 @@ const AppointmentBox = ({ donation_details, onPress }) => {
           </Text>
           {!drive_donation ? (
             <Text className="my-2 mx-4 text-gray-500 text-base ">
-              <Text className=" font-bold"> Recipient:</Text> {recipient}
+              <Text className=" font-bold"> Recipient:</Text>{" "}
+              {`${first_name} ${last_name}`}
             </Text>
           ) : (
             ""

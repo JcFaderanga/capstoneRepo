@@ -14,7 +14,7 @@ const UseFetchDonation = ({ recentDonation, activeSched }) => {
       // Create the initial query
       let query = supabase
         .from("blood_donation")
-        .select("*")
+        .select(`*, profile(first_name, last_name)`)
         .eq("donor", user_id)
         .order("schedule_date", { ascending: true });
 
