@@ -31,6 +31,7 @@ import ModalPublicDonate from "../../../../../components/Modals/request__tab/for
 import PreSreening from "./components/PreScreening";
 import UseFetchDonationCount from "../../../../../hooks/blood_donation/fetchDonationUnitCount";
 import UseFetchNextDonation from "../../../../../hooks/blood_donation/fetchNextDonationDays";
+import UseFetchDonation from "../../../../../hooks/blood_donation/fetchDonation";
 import useFetchUser from "../../../../../hooks/user/useFetchUser";
 import { ShowCompatibility } from "../../../../../hooks/blood_validation/useBloodCopatibilty";
 import PreRegister from "../../donationDrvie/sheetPreRegister";
@@ -42,14 +43,21 @@ const SheetViewRequest = forwardRef(({ request_data }, ref) => {
   const [isBloodCompatible, setBloodCompatible] = useState(null);
   const { user } = useAuth();
   const { nextDonation, FetchNextDonation } = UseFetchNextDonation();
-
+  const { donationData, loading, FetchDonation } = UseFetchDonation({});
   if (request_data) {
     console.log("request_data", request_data);
   }
 
   useEffect(() => {
     FetchNextDonation(user?.id);
+    FetchDonation(user?.id);
   }, [user]);
+
+  const isRequestPending = request_data
+    ? donationData.some(
+        (d) => d.recipient === request_data.user_id && d.status === "pending"
+      )
+    : false;
 
   //ref.current?.close();
   const expandRegistrationFormRef = useRef(null);
@@ -217,6 +225,10 @@ const SheetViewRequest = forwardRef(({ request_data }, ref) => {
                   </Text>
                 </Pressable>
               </View>
+            ) : isRequestPending ? (
+              <Text className="text-center text-lg font-bold text-white">
+                You Aldready have pending donation for this patient.
+              </Text>
             ) : (
               <TouchableOpacity
                 style={isDonate ? { display: "none" } : {}}
