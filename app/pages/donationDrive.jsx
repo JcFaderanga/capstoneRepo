@@ -98,12 +98,13 @@ const DonationDrive = () => {
           </Pressable>
         </View>
         <ScrollView
-          className="h-full w-full"
+          className="w-full"
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
           }
         >
-          {/* <View className="py-4">
+          <View className="h-full w-full lg:flex-row lg:flex-wrap lg:justify-center">
+            {/* <View className="py-4">
           <DonationDriveBox
             details={donationDriveDetails}
             user={user}
@@ -111,29 +112,33 @@ const DonationDrive = () => {
           />
         </View> */}
 
-          {loading ? (
-            <View className="flex-1 justify-center items-center">
-              <ActivityIndicator size="large" color="red" />
-              <Text className="text-gray-500 mt-4">Loading list...</Text>
-            </View>
-          ) : (
-            donationDrive.map((item, index) => (
-              <View key={item.drive_id.toString()}>
-                <DonationDriveBox
-                  index={index}
-                  details={item}
-                  user={user}
-                  onPress={() => viewPreRegisterForm(item)}
-                />
+            {loading ? (
+              <View className="flex-1 justify-center items-center">
+                <ActivityIndicator size="large" color="red" />
+                <Text className="text-gray-500 mt-4">Loading list...</Text>
               </View>
-            ))
-          )}
-          <View>
-            {/* <Text className="text-center py-10 font-bold text-gray-400">
+            ) : (
+              donationDrive.map((item, index) => (
+                <View key={item.drive_id.toString()}>
+                  <DonationDriveBox
+                    index={index}
+                    details={item}
+                    user={user}
+                    onPress={() => viewPreRegisterForm(item)}
+                  />
+                </View>
+              ))
+            )}
+            <View>
+              {/* <Text className="text-center py-10 font-bold text-gray-400">
           No more donation drive available.
         </Text> */}
+            </View>
+            <PreRegister
+              ref={expandRegistrationFormRef}
+              props={selectedDrive}
+            />
           </View>
-          <PreRegister ref={expandRegistrationFormRef} props={selectedDrive} />
         </ScrollView>
         <BottomSheetModal
           ref={modalRef}

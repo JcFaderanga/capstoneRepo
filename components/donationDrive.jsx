@@ -19,7 +19,7 @@ const screenWidth = Dimensions.get("window").width;
 const DonationDrive = ({ details, onPress, user }) => {
   return (
     <>
-      <View className="px-3" style={{ width: screenWidth }}>
+      <View className="px-3 lg:max-w-96 lg:m-2">
         <Elevated width={"100%"} height={"auto"} elevated={1} radius={7}>
           <View className="py-2">
             <View className="w-full max-h-28">
