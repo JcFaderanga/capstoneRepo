@@ -19,6 +19,7 @@ const ProfileList = ({
   const [refreshing, setRefreshing] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const ViewRequestBottomSheetRef = useRef(null);
+  // console.log("requestList", JSON.stringify(requestList, null, 2));
   const getRequestList = async (limit) => {
     try {
       const requests = await fetchRequests(
@@ -93,13 +94,13 @@ const ProfileList = ({
             user={user}
             index={index}
             userId={item.user_id}
-            name={item.userName}
+            name={`${item.profile.first_name} ${item.profile.last_name}`}
             description={item.description}
             bloodType={item.blood_type}
             units={item.units}
             anonymous={item.anonymous}
             timePosted={TimeAgo(item.created_at)}
-            gender={item.userGender}
+            gender={item.profile.gender}
             onPress={() => viewSelectedRequest(item)}
           />
         )}

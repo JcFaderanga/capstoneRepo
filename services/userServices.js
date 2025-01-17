@@ -35,10 +35,13 @@ export const fetchRequests = async ({ bloodTypeFilterResult }, typeFilter, anony
 
   try {
     // Get data only if public and approved
-    let query = supabase.from('blood_request').select('*').eq('public_request', true); 
+    let query = supabase.from('blood_request').select(`
+      *,profile(
+          first_name, last_name, gender
+        )
+      `).eq('public_request', true); 
 
     if (bloodTypeFilterResult && bloodTypeFilterResult.length > 0) {
-      // If filterRequest !empty will return list of selected types
       query = query.in('blood_type', bloodTypeFilterResult);
     }
 
@@ -54,41 +57,39 @@ export const fetchRequests = async ({ bloodTypeFilterResult }, typeFilter, anony
       query = query.eq('anonymous', false);
     }
 
-    const { data: requests, error: requestError } = await query.limit(limit).order('created_at', { ascending: false });
+    const { data: requests_data, error: requestError } = await query.limit(limit).order('created_at', { ascending: false });
 
     if (requestError) {
-      throw new Error(requestError.message);
+      throw new Error('request API error', requestError.message);
     }
 
-    const uniqueUserIds = [...new Set(requests.map(request => request.user_id))];
-    const { data: users, error: userError } = await supabase
-      .from('profile')
-      .select('id, first_name, last_name, gender')
-      .in('id', uniqueUserIds);
+    // Iterate through the requests and check blood donations
+    const updatedRequests = [];
 
-    if (userError) {
-      throw new Error(userError.message);
+    for (let request of requests_data) {
+      const { blood_request_id, units } = request;
+
+      // Fetch donations related to the current blood request
+      const { data: donation_data, error: donationError } = await supabase
+        .from('blood_donation')
+        .select('units_donated')
+        .eq('blood_request_id', blood_request_id);
+
+      if (donationError) {
+        throw new Error( donationError.message);
+      }
+
+      const totalDonated = donation_data.reduce((sum, donation) => sum + donation.units_donated, 0);
+
+      if (totalDonated < units) {
+        updatedRequests.push({ ...request, remaining_units: units - totalDonated });
+      }
     }
 
-    const userMap = {};
-    users.forEach(user => {
-      userMap[user.id] = { firstName: user.first_name, lastName: user.last_name, gender: user.gender };
-    });
+    return updatedRequests;
 
-    const requestsWithNames = requests.map(request => {
-      const user = userMap[request.user_id] || { firstName: 'Unknown', lastName: '', gender: 'Unknown' };
-      return { 
-        ...request, 
-        userName: `${user.firstName} ${user.lastName}`,
-        userGender: user.gender // Add gender to the result
-      };
-    });
-
-    return requestsWithNames;
   } catch (error) {
     throw error;
   }
 };
-
-
 
