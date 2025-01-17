@@ -226,8 +226,8 @@ const SheetViewRequest = forwardRef(({ request_data }, ref) => {
                 </Pressable>
               </View>
             ) : isRequestPending ? (
-              <Text className="text-center text-lg font-bold text-white">
-                You Aldready have pending donation for this patient.
+              <Text className="text-center text-lg font-bold text-white px-4">
+                You have already scheduled a donation for this patient.
               </Text>
             ) : (
               <TouchableOpacity

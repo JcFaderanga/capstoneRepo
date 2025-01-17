@@ -50,7 +50,6 @@ const AppointmentBox = ({ donation_details, onPress }) => {
 
   return (
     <>
-      <Text className="px-4 text-gray-400 py-1">{TimeToGo(schedule_date)}</Text>
       <View className="w-full bg-white mb-2">
         <View className="w-full max-h-28">
           <View className=" pt-2 ">
@@ -64,7 +63,7 @@ const AppointmentBox = ({ donation_details, onPress }) => {
                 <Text className="text-base font-bold flex-wrap">
                   {titleHeader}
                 </Text>
-                <Text className="text-[12px] ">{recipientTime}</Text>
+                <Text className="text-[12px] ">{TimeToGo(schedule_date)}</Text>
               </View>
             </View>
           </View>
@@ -89,7 +88,7 @@ const AppointmentBox = ({ donation_details, onPress }) => {
             </View>
             <View className="px-2">
               <Text className="text-[16px] ">{DayAndDate(schedule_date)}</Text>
-              <Text className="text-[12px] ">Scheduled date</Text>
+              <Text className="text-[12px] ">{recipientTime}</Text>
             </View>
           </View>
           <Pressable className="p-3 bg-slate-100 rounded-lg" onPress={onPress}>
