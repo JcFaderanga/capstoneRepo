@@ -43,7 +43,9 @@ const SheetViewRequest = forwardRef(({ request_data }, ref) => {
   const { user } = useAuth();
   const { nextDonation, FetchNextDonation } = UseFetchNextDonation();
 
-  console.log("request_data", request_data?.anonymous);
+  if (request_data) {
+    console.log("request_data", request_data);
+  }
 
   useEffect(() => {
     FetchNextDonation(user?.id);

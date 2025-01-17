@@ -62,7 +62,7 @@ const BloodBank = () => {
               onPress={() => router.push("./setDonation")}
             >
               <Text className="text-center text-white font-bold">
-                Set Up Your Donation
+                Set Up Appointment
               </Text>
             </Pressable>
           </View>

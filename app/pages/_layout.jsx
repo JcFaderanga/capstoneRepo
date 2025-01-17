@@ -38,10 +38,10 @@ const _layout = () => {
     "donationHistory",
     "donationSettings",
     "bloodBank",
-    "donationDrive",
     "setDonation",
     "prescreening",
     "viewAppointment",
+    "createDonationDrive",
   ];
 
   return (
@@ -58,6 +58,7 @@ const _layout = () => {
       ))}
       <Stack.Screen name="donationReview" options={{ headerShown: false }} />
       <Stack.Screen name="bloodTypeInfo" options={{ headerShown: false }} />
+      <Stack.Screen name="donationDrive" options={{ headerShown: false }} />
       <Stack.Screen
         name="request_materialtop"
         options={{ headerShown: false }}

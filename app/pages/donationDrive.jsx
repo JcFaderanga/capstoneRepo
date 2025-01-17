@@ -23,12 +23,16 @@ import useDonationDrive from "../../hooks/donation_drive/fetchDonationDrive";
 import { useAuth } from "../../context/authContext";
 import { CalculateAge } from "../../constant/timeStamp";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { router } from "expo-router";
 import BottomSheet, {
   BottomSheetView,
   BottomSheetBackdrop,
   BottomSheetModal,
 } from "@gorhom/bottom-sheet";
 import { ToTitleCase } from "../../constant/textFormat";
+import ThemeContainer from "../../components/UI/themeContainer";
+
 const DonationDrive = () => {
   const { user } = useAuth();
   const [selectedDrive, setSelectedDrive] = useState(null);
@@ -68,9 +72,23 @@ const DonationDrive = () => {
     </View>
   );
   return (
-    <View className="w-full h-full bg-white ">
+    <ThemeContainer>
+      <View className="w-full bg-primary_red h-16 flex-row items-center justify-between px-4 shadow-md">
+        <Pressable className="flex-row p-2" onPress={() => router.back()}>
+          <AntDesign name="arrowleft" size={24} color="white" />
+        </Pressable>
+        <Text className="text-white font-bold text-2xl px-3">
+          Donation Drive
+        </Text>
+        <Pressable
+          className="flex-row p-2"
+          onPress={() => router.push("./createDonationDrive")}
+        >
+          <AntDesign name="plus" size={24} color="white" />
+        </Pressable>
+      </View>
       <GestureHandlerRootView>
-        <View className="w-full border border-slate-200 h-16 items-center justify-center">
+        <View className="w-full border border-slate-200 h-16 items-center justify-center bg-white">
           <Pressable className="flex-row p-2" onPress={onFilterPressed}>
             <Text className="text-primary_red font-bold text-base px-3">
               Ordered by{" "}
@@ -144,7 +162,7 @@ const DonationDrive = () => {
           </BottomSheetView>
         </BottomSheetModal>
       </GestureHandlerRootView>
-    </View>
+    </ThemeContainer>
   );
 };
 
