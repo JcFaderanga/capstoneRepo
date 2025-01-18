@@ -1,25 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import AppRoutes from './routes/AppRoutes';
+import { SideBar, Header } from './components/navigationBars';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="h-screen w-full flex">
+      <SideBar />
+      <div className="w-full h-full relative">
+        <Header />
+        <div className="bg-[url(./assets/image/site-bg.jpg)] h-[calc(100%-70px)] w-full bg-cover bg-no-repeat opacity-30 lg:rounded-tl-3xl"></div>
+        <div className="absolute top-[70px] w-full md:px-16 lg:px-10">    
+          <AppRoutes />
+        </div>
+      </div>
     </div>
   );
-}
+};
 
 export default App;
