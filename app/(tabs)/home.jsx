@@ -41,6 +41,7 @@ import { useRouter } from "expo-router";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Feather from "@expo/vector-icons/Feather";
+
 const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const { user } = useAuth();
@@ -127,6 +128,10 @@ const Home = () => {
 
   const handleEdit = () => {
     router.push("../pages/profile__tab/editProfile");
+    modalRef.current?.close();
+  };
+  const handleWebViewAdmin = () => {
+    router.push("../pages/webViewAdmin");
     modalRef.current?.close();
   };
 
@@ -240,7 +245,7 @@ const Home = () => {
             {user?.super_user ? (
               <TouchableOpacity
                 className=" flex-row items-center w-full h-20 border-b-2 border-[#F2F2F2] px-5"
-                onPress={handleLogout}
+                onPress={handleWebViewAdmin}
               >
                 <FontAwesome6 name="arrows-rotate" size={24} color="black" />
                 <Text className="font-bold text-lg ml-5">swith to admin</Text>
