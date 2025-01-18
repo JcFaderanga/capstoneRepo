@@ -18,10 +18,13 @@ import { useAuth } from "../../../../context/authContext";
 import { ShowCompatibility } from "../../../../hooks/blood_validation/useBloodCopatibilty";
 import * as Animatable from "react-native-animatable";
 import { createPublicRequest } from "../../../../services/requestServices";
+import { createNotification } from "../../../../services/notificationServices";
+import useCreateNotification from "../../../../hooks/notification/useCreateNotification";
 const sheetRequestDonation = forwardRef(({ donor_data }, ref) => {
   const [isBloodCompatible, setBloodCompatible] = useState(null);
   const [isRequestSubmit, setRequestSubmit] = useState(false);
   const [isRequestAnonymous, setRequestAnonymous] = useState(false);
+  const { error, loading, insertNotif } = useCreateNotification();
   const [urgent, setUrgent] = useState(false);
   const { user: currentUser } = useAuth();
   if (!donor_data) return null;
@@ -71,7 +74,22 @@ const sheetRequestDonation = forwardRef(({ donor_data }, ref) => {
       urgent: urgent,
     };
     const reqData = await createPublicRequest(request_details);
-    console.log("newest request", reqData);
+
+    const newNotif = {
+      sender_id: reqData?.data?.user_id,
+      reciever_id: reqData?.data?.requested_to,
+      notification_type: "blood_request_direct",
+      data: {
+        blood_request_id: reqData?.data?.blood_request_id,
+        anonymous: reqData?.data?.anonymous,
+        anonymous_donor: reqData?.data?.anonymous_donor,
+        urgent: reqData?.data?.urgent,
+        created_at: reqData?.data?.created_at,
+      },
+    };
+    insertNotif(newNotif);
+    console.log("newNotif", newNotif);
+
     setRequestSubmit(true);
     setTimeout(() => {
       ref.current?.close();

@@ -45,7 +45,7 @@ const SetDonation = () => {
 
   return (
     <ScrollView className="w-full h-full bg-white pt-5">
-      <View className="px-3">
+      {/* <View className="px-3">
         <Elevated radius={10} elevated={2}>
           <Pressable className="w-full h-28  px-6 flex-row items-center">
             <View className=" h-14 w-14 rounded-xl bg-slate-100 justify-center">
@@ -73,7 +73,7 @@ const SetDonation = () => {
             </View>
           </Pressable>
         </Elevated>
-      </View>
+      </View> */}
       <View className="px-3">
         <Elevated radius={10} elevated={2}>
           <Pressable

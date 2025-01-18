@@ -1,147 +1,93 @@
-// import React, { useRef, useState, useEffect } from "react";
-// import { ScrollView, View, Text, Dimensions, StyleSheet } from "react-native";
-// import ThemeContainer from "../../components/UI/themeContainer";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  ActivityIndicator,
+  RefreshControl,
+} from "react-native";
+import ThemeContainer from "../../components/UI/themeContainer";
+import useFetchNotification from "../../hooks/notification/useFetchNotification";
+import { useAuth } from "../../context/authContext";
+import NotificationMassage from "../../components/notification/notificationMessage";
 
-// const AutoScrollViewWithPagination = () => {
-//   const [currentPage, setCurrentPage] = useState(0);
-//   const scrollViewRef = useRef(null);
-//   const screenWidth = Dimensions.get("window").width;
+const Notification = () => {
+  const { user } = useAuth();
+  const { notification, error, loading, fetchNotification } =
+    useFetchNotification();
 
-//   const pages = [
-//     { color: "red", text: "Page 1" },
-//     { color: "orange", text: "Page 2" },
-//     { color: "yellow", text: "Page 3" },
-//     { color: "green", text: "Page 4" },
-//     { color: "blue", text: "Page 5" },
-//     { color: "indigo", text: "Page 6" },
-//     { color: "violet", text: "Page 7" },
+  const [refreshing, setRefreshing] = useState(false);
 
-//   ];
+  useEffect(() => {
+    if (user) {
+      fetchNotification(user?.id);
+    }
+  }, [user]);
 
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       // Calculate the next page index
-//       const nextPage = (currentPage + 1) % pages.length;
+  // Refresh handler
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    if (user) {
+      await fetchNotification(user?.id); // Re-fetch notifications
+    }
+    setRefreshing(false);
+  }, [user, fetchNotification]);
 
-//       // Scroll to the next page
-//       if (scrollViewRef.current) {
-//         scrollViewRef.current.scrollTo({
-//           x: nextPage * screenWidth,
-//           animated: true,
-//         });
-//       }
-
-//       setCurrentPage(nextPage);
-//     }, 100000); 
-
-//     return () => clearInterval(interval); // Cleanup on unmount
-//   }, [currentPage, screenWidth, pages.length]);
-
-//   return (
-//   <ThemeContainer>
-//     <View style={styles.container}>
-//       {/* Pagination Dots */}
-//       <View style={styles.pagination}>
-//         {pages.map((_, index) => (
-//           <View
-//             key={index}
-//             style={[
-//               styles.dot,
-//               currentPage === index ? styles.activeDot : styles.inactiveDot,
-//             ]}
-//           />
-//         ))}
-//       </View>
-//       <ScrollView
-//         ref={scrollViewRef}
-//         horizontal
-//         pagingEnabled
-//         showsHorizontalScrollIndicator={false}
-//         onScroll={(event) => {
-//           const offsetX = event.nativeEvent.contentOffset.x;
-//           const pageIndex = Math.round(offsetX / screenWidth);
-//           setCurrentPage(pageIndex);
-//         }}
-//         scrollEventThrottle={16}
-//       >
-//         {pages.map((page, index) => (
-//           <View key={index} style={[styles.page, { backgroundColor: page.color }]}>
-//             <Text style={styles.text}>{page.text}</Text>
-//           </View>
-//         ))}
-//       </ScrollView>
- 
-//     </View>
-//   </ThemeContainer> 
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//   },
-//   page: {
-//     width: Dimensions.get("window").width,
-//     height: Dimensions.get("window").height * 1, // Adjust height as needed
-//     justifyContent: "center",
-//     alignItems: "center",
-//   },
-//   text: {
-//     color: "#fff",
-//     fontSize: 24,
-//     fontWeight: "bold",
-//   },
-//   pagination: {
-//     flexDirection: "row",
-//     justifyContent: "center",
-//     alignItems: "center",
-//     marginVertical: 20,
-//   },
-//   dot: {
-//     width: 10,
-//     height: 10,
-//     borderRadius: 5,
-//     marginHorizontal: 5,
-//   },
-//   activeDot: {
-//     backgroundColor: "black",
-//   },
-//   inactiveDot: {
-//     backgroundColor: "gray",
-//   },
-// });
-import React, { useRef, useMemo, forwardRef, useCallback } from 'react';
-import { View, Text, Button, StyleSheet, Pressable } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler'; // Import GestureHandlerRootView
-import BottomSheet ,{ BottomSheetView } from '@gorhom/bottom-sheet';
-import Unavailable from '../../components/unavailable';
-import ThemeContainer from '../../components/UI/themeContainer';
-
-export default function TabOneScreen() {
-
-  
   return (
-  <ThemeContainer>
-      <Unavailable/>
-  </ThemeContainer>
-  );
-}
+    <ThemeContainer bgColor="white">
+      {/* Header */}
+      <View className="w-full h-16 border-b border-gray-200 bg-primary_red px-4 justify-center">
+        <Text className="text-2xl font-bold text-white">Notifications</Text>
+      </View>
 
-// Styles
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center', // Center the content vertically
-  },
-  contentContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center', // Center the content in the modal
-  },
-  containerHeadline: {
-    fontSize: 24,
-    fontWeight: '600',
-    padding: 20,
-  },
-});
+      {/* Notifications */}
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        {notification.length > 0 ? (
+          <Text className="text-xl font-bold text-primary_gray py-4 px-4">
+            Today
+          </Text>
+        ) : (
+          ""
+        )}
+
+        {/* Handle Loading State */}
+        {loading && (
+          <View className="w-full h-full justify-center items-center">
+            <ActivityIndicator size={25} color={"red"} />
+            <Text className="text-primary_gray px-4 text-center">
+              Loading notifications...
+            </Text>
+          </View>
+        )}
+
+        {/* Handle Error State */}
+        {error && (
+          <Text className="text-red-500 px-4">
+            Error loading notifications.
+          </Text>
+        )}
+
+        {/* Render Notifications */}
+        {!loading && notification.length > 0
+          ? notification.map((n, index) => (
+              <NotificationMassage key={index} notif={n} />
+            ))
+          : !loading &&
+            notification.length === 0 && (
+              <Text className="text-primary_gray px-4 py-5 text-center">
+                No notifications available.
+              </Text>
+            )}
+      </ScrollView>
+    </ThemeContainer>
+  );
+};
+
+export default Notification;
+
+const styles = StyleSheet.create({});
