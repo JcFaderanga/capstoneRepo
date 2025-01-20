@@ -80,12 +80,18 @@ const DonationDrive = () => {
         <Text className="text-white font-bold text-2xl px-3">
           Donation Drive
         </Text>
-        <Pressable
-          className="flex-row p-2"
-          onPress={() => router.push("./createDonationDrive")}
-        >
-          <AntDesign name="plus" size={24} color="white" />
-        </Pressable>
+        {user?.super_user ? (
+          <Pressable
+            className="flex-row p-2"
+            onPress={() => router.push("./createDonationDrive")}
+          >
+            <AntDesign name="plus" size={24} color="white" />
+          </Pressable>
+        ) : (
+          <Text className="p-2">
+            <AntDesign name="plus" size={24} color="#F42F47" />
+          </Text>
+        )}
       </View>
       <GestureHandlerRootView>
         <View className="w-full border border-slate-200 h-16 items-center justify-center bg-white">
