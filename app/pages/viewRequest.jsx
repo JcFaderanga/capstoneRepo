@@ -1,10 +1,12 @@
-import { StyleSheet, Text, View, Pressable, Image } from "react-native";
+import { StyleSheet, Text, View, Pressable, Image, Alert } from "react-native";
 import React, { useMemo, useCallback, useRef } from "react";
 import QRCode from "react-native-qrcode-svg";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Entypo from "@expo/vector-icons/Entypo";
 import { TimeAgo, DayAndDate } from "../../constant/timeStamp";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import { supabase } from "../../lib/supabase";
 import BottomSheet, {
   BottomSheetView,
   BottomSheetBackdrop,
@@ -14,9 +16,10 @@ import Unavailable from "../../components/unavailable";
 const ViewRequest = () => {
   const params = useLocalSearchParams();
   const selectedRequest = JSON.parse(params?.request_data);
-  console.log(selectedRequest);
+  //console.log("selectedRequest", selectedRequest);
   const bottomSheetRef = useRef(null);
   const snapPoints = useMemo(() => ["45%", "95%"], []);
+
   const renderBackdrop = useCallback(
     (props) => (
       <BottomSheetBackdrop
@@ -32,7 +35,44 @@ const ViewRequest = () => {
       bottomSheetRef.current?.snapToIndex(1);
     }
   };
+  const handleRequestCancel = async (request_id) => {
+    try {
+      const { error } = await supabase
+        .from("blood_request")
+        .delete()
+        .eq("blood_request_id", request_id);
 
+      if (error) {
+        console.log(error.message);
+      } else {
+        console.log("delete success");
+        router.back();
+        // router.replace("./myRequestList");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const confirmCancel = (request_id) => {
+    Alert.alert(
+      "Cancel Request",
+      "Are you sure you want to cancel this request?",
+      [
+        {
+          text: "No",
+          onPress: () => console.log("Cancellation aborted"),
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: () => handleRequestCancel(request_id),
+          style: "destructive",
+        },
+      ],
+      { cancelable: true }
+    );
+  };
   const dots = () => {
     return (
       <View className="abosolute top-0 h-14 w-10 bg-white">
@@ -41,10 +81,17 @@ const ViewRequest = () => {
     );
   };
   const renderCustomHandle = () => (
-    <View className="p-4 rounded-t-lg">
-      <Text className="text-center text-xl font-bold">Request Details</Text>
-    </View>
+    <Pressable className="w-full border border-white py-4 px-5 rounded-t-2xl flex-row items-center justify-between">
+      <Text className="text-xl font-bold">Donation Details</Text>
+      <Pressable
+        className=" px-4"
+        onPress={() => confirmCancel(selectedRequest?.blood_request_id)}
+      >
+        <FontAwesome6 name="trash-alt" size={17} color="red" />
+      </Pressable>
+    </Pressable>
   );
+
   return (
     <SafeAreaView>
       <View className="w-full h-full bg-primary_red ">

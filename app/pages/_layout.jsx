@@ -14,7 +14,7 @@ const customTitles = {
   FAQs: "FAQs",
   setDonation: "Set Appointment",
   viewAppointment: "Appointments",
-  webViewAdmin: "BLOOD LINK",
+  webViewAdmin: " ",
 };
 
 const capitalizeTitle = (title) => {
