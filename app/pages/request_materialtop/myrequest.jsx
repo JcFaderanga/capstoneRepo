@@ -64,7 +64,7 @@ const Myrequest = () => {
           />
         </Pressable>
       </View>
-      <View className="p-4 mt-2 bg-slate-100">
+      {/* <View className="p-4 mt-2 bg-slate-100">
         <Text className="text-xl font-bold text-center">
           <Text className="text-primary_red">Urgent: </Text>Someone needs your
           help!{" "}
@@ -77,7 +77,7 @@ const Myrequest = () => {
           difference today.
         </Text>
         <ThemeButton title={"Donate Now"} />
-      </View>
+      </View> */}
       <View className="p-4 mt-2">
         <View className="w-full h-40 rounded-3xl"></View>
       </View>

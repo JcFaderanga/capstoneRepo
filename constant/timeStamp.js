@@ -33,24 +33,27 @@ export const TimeToGo = (isoString) => {
     return "Invalid date format.";
   }
 
-
   const now = new Date();
-    
-  if (now > targetDate){
+
+  // Check if the current time is the target date and time
+  if (now.toDateString() === targetDate.toDateString()) {
+    return "It's time";
+  }
+
+  // If the current time is after the target date
+  if (now > targetDate) {
     return "Missed Schedule";
-  } 
+  }
 
   const timeDiff = targetDate - now;
 
- 
-
   const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
   const hours = Math.floor((timeDiff / (1000 * 60 * 60)) % 24);
+
   if (days > 0) return `${days} ${days === 1 ? "day to go" : "days to go"}`;
-  if (hours > 0 || days > 0) return `${hours} ${hours === 1 ? "hour to go" : "hours to go"} `;
-
-
+  if (hours > 0) return `${hours} ${hours === 1 ? "hour to go" : "hours to go"}`;
 };
+
 
 export const LongDateFormat = (date) => {
     return date ? date.toLocaleDateString('en-US', { 
