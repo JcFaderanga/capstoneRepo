@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Pressable, Image, Alert } from "react-native";
-import React, { useMemo, useCallback, useRef } from "react";
+import React, { useMemo, useCallback, useRef, useEffect } from "react";
 import QRCode from "react-native-qrcode-svg";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,15 +11,27 @@ import BottomSheet, {
   BottomSheetView,
   BottomSheetBackdrop,
 } from "@gorhom/bottom-sheet";
+import useFetchUser from "../../hooks/user/useFetchUser";
 import { useLocalSearchParams, router } from "expo-router";
 import Unavailable from "../../components/unavailable";
+const KeyValueRow = ({ label, value }) => (
+  <View className="flex-row justify-between items-center py-2 px-4">
+    <Text className="font-bold text-base text-gray-800">{label}</Text>
+    <Text className="text-base text-gray-600">{value || "N/A"}</Text>
+  </View>
+);
+
 const ViewRequest = () => {
   const params = useLocalSearchParams();
   const selectedRequest = JSON.parse(params?.request_data);
-  //console.log("selectedRequest", selectedRequest);
+  const { user: donor, error, loading, fetchUser } = useFetchUser();
+
+  useEffect(() => {
+    fetchUser(selectedRequest?.requested_to);
+  }, []);
+  console.log("selectedRequest", selectedRequest);
   const bottomSheetRef = useRef(null);
   const snapPoints = useMemo(() => ["45%", "95%"], []);
-
   const renderBackdrop = useCallback(
     (props) => (
       <BottomSheetBackdrop
@@ -82,7 +94,7 @@ const ViewRequest = () => {
   };
   const renderCustomHandle = () => (
     <Pressable className="w-full border border-white py-4 px-5 rounded-t-2xl flex-row items-center justify-between">
-      <Text className="text-xl font-bold">Donation Details</Text>
+      <Text className="text-xl font-bold">Request Details</Text>
       <Pressable
         className=" px-4"
         onPress={() => confirmCancel(selectedRequest?.blood_request_id)}
@@ -133,33 +145,62 @@ const ViewRequest = () => {
             <BottomSheetView>
               <View className="px-4 mb-5">
                 <View className="w-full py-4 bg-slate-100 rounded-xl px-4 ">
-                  <Text className="py-1">
-                    <Text className="font-bold">Requested:</Text>{" "}
-                    {DayAndDate(selectedRequest?.created_at)}
-                  </Text>
-                  <Text className="py-1">
-                    <Text className="font-bold">Requeste Type:</Text>{" "}
-                    {selectedRequest?.public_request ? "Public" : "Direct"}
-                  </Text>
-                  <Text className="py-1">
-                    <Text className="font-bold">Unit Requested:</Text>{" "}
-                    {selectedRequest?.units}
-                  </Text>
-                  <Text className="py-1">
-                    <Text className="font-bold">Urgent:</Text>{" "}
-                    {selectedRequest?.urgent ? "Yes" : "No"}
-                  </Text>
+                  <View className="bg-slate-100 py-5 px-4">
+                    <Text className="text-center font-bold text-lg text-primary_gray">
+                      Philippine Red Cross Muntinlupa
+                    </Text>
+                    <Text className="text-center ext-lg text-primary_gray">
+                      Red Cross Center Centennial Lane, Filinvest Corporate
+                      City,Alabang, Muntinlupa, Rizal
+                    </Text>
+                    {selectedRequest?.request_status === "complete" ? (
+                      <Text className="text-center text-green-600 font-bold pt-4">
+                        You can claim you blood unit now!
+                      </Text>
+                    ) : (
+                      ""
+                    )}
+                  </View>
+                </View>
+                <View className=" px-4 py-6 space-y-4">
+                  <KeyValueRow
+                    label="Date Requested:"
+                    value={DayAndDate(selectedRequest?.created_at)}
+                  />
+                  <KeyValueRow
+                    label="Request Type:"
+                    value={
+                      selectedRequest?.public_request ? "Public" : "Direct"
+                    }
+                  />
+                  {selectedRequest?.direct_request ? (
+                    <KeyValueRow
+                      label="Requested to:"
+                      value={
+                        selectedRequest?.anonymous_donor
+                          ? "Anonymous"
+                          : `${donor?.first_name} ${donor?.last_name}`
+                      }
+                    />
+                  ) : (
+                    ""
+                  )}
+                  <KeyValueRow
+                    label="Unit Requested:"
+                    value={selectedRequest?.units}
+                  />
+                  <KeyValueRow
+                    label="Urgent:"
+                    value={selectedRequest?.urgent ? "Yes" : "No"}
+                  />
                 </View>
                 <View className=" w-full my-10">
                   <Text className="text-center py-10 text-xl font-bold text-gray-400">
-                    No Donors Yet
+                    {selectedRequest?.public_request
+                      ? " No Donors Yet"
+                      : "Donor is not responding yet"}
                   </Text>
                 </View>
-                <Pressable>
-                  <Text className="font-bold text-center text-xl py-4 bg-red-200 rounded-xl text-red-600">
-                    Delete
-                  </Text>
-                </Pressable>
               </View>
             </BottomSheetView>
           </BottomSheet>
