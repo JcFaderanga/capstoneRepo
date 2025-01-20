@@ -97,3 +97,10 @@ export const LongDateFormat = (date) => {
     return age;
   };
   
+  export const NumberDate = (date) => {
+    return date ? date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    }) : 'Select Date';
+  };

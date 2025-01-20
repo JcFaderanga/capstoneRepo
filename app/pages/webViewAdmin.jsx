@@ -6,6 +6,7 @@ const WebViewAdmin = () => {
   return (
     <View style={styles.container}>
       <WebView source={{ uri: "https://blood-link-web-lovat.vercel.app/" }} />
+      {/* <WebView source={{ uri: "http://192.168.100.20:3000/" }} /> */}
     </View>
   );
 };
