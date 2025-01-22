@@ -16,10 +16,13 @@ import RNPickerSelect from "react-native-picker-select";
 import DonorList from "../../components/donor__tab/donorList";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from "expo-router";
+import ModalFilterRequest from "../../components/Modals/request__tab/foryou/modalFilterRequest";
 const FindDonor = () => {
   const [viewDonor, setViewDonor] = useState(false);
   const [compatibility, setCompatibility] = useState(null);
+  const [modalFilterVisible, setModalFilterVisible] = useState(false);
   const [typeFilter, setTypeFilter] = useState(null);
+  const [selectedTypes, setSelectedTypes] = useState([]);
   const [anonymousFilter, setAnonymousFilter] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
   const { user } = useAuth();
@@ -34,22 +37,37 @@ const FindDonor = () => {
   useEffect(() => {
     if (compatibility?.canReceiveFrom?.length > 0) {
       const { canReceiveFrom } = compatibility;
-      fetchDonors({ canReceiveFrom, typeFilter, anonymousFilter });
+      fetchDonors({
+        canReceiveFrom,
+        typeFilter,
+        anonymousFilter,
+        selectedTypes,
+      });
     }
-  }, [compatibility, typeFilter, anonymousFilter]);
+  }, [compatibility, typeFilter, anonymousFilter, selectedTypes]);
 
   const onRefreshDonors = async () => {
     setRefreshing(true);
     try {
       if (compatibility?.canReceiveFrom?.length > 0) {
         const { canReceiveFrom } = compatibility;
-        await fetchDonors({ canReceiveFrom, typeFilter, anonymousFilter });
+        await fetchDonors({
+          canReceiveFrom,
+          typeFilter,
+          anonymousFilter,
+          selectedTypes,
+        });
       }
     } catch (error) {
       console.error("Error refreshing donors:", error);
     } finally {
       setRefreshing(false);
     }
+  };
+  const handleSelectedBloodTypes = (types) => {
+    setRefreshing(false);
+    setSelectedTypes(types); // get data in array from ModalFilterRequest.jsx and store in selectedTypes
+    setModalFilterVisible(false); // Close modal after selecting
   };
 
   return (
@@ -74,13 +92,27 @@ const FindDonor = () => {
             onValueChange={(value) => setAnonymousFilter(value)}
           />
         </View>
-        <Pressable
-          className="px-5 w-full bg-blue-100 flex-row justify-between items-center"
-          onPress={() => router.push("../pages/donationDrive")}
-        >
-          <Text className="py-4 font-bold ">Find Nearby Donation Center</Text>
-          <MaterialIcons name="arrow-forward-ios" size={20} color="black" />
-        </Pressable>
+        <View className="w-full pb-3 flex items-center justify-center ">
+          <Pressable
+            className="w-full rounded-2xl border-gray-200 bg-white flex justify-center"
+            onPress={() => setModalFilterVisible(true)}
+          >
+            <View className="flex-row mx-3 items-center">
+              <Image
+                source={require("../../assets/icon/filter.png")}
+                className="w-5 mx-2"
+                resizeMode="contain"
+              />
+              <Text className="text-gray-400 font-bold">
+                Filtered by:
+                <Text className="text-primaryRed px-2 text-primary_red">
+                  {" "}
+                  {selectedTypes.join(", ") || "All Type"}
+                </Text>
+              </Text>
+            </View>
+          </Pressable>
+        </View>
         {loading ? (
           <View className="flex-1 justify-center items-center">
             <ActivityIndicator size="large" color="red" />
@@ -96,7 +128,20 @@ const FindDonor = () => {
             refreshing={refreshing}
           />
         )}
+        <Pressable
+          className="px-5 w-full bg-blue-100 flex-row justify-between items-center absolute bottom-0"
+          onPress={() => router.push("../pages/donationDrive")}
+        >
+          <Text className="py-4 font-bold ">Find Nearby Donation Center</Text>
+          <MaterialIcons name="arrow-forward-ios" size={20} color="black" />
+        </Pressable>
       </View>
+
+      <ModalFilterRequest
+        visible={modalFilterVisible}
+        onRequestClose={() => setModalFilterVisible(false)}
+        selectedBloodType={handleSelectedBloodTypes}
+      />
     </ThemeContainer>
   );
 };

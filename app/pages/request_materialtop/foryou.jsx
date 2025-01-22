@@ -55,28 +55,8 @@ const Foryou = () => {
   return (
     <View className="bg-white h-full">
       {/* FILTER BAR */}
-      <View className="w-full h-20 flex items-center justify-center px-3">
-        <Pressable
-          className="h-16 w-full border rounded-2xl border-gray-200 bg-white flex justify-center"
-          onPress={() => setModalFilterVisible(true)}
-        >
-          <View className="flex-row mx-3 items-center">
-            <Image
-              source={require("../../../assets/icon/filter.png")}
-              className="w-5 mx-2"
-              resizeMode="contain"
-            />
-            <Text className="text-gray-400">
-              Filter Result:
-              <Text className="text-primaryRed px-2 text-primary_red">
-                {" "}
-                {selectedTypes.join(", ") || "All Type"}
-              </Text>
-            </Text>
-          </View>
-        </Pressable>
-      </View>
-      <View className="w-full flex-row border border-transparent mb-4">
+
+      <View className="w-full flex-row border border-transparent my-4">
         <DropDown
           placeholder={"Type"}
           list={[
@@ -94,6 +74,27 @@ const Foryou = () => {
           ]}
           onValueChange={(value) => setAnonymousFilter(value)}
         />
+      </View>
+      <View className="w-full pb-3 flex items-center justify-center ">
+        <Pressable
+          className="w-full rounded-2xl border-gray-200 bg-white flex justify-center"
+          onPress={() => setModalFilterVisible(true)}
+        >
+          <View className="flex-row mx-3 items-center">
+            <Image
+              source={require("../../../assets/icon/filter.png")}
+              className="w-5 mx-2"
+              resizeMode="contain"
+            />
+            <Text className="text-gray-400 font-bold">
+              Filtered by:
+              <Text className="text-primaryRed px-2 text-primary_red">
+                {" "}
+                {selectedTypes.join(", ") || "All Type"}
+              </Text>
+            </Text>
+          </View>
+        </Pressable>
       </View>
       <RequestList
         bloodTypeFilterResult={selectedTypes}
