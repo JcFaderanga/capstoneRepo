@@ -91,3 +91,8 @@
 ## ReactNative Picker
 
 - `npx expo install @react-native-picker/picker`
+
+## Copy to Clipboard
+
+- `npm install react-copy-to-clipboard`
+- `expo install expo-clipboard`

@@ -10,6 +10,8 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/authContext";
 import Elevated from "../elevated";
 import { ToTitleCase } from "../../constant/textFormat";
+import Octicons from "@expo/vector-icons/Octicons";
+import * as Clipboard from "expo-clipboard";
 const _layout = () => {
   return (
     <AuthProvider>
@@ -21,7 +23,8 @@ const _layout = () => {
 const ProfileInfo = ({ setProfile, unit, nextDonation }) => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
-  const [showId, setShowId] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [copyId, setCopyId] = useState("");
 
   useEffect(() => {
     if (user) {
@@ -50,6 +53,12 @@ const ProfileInfo = ({ setProfile, unit, nextDonation }) => {
     Female: require("../../assets/icon/femaleProfile.png"),
   };
   const userFullName = `${user.first_name} ${user.last_name}`;
+
+  const handleCopy = async () => {
+    await Clipboard.setStringAsync(copyId.toString());
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
   return (
     <>
       <View className="w-full flex bg-primary_red h-52 rounded-b-2xl ">
@@ -87,7 +96,11 @@ const ProfileInfo = ({ setProfile, unit, nextDonation }) => {
               </Text>
 
               <Text className="float-left text-sm font-bold text-white">
-                ID: {user?.id || ""}
+                {copied ? "Id Copied!" : `ID: ${user?.id || ""}`}
+
+                <Pressable className="px-2 " onPress={handleCopy}>
+                  <Octicons name="copy" size={10} color="white" />
+                </Pressable>
               </Text>
             </View>
           </View>

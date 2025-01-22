@@ -41,7 +41,7 @@ import { useRouter } from "expo-router";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Feather from "@expo/vector-icons/Feather";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const { user } = useAuth();
@@ -88,10 +88,17 @@ const Home = () => {
       setIsRefreshing(false);
     }, 1000);
   };
+
   const handleLogout = async () => {
+    //
     try {
       const { error } = await supabase.auth.signOut();
-      if (error) return;
+      if (error) {
+        AsyncStorage.clear().then(() => console.log("Storage cleared!"));
+        console.log(error);
+        return;
+      }
+
       setTimeout(() => {
         router.replace(".././");
       }, 100);
