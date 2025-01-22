@@ -72,7 +72,7 @@ const createBloodRequest = ({ onPress, user }) => {
         </View>
       </View>
 
-      <View className=" border border-[#DCDCDC] h-40 px-4 rounded-2xl py-4 mb-4">
+      {/* <View className=" border border-[#DCDCDC] h-40 px-4 rounded-2xl py-4 mb-4">
         <Text className="text-lg py-1">
           Do you have Prescription or Doctor's Request?
         </Text>
@@ -80,7 +80,7 @@ const createBloodRequest = ({ onPress, user }) => {
           <FontAwesome6 name="add" size={18} color="black" />
           <Text className="mx-2">Attach file here</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
       <View className="w-full h-16 border border-[#DCDCDC] flex-row items-center justify-between rounded-xl mb-4">
         <View className="flex-1 flex-row justify-between items-center px-8 h-20">
           <View className="flex-row items-center gap-3">
