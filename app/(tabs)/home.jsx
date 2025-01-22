@@ -225,6 +225,9 @@ const Home = () => {
               tintColor={"#F42F47"}
               onPress={() => router.push("../pages/FAQs")}
             />
+            <Text className="text-center font-bold opacity-10">
+              App Version 2.11.4
+            </Text>
           </BottomSheetView>
         </BottomSheet>
         <BottomSheetModal
