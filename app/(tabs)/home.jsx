@@ -85,10 +85,10 @@ const Home = () => {
   }, [user]);
   const onRefresh = async () => {
     setIsRefreshing(true);
+    FetchDonation(user?.id);
     setTimeout(() => {
       FetchUnitCount(user?.id);
       FetchNextDonation(user?.id);
-      FetchDonation(user?.id);
       setIsRefreshing(false);
     }, 1000);
   };
@@ -184,7 +184,14 @@ const Home = () => {
             </TouchableOpacity>
           </View>
           <ProfileInfo unit={totalUnitDonated} nextDonation={nextDonation} />
-          <UpComingDonation upComingDonation={donationData} />
+          {loading ? (
+            <View className="mt-10 p-4 flex items-center justify-center">
+              <ActivityIndicator size={30} color={"red"} />
+              <Text>Fetching Update...</Text>
+            </View>
+          ) : (
+            <UpComingDonation upComingDonation={donationData} />
+          )}
         </ScrollView>
         <BottomSheet
           index={0}

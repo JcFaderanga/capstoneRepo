@@ -24,7 +24,6 @@ const ProfileInfo = ({ setProfile, unit, nextDonation }) => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
-  const [copyId, setCopyId] = useState("");
 
   useEffect(() => {
     if (user) {
@@ -55,7 +54,7 @@ const ProfileInfo = ({ setProfile, unit, nextDonation }) => {
   const userFullName = `${user.first_name} ${user.last_name}`;
 
   const handleCopy = async () => {
-    await Clipboard.setStringAsync(copyId.toString());
+    await Clipboard.setStringAsync(String(user?.id || ""));
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
