@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   Pressable,
   RefreshControl,
+  Dimensions,
   Linking,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -55,11 +56,14 @@ const Home = () => {
   const bottomSheetRef = useRef(null);
   const modalRef = useRef(null);
 
+  //get screen height
+  const screenHeight = Dimensions.get("window").height;
+  const calcHeight = (h) => h * screenHeight;
   const snapPoints = useMemo(() => {
     if (donationData) {
-      return ["28%", "95%"];
+      return [calcHeight(0.25), calcHeight(0.9)];
     }
-    return ["33%", "95%"];
+    return [calcHeight(0.33), calcHeight(0.9)];
   }, [donationData]);
 
   const modalSnapPoints = useMemo(
