@@ -10,6 +10,7 @@ import {
   Dimensions,
   Linking,
 } from "react-native";
+import appVersion from "../../app.json";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import React, {
@@ -237,7 +238,7 @@ const Home = () => {
               onPress={() => router.push("../pages/FAQs")}
             />
             <Text className="text-center font-bold opacity-10">
-              App Version 2.11.4
+              App Version {appVersion.expo.version}
             </Text>
           </BottomSheetView>
         </BottomSheet>
