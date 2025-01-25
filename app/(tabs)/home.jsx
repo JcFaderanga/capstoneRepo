@@ -270,7 +270,7 @@ const Home = () => {
                 onPress={handleWebViewAdmin}
               >
                 <FontAwesome6 name="arrows-rotate" size={24} color="black" />
-                <Text className="font-bold text-lg ml-5">swith to admin</Text>
+                <Text className="font-bold text-lg ml-5">switch to admin</Text>
               </TouchableOpacity>
             ) : null}
           </BottomSheetView>
