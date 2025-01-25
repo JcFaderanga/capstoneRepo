@@ -170,7 +170,7 @@ const Home = () => {
           <View className="w-full h-[40px] flex-row justify-between items-center bg-primary_red ">
             <View className="px-4">
               <Text className="text-white font-bold">
-                Blood Group: {user?.blood_type}
+                Blood Group: {user?.blood_type} (Unverified)
               </Text>
             </View>
             <TouchableOpacity

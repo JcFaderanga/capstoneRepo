@@ -48,7 +48,7 @@ const Foryou = () => {
   };
 
   const CreateBottomSheetRef = useRef(null);
-  const openCreatRequestSheet = useCallback(() => {
+  const openCreateRequestSheet = useCallback(() => {
     CreateBottomSheetRef.current?.present();
   }, []);
 
@@ -105,7 +105,7 @@ const Foryou = () => {
       />
 
       <Pressable
-        onPress={openCreatRequestSheet}
+        onPress={openCreateRequestSheet}
         className=" h-16 w-16 rounded-full bg-primary_red flex items-center justify-center absolute bottom-0 right-0 m-5 border border-white"
       >
         <Image
