@@ -77,7 +77,7 @@ const sheetRequestDonation = forwardRef(({ donor_data }, ref) => {
 
     const newNotif = {
       sender_id: reqData?.data?.user_id,
-      reciever_id: reqData?.data?.requested_to,
+      receiver_id: reqData?.data?.requested_to,
       notification_type: "blood_request_direct",
       data: {
         blood_request_id: reqData?.data?.blood_request_id,
