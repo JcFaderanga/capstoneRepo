@@ -33,6 +33,7 @@ const Foryou = () => {
 
   const userData = {
     id: user?.id,
+    super_user: user?.super_user,
     blood_type: user?.blood_type,
   };
   useEffect(() => {

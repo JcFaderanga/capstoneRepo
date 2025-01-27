@@ -123,7 +123,7 @@ const SetDonation = () => {
         <View className="flex-1 justify-center items-center">
           <ActivityIndicator size="large" color="red" />
           <Text className="text-gray-500 mt-4">
-            Searching available donors...
+            Searching available donotion drives...
           </Text>
         </View>
       ) : (

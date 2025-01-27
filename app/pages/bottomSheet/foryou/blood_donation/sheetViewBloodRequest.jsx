@@ -54,7 +54,7 @@ const SheetViewRequest = forwardRef(({ request_data }, ref) => {
   }, [user]);
 
   const isRequestPending = request_data
-    ? donationData.some(
+    ? donationData?.some(
         (d) => d.recipient === request_data.user_id && d.status === "pending"
       )
     : false;

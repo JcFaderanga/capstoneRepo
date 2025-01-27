@@ -7,22 +7,29 @@ import {
   Pressable,
   ActivityIndicator,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import UseFetchDonation from "../../hooks/blood_donation/fetchDonation";
 import { useAuth } from "../../context/authContext";
 import useFetchUser from "../../hooks/user/useFetchUser";
 import { useRouter } from "expo-router";
 import Elevated from "../../components/elevated";
 import { router } from "expo-router";
+
 const DonationHistory = () => {
   const { user } = useAuth();
   const { donationData, error, loading, FetchDonation } = UseFetchDonation({});
-
-  //console.log("donation data error", error);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     FetchDonation(user?.id);
   }, [user]);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    FetchDonation(user?.id).finally(() => {
+      setRefreshing(false);
+    });
+  };
 
   if (loading) {
     return (
@@ -32,6 +39,7 @@ const DonationHistory = () => {
       </View>
     );
   }
+
   return (
     <View className="h-full w-full bg-white ">
       {donationData?.length === 0 ? (
@@ -64,11 +72,14 @@ const DonationHistory = () => {
           data={donationData || []}
           keyExtractor={(item) => item?.blood_donation_id?.toString()}
           renderItem={({ item }) => <DonationBox donationData={item} />}
+          onRefresh={handleRefresh} // Trigger refresh on pull
+          refreshing={refreshing} // Set refresh state
         />
       )}
     </View>
   );
 };
+
 export default DonationHistory;
 
 const DonationBox = ({ donationData }) => {
@@ -78,18 +89,14 @@ const DonationBox = ({ donationData }) => {
     fetchUser(donationData?.recipient);
   }, [donationData]);
 
-  if (!user) return;
+  if (!user) return null;
+
   const { first_name, last_name, blood_type } = user;
   const unitDonatedVolume = donationData.units_donated * 450;
   const recipient = donationData?.anonymous_donation
     ? "Anonymous"
     : `${first_name} ${last_name}`;
 
-  // const statusImages = {
-  //   complete: require("../../assets/icon/complete.png"),
-  //   cancelled: require("../../assets/icon/cancelled.png"),
-  //   pending: require("../../assets/icon/pending.png"),
-  // };
   const statusTag = {
     complete: (
       <Text className="font-bold text-base pt-1 text-green-700"> Complete</Text>
@@ -117,12 +124,13 @@ const DonationBox = ({ donationData }) => {
       params: { donation_details: JSON.stringify(donationData) },
     });
   };
+
   return (
     <Pressable className="px-3" onPress={handleDonationReview}>
       <Elevated width={"100%"} radius={5} elevated={2}>
-        <View className=" w-full px-4 overflow-hidden">
-          <View className="flex-row h-28">
-            <View className=" flex justify-center">
+        <View className="w-full px-4 overflow-hidden">
+          <View className="flex-row py-3">
+            <View className="flex justify-center">
               <Text className="font-bold text-lg">
                 Recipient: <Text className="font-normal">{recipient}</Text>
               </Text>
@@ -130,28 +138,29 @@ const DonationBox = ({ donationData }) => {
                 Volume:{" "}
                 <Text className="font-normal">
                   {donationData.units_donated}
-                  {donationData.units_donated >= 1 ? "units" : "unit"} (
+                  {donationData.units_donated >= 1 ? " units" : " unit"} (
                   {unitDonatedVolume}ml)
                 </Text>
               </Text>
               <View className="flex-row justify-between w-full">
                 <Text className="font-bold text-base pt-1 ">
-                  Schedule:{" "}
+                  Scheduled date:{" "}
                   <Text className="font-normal">
                     {formattedDate(donationData.schedule_date)}
                   </Text>
+                </Text>
+              </View>
+              <View className="flex-row justify-between w-full">
+                <Text className="font-bold text-base pt-1 ">
+                  Completed date:{" "}
+                  {/* <Text className="font-normal">
+                    {formattedDate(donationData.schedule_date)}
+                  </Text> */}
                 </Text>
                 <Text className="font-bold text-base pt-1">
                   {statusTag[donationData?.status]}
                 </Text>
               </View>
-            </View>
-            <View>
-              {/* <Image
-                source={statusImages[donationData?.status]}
-                className="w-52 h-52 absolute top-[-60px] right-[-220px]"
-                resizeMode="contain"
-              /> */}
             </View>
           </View>
           <View className="flex-row justify-between items-center border-t-2 border-slate-100 p-3">
@@ -161,7 +170,7 @@ const DonationBox = ({ donationData }) => {
                 className="w-10 h-11 mr-3"
                 resizeMode="contain"
               />
-              <Text className="font-bold text-lg">Whole Blood</Text>
+              <Text className="font-bold text-lg">1555-096542-3</Text>
             </View>
             <Text className="font-bold text-2xl text-primary_red">
               {blood_type}

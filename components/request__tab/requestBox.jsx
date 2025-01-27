@@ -22,7 +22,6 @@ const RequestBox = ({
     Male: require("../../assets/icon/maleProfile.png"),
     Female: require("../../assets/icon/femaleProfile.png"),
   };
-
   return (
     <View className="w-full bg-white py-2 my-1">
       <Animatable.View
@@ -63,6 +62,7 @@ const RequestBox = ({
               ? description
               : `I need a blood donation of ${bloodType} as soon as possible. Please consider helping.`}
           </Text>
+          {user?.super_user && <Text className="px-4">user id: {userId}</Text>}
         </View>
         <View className=" flex-row justify-between items-center px-4 py-2 h-16">
           <View className=" flex-row items-center h-10">
