@@ -36,7 +36,6 @@ const _layout = () => {
     "FAQs",
     "myRequestList",
     "donate",
-    "donationHistory",
     "donationSettings",
     "bloodBank",
     "setDonation",
@@ -58,6 +57,22 @@ const _layout = () => {
           }}
         />
       ))}
+      <Stack.Screen
+        name="donationHistory"
+        options={{
+          title: "Donation History",
+          headerTitleAlign: "center",
+          headerStyle: {
+            backgroundColor: "white",
+          },
+          headerTintColor: "#3D3D3D",
+          headerTitleStyle: {
+            fontWeight: "bold",
+            color: "#3D3D3D",
+          },
+          headerShadowVisible: false,
+        }}
+      />
       <Stack.Screen name="donationReview" options={{ headerShown: false }} />
       <Stack.Screen name="bloodTypeInfo" options={{ headerShown: false }} />
       <Stack.Screen name="donationDrive" options={{ headerShown: false }} />

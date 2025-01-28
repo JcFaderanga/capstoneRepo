@@ -6,6 +6,7 @@ import {
   FlatList,
   Pressable,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import UseFetchDonation from "../../hooks/blood_donation/fetchDonation";
@@ -14,7 +15,12 @@ import useFetchUser from "../../hooks/user/useFetchUser";
 import { useRouter } from "expo-router";
 import Elevated from "../../components/elevated";
 import { router } from "expo-router";
-
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useFetchSelectedDrive } from "../../hooks/donation_drive";
+import {
+  DonationRecipient,
+  DonationDrive,
+} from "../../components/donation_history/DonationBoxGrandChild";
 const DonationHistory = () => {
   const { user } = useAuth();
   const { donationData, error, loading, FetchDonation } = UseFetchDonation({});
@@ -26,9 +32,8 @@ const DonationHistory = () => {
 
   const handleRefresh = () => {
     setRefreshing(true);
-    FetchDonation(user?.id).finally(() => {
-      setRefreshing(false);
-    });
+    FetchDonation(user?.id);
+    setRefreshing(false);
   };
 
   if (loading) {
@@ -39,40 +44,70 @@ const DonationHistory = () => {
       </View>
     );
   }
+  const handleDonationReview = (item) => {
+    router.push({
+      pathname: "../pages/donationReview",
+      params: { donation_details: JSON.stringify(item) },
+    });
+  };
 
   return (
-    <View className="h-full w-full bg-white ">
-      {donationData?.length === 0 ? (
-        <>
-          <View className="mt-12 w-full px-4">
-            <View className="w-full rounded-sm ">
-              <Text className="font-bold text-xl text-center">
-                Take your first step in donating
-              </Text>
-              <View className="w-full my-2 rounded-2xl border border-stone-50">
-                <View className="mx-4 mb-3 rounded-xl p-3 px-3">
-                  <Text className="text-center text-gray-500">
-                    Every donation can save 3 lives.
-                  </Text>
-                </View>
-                <Pressable
-                  className="bg-primary_red mx-4 mb-7 rounded-xl py-4"
-                  onPress={() => router.push("./setDonation")}
-                >
-                  <Text className="text-center text-white font-bold">
-                    Set Up Your Donation
-                  </Text>
-                </Pressable>
+    <View className="h-full w-full bg-slate-100 ">
+      <View className="py-4 flex-row border border-gray-200 bg-white">
+        <View className="w-2/4 border-r border-gray-200 flex-row items-center justify-center ">
+          <Text className="text-base text-primary_gray">Donation status</Text>
+          <MaterialIcons name="keyboard-arrow-down" size={25} color="#3D3D3D" />
+        </View>
+        <View className="w-2/4 border-r border-gray-200 flex-row items-center justify-center ">
+          <Text className="text-base text-primary_gray">Donation type</Text>
+          <MaterialIcons name="keyboard-arrow-down" size={25} color="#3D3D3D" />
+        </View>
+      </View>
+      {!donationData || donationData?.length === 0 ? (
+        <View className="mt-12 w-full px-4">
+          <View className="w-full rounded-sm ">
+            <Text className="font-bold text-xl text-center">
+              Take your first step in donating
+            </Text>
+            <View className="w-full my-2 rounded-2xl border border-stone-50">
+              <View className="mx-4 mb-3 rounded-xl p-3 px-3">
+                <Text className="text-center text-gray-500">
+                  Every donation can save 3 lives.
+                </Text>
               </View>
+              <Pressable
+                className="bg-primary_red mx-4 mb-7 rounded-xl py-4"
+                onPress={() => router.push("./setDonation")}
+              >
+                <Text className="text-center text-white font-bold">
+                  Set Up Your Donation
+                </Text>
+              </Pressable>
             </View>
           </View>
-        </>
+        </View>
       ) : (
         <FlatList
-          data={donationData || []}
+          data={donationData}
           keyExtractor={(item) => item?.blood_donation_id?.toString()}
-          renderItem={({ item }) => <DonationBox donationData={item} />}
-          onRefresh={handleRefresh} // Trigger refresh on pull
+          renderItem={({ item, index }) => {
+            // Render each item based on the `drive_donation` property
+            return item?.drive_donation ? (
+              <DonationDrive
+                item={item}
+                index={index}
+                onPress={() => handleDonationReview(item)}
+              />
+            ) : (
+              <DonationRecipient
+                item={item}
+                index={index}
+                onPress={() => handleDonationReview(item)}
+              />
+            );
+          }}
+          contentContainerStyle={{ paddingBottom: 10 }} // Add padding to the bottom
+          onRefresh={handleRefresh} // Pull-to-refresh functionality
           refreshing={refreshing} // Set refresh state
         />
       )}
@@ -81,103 +116,3 @@ const DonationHistory = () => {
 };
 
 export default DonationHistory;
-
-const DonationBox = ({ donationData }) => {
-  const router = useRouter();
-  const { user, fetchUser } = useFetchUser();
-  useEffect(() => {
-    fetchUser(donationData?.recipient);
-  }, [donationData]);
-
-  if (!user) return null;
-
-  const { first_name, last_name, blood_type } = user;
-  const unitDonatedVolume = donationData.units_donated * 450;
-  const recipient = donationData?.anonymous_donation
-    ? "Anonymous"
-    : `${first_name} ${last_name}`;
-
-  const statusTag = {
-    complete: (
-      <Text className="font-bold text-base pt-1 text-green-700"> Complete</Text>
-    ),
-    cancelled: (
-      <Text className="font-bold text-base pt-1 text-red-700"> Cancelled</Text>
-    ),
-    pending: (
-      <Text className="font-bold text-base pt-1 text-orange-400"> Pending</Text>
-    ),
-  };
-
-  const formattedDate = (sched_date) => {
-    const dateObj = new Date(sched_date);
-    return dateObj.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
-  const handleDonationReview = () => {
-    router.push({
-      pathname: "../pages/donationReview",
-      params: { donation_details: JSON.stringify(donationData) },
-    });
-  };
-
-  return (
-    <Pressable className="px-3" onPress={handleDonationReview}>
-      <Elevated width={"100%"} radius={5} elevated={2}>
-        <View className="w-full px-4 overflow-hidden">
-          <View className="flex-row py-3">
-            <View className="flex justify-center">
-              <Text className="font-bold text-lg">
-                Recipient: <Text className="font-normal">{recipient}</Text>
-              </Text>
-              <Text className="font-bold text-base pt-1">
-                Volume:{" "}
-                <Text className="font-normal">
-                  {donationData.units_donated}
-                  {donationData.units_donated >= 1 ? " units" : " unit"} (
-                  {unitDonatedVolume}ml)
-                </Text>
-              </Text>
-              <View className="flex-row justify-between w-full">
-                <Text className="font-bold text-base pt-1 ">
-                  Scheduled date:{" "}
-                  <Text className="font-normal">
-                    {formattedDate(donationData.schedule_date)}
-                  </Text>
-                </Text>
-              </View>
-              <View className="flex-row justify-between w-full">
-                <Text className="font-bold text-base pt-1 ">
-                  Completed date:{" "}
-                  {/* <Text className="font-normal">
-                    {formattedDate(donationData.schedule_date)}
-                  </Text> */}
-                </Text>
-                <Text className="font-bold text-base pt-1">
-                  {statusTag[donationData?.status]}
-                </Text>
-              </View>
-            </View>
-          </View>
-          <View className="flex-row justify-between items-center border-t-2 border-slate-100 p-3">
-            <View className="flex-row items-center">
-              <Image
-                source={require("../../assets/icon/donated.png")}
-                className="w-10 h-11 mr-3"
-                resizeMode="contain"
-              />
-              <Text className="font-bold text-lg">1555-096542-3</Text>
-            </View>
-            <Text className="font-bold text-2xl text-primary_red">
-              {blood_type}
-            </Text>
-          </View>
-        </View>
-      </Elevated>
-    </Pressable>
-  );
-};

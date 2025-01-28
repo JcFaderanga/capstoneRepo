@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "../../lib/supabase";
 
-const UseFetchDonation = ({ recentDonation, activeSched }) => {
+const UseFetchDonation = ({ recentDonation = false, activeSched = false }) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [donationData, setDonationData] = useState(null);

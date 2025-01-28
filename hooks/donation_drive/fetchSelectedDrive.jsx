@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabase";
 
 const useFetchSelectedDrive = (sortBy, limit) => {
-  const [donationDrive, setDonationDrive] = useState([]);
+  const [donationDrive, setDonationDrive] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 

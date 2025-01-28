@@ -1,15 +1,24 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View } from "react-native";
+import React from "react";
 
-const SignUpHeader = ({text}) => {
+const Box = ({ text }) => {
+  return (
+    <View>
+      <Text className="text-primary_gray text-xl font-interRegularBold">
+        {text}
+      </Text>
+    </View>
+  );
+};
+
+const SignUpHeader = ({ text }) => {
   return (
     <View>
       <View className="w-full h-[100] items-center flex justify-end">
-            <Text className="text-primary_gray text-xl font-interRegularBold">{text}</Text>
-        </View>
+        <Box text={text} />
+      </View>
     </View>
-  )
-}
+  );
+};
 
-export default SignUpHeader
-
+export default SignUpHeader;
