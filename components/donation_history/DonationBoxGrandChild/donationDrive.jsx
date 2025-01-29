@@ -9,7 +9,7 @@ const DonationDrive = ({ item, onPress, index }) => {
   useEffect(() => {
     fetchSelectedDrive(item?.recipient);
   }, [item]);
-  console.log("donationDrive", donationDrive);
+
   return (
     <>
       {loading ? (

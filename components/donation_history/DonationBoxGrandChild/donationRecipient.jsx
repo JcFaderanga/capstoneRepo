@@ -8,7 +8,7 @@ const DonationRecipient = ({ item, onPress, index }) => {
 
   // if (!donationRecipient) return null;
   // const { first_name, last_name, blood_type } = donationRecipient;
-  console.log("item", item);
+
   useEffect(() => {
     fetchUser(item?.recipient);
   }, [item]);

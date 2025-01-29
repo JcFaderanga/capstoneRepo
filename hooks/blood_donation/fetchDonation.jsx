@@ -6,7 +6,7 @@ const UseFetchDonation = ({ recentDonation = false, activeSched = false }) => {
   const [loading, setLoading] = useState(false);
   const [donationData, setDonationData] = useState(null);
 
-  const FetchDonation = async (user_id) => {
+  const FetchDonation = async (user_id, status, type) => {
     let today = new Date();
     today.setHours(0, 0, 0, 0);
     setLoading(true);

@@ -29,7 +29,6 @@ const useDonationDrive = (sortBy, limit) => {
 
       const { data, error } = await query;
       if (error) console.log("donation drive bad request", error.message);
-      console.log("success");
       setDonationDrive(data);
     } catch (e) {
       setError(e.message);

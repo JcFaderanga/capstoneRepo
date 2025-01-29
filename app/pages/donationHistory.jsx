@@ -2,39 +2,105 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   FlatList,
   Pressable,
   ActivityIndicator,
-  ScrollView,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import UseFetchDonation from "../../hooks/blood_donation/fetchDonation";
 import { useAuth } from "../../context/authContext";
-import useFetchUser from "../../hooks/user/useFetchUser";
 import { useRouter } from "expo-router";
-import Elevated from "../../components/elevated";
-import { router } from "expo-router";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useFetchSelectedDrive } from "../../hooks/donation_drive";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import BottomSheet, {
+  BottomSheetView,
+  BottomSheetBackdrop,
+  BottomSheetModal,
+} from "@gorhom/bottom-sheet";
 import {
   DonationRecipient,
   DonationDrive,
 } from "../../components/donation_history/DonationBoxGrandChild";
+
 const DonationHistory = () => {
   const { user } = useAuth();
-  const { donationData, error, loading, FetchDonation } = UseFetchDonation({});
+  const { donationData, loading, FetchDonation } = UseFetchDonation({});
   const [refreshing, setRefreshing] = useState(false);
+  const [filter, setFilter] = useState("");
+  const [selectedFilterType, setSelectedFilterType] = useState("");
+  const [selectedFilterStatus, setSelectedFilterStatus] = useState("");
+
+  // Ensure donationData exists before filtering
+  const dataToFilter = donationData || [];
+
+  // Apply both filters together
+  const filteredData = dataToFilter.filter((d) => {
+    const statusMatch = selectedFilterStatus
+      ? selectedFilterStatus === "missed"
+        ? new Date(d.schedule_date) < new Date() && d.status === "pending"
+        : d.status === selectedFilterStatus
+      : true;
+
+    const typeMatch = selectedFilterType
+      ? selectedFilterType === "voluntaryDonation"
+        ? d.drive_donation === true
+        : d.drive_donation === false
+      : true;
+
+    return statusMatch && typeMatch;
+  });
+
+  // const _selectedFilterStatus = {
+  //   complete,
+  //   pending,
+  //   missed,
+  // };
+  // const _setSelectedFilterType = {
+  //   voluntaryDonation,
+  //   DirectDonation,
+  // };
+
+  const modalRef = useRef(null);
+  const router = useRouter();
 
   useEffect(() => {
     FetchDonation(user?.id);
-  }, [user]);
+  }, [user, selectedFilterType, selectedFilterStatus]);
 
   const handleRefresh = () => {
     setRefreshing(true);
     FetchDonation(user?.id);
     setRefreshing(false);
   };
+
+  const handleDonationReview = (item) => {
+    router.push({
+      pathname: "../pages/donationReview",
+      params: { donation_details: JSON.stringify(item) },
+    });
+  };
+
+  const onFilterPressed = useCallback((filterType) => {
+    setFilter(filterType);
+    modalRef.current?.present();
+  }, []);
+
+  const modalBackDrop = useCallback(
+    (props) => (
+      <BottomSheetBackdrop
+        appearsOnIndex={0}
+        disappearsOnIndex={-1}
+        {...props}
+      />
+    ),
+    []
+  );
+
+  const renderCustomHandle = () => (
+    <View className="py-4 rounded-t-lg">
+      <Text className="text-center text-lg font-bold">Filter By</Text>
+    </View>
+  );
 
   if (loading) {
     return (
@@ -44,28 +110,63 @@ const DonationHistory = () => {
       </View>
     );
   }
-  const handleDonationReview = (item) => {
-    router.push({
-      pathname: "../pages/donationReview",
-      params: { donation_details: JSON.stringify(item) },
-    });
-  };
 
   return (
-    <View className="h-full w-full bg-slate-100 ">
-      <View className="py-4 flex-row border border-gray-200 bg-white">
-        <View className="w-2/4 border-r border-gray-200 flex-row items-center justify-center ">
-          <Text className="text-base text-primary_gray">Donation status</Text>
-          <MaterialIcons name="keyboard-arrow-down" size={25} color="#3D3D3D" />
+    <GestureHandlerRootView>
+      <View className="h-full w-full bg-slate-100">
+        {/* Filter Buttons */}
+        <View className="flex-row border border-gray-200 bg-white">
+          <Pressable
+            className="w-2/4 py-3"
+            onPress={() => onFilterPressed("filterStatus")}
+          >
+            <View className="border-r border-gray-200 flex-row items-center justify-center">
+              <Text className="text-base text-primary_gray">
+                {selectedFilterStatus
+                  ? selectedFilterStatus
+                  : "Donation status"}
+              </Text>
+              <MaterialIcons
+                name="keyboard-arrow-down"
+                size={25}
+                color="#3D3D3D"
+              />
+            </View>
+          </Pressable>
+          <Pressable
+            className="w-2/4 py-3"
+            onPress={() => onFilterPressed("filterType")}
+          >
+            <View className="border-r border-gray-200 flex-row items-center justify-center">
+              <Text className="text-base text-primary_gray">
+                {selectedFilterType ? selectedFilterType : "Donation type"}
+              </Text>
+              <MaterialIcons
+                name="keyboard-arrow-down"
+                size={25}
+                color="#3D3D3D"
+              />
+            </View>
+          </Pressable>
         </View>
-        <View className="w-2/4 border-r border-gray-200 flex-row items-center justify-center ">
-          <Text className="text-base text-primary_gray">Donation type</Text>
-          <MaterialIcons name="keyboard-arrow-down" size={25} color="#3D3D3D" />
-        </View>
-      </View>
-      {!donationData || donationData?.length === 0 ? (
-        <View className="mt-12 w-full px-4">
-          <View className="w-full rounded-sm ">
+        {selectedFilterType || selectedFilterStatus ? (
+          <View className="bg-white px-4 py-2">
+            <Pressable
+              onPress={() => {
+                setSelectedFilterType("");
+                setSelectedFilterStatus("");
+              }}
+            >
+              <Text className="py-2">Remove Filter</Text>
+            </Pressable>
+          </View>
+        ) : (
+          ""
+        )}
+
+        {/* No Data Placeholder */}
+        {!donationData || donationData?.length === 0 ? (
+          <View className="mt-12 w-full px-4">
             <Text className="font-bold text-xl text-center">
               Take your first step in donating
             </Text>
@@ -85,34 +186,119 @@ const DonationHistory = () => {
               </Pressable>
             </View>
           </View>
-        </View>
-      ) : (
-        <FlatList
-          data={donationData}
-          keyExtractor={(item) => item?.blood_donation_id?.toString()}
-          renderItem={({ item, index }) => {
-            // Render each item based on the `drive_donation` property
-            return item?.drive_donation ? (
-              <DonationDrive
-                item={item}
-                index={index}
-                onPress={() => handleDonationReview(item)}
-              />
-            ) : (
-              <DonationRecipient
-                item={item}
-                index={index}
-                onPress={() => handleDonationReview(item)}
-              />
-            );
-          }}
-          contentContainerStyle={{ paddingBottom: 10 }} // Add padding to the bottom
-          onRefresh={handleRefresh} // Pull-to-refresh functionality
-          refreshing={refreshing} // Set refresh state
-        />
-      )}
-    </View>
+        ) : filteredData?.length === 0 ? (
+          <Text className="text-gray-100 text-center py-5 text-2xl font-bold ">
+            No result
+          </Text>
+        ) : (
+          <FlatList
+            data={filteredData}
+            keyExtractor={(item) => item?.blood_donation_id?.toString()}
+            renderItem={({ item, index }) => {
+              return item?.drive_donation ? (
+                <DonationDrive
+                  item={item}
+                  index={index}
+                  onPress={() => handleDonationReview(item)}
+                />
+              ) : (
+                <DonationRecipient
+                  item={item}
+                  index={index}
+                  onPress={() => handleDonationReview(item)}
+                />
+              );
+            }}
+            contentContainerStyle={{ paddingBottom: 10 }}
+            onRefresh={handleRefresh}
+            refreshing={refreshing}
+          />
+        )}
+      </View>
+
+      {/* Bottom Sheet Modal */}
+      <BottomSheetModal
+        ref={modalRef}
+        backdropComponent={modalBackDrop}
+        handleComponent={renderCustomHandle}
+      >
+        <BottomSheetView>
+          {filter === "filterType" && (
+            <FilterDonationType
+              onPress={setSelectedFilterType}
+              modalRef={modalRef}
+            />
+          )}
+          {filter === "filterStatus" && (
+            <FilterDonationStatus
+              onPress={setSelectedFilterStatus}
+              modalRef={modalRef}
+            />
+          )}
+        </BottomSheetView>
+      </BottomSheetModal>
+    </GestureHandlerRootView>
   );
 };
 
 export default DonationHistory;
+
+/* Components for Filters */
+const FilterDonationStatus = ({ onPress, modalRef }) => {
+  return (
+    <>
+      <Pressable
+        className="px-4 py-4"
+        onPress={() => {
+          onPress("complete");
+          modalRef.current?.close();
+        }}
+      >
+        <Text className="text-lg">Complete</Text>
+      </Pressable>
+      <Pressable
+        className="px-4 py-4"
+        onPress={() => {
+          onPress("pending");
+          modalRef.current?.close();
+        }}
+      >
+        <Text className="text-lg">Pending</Text>
+      </Pressable>
+      <Pressable
+        className="px-4 py-4"
+        onPress={() => {
+          onPress("missed");
+          modalRef.current?.close();
+        }}
+      >
+        <Text className="text-lg">Missed</Text>
+      </Pressable>
+    </>
+  );
+};
+
+const FilterDonationType = ({ onPress, modalRef }) => {
+  return (
+    <>
+      <Pressable
+        className="px-4 py-4"
+        onPress={() => {
+          onPress("voluntaryDonation");
+          modalRef.current?.close();
+        }}
+      >
+        <Text className="text-lg">Voluntary donation</Text>
+      </Pressable>
+      <Pressable
+        className="px-4 py-4"
+        onPress={() => {
+          onPress("DirectDonation");
+          modalRef.current?.close();
+        }}
+      >
+        <Text className="text-lg">Direct to person donation</Text>
+      </Pressable>
+    </>
+  );
+};
