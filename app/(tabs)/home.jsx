@@ -43,10 +43,17 @@ import { useRouter } from "expo-router";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Feather from "@expo/vector-icons/Feather";
+import {
+  getUserImageSrc,
+  uploadFile,
+  getSupabaseFileUrl,
+} from "../../services/imageServices";
+import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const { user } = useAuth();
+  const [profileImage, setProfileImage] = useState(null);
+  const { user, setUserData } = useAuth();
   const { totalUnitDonated, FetchUnitCount } = UseFetchDonationCount();
   const { nextDonation, error, FetchNextDonation } = UseFetchNextDonation();
   const { donationData, loading, FetchDonation } = UseFetchDonation({
@@ -86,6 +93,7 @@ const Home = () => {
   }, [user]);
   const onRefresh = async () => {
     setIsRefreshing(true);
+
     FetchDonation(user?.id);
     setTimeout(() => {
       FetchUnitCount(user?.id);
@@ -147,6 +155,49 @@ const Home = () => {
     modalRef.current?.close();
   };
 
+  const setProfile = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setProfileImage(result.assets[0].uri); // Temporarily show selected image while uploading
+
+      // Upload the image to Supabase
+      const uploadResult = await uploadFile(
+        "profileImages",
+        result.assets[0].uri
+      );
+      if (uploadResult.success) {
+        // Update user profile image path in Supabase
+        const { error } = await supabase
+          .from("profile")
+          .update({ image: uploadResult.data.path })
+          .eq("id", user.id);
+
+        if (!error) {
+          setUserData({
+            ...user,
+            image: uploadResult.data.path,
+          });
+        } else {
+          console.log("Error updating profile:", error);
+        }
+      } else {
+        console.log(uploadResult.msg);
+      }
+    }
+  };
+  console.log(user);
+  //console.log(" profileImage.uri", profileImage);
+  let imageSource =
+    profileImage && typeof profileImage == "object"
+      ? profileImage.uri
+      : getUserImageSrc(user?.image);
+  // console.log("imageSource", imageSource);
+
   if (!user) {
     return (
       <ThemeContainer bgColor="white">
@@ -154,7 +205,6 @@ const Home = () => {
       </ThemeContainer>
     );
   }
-
   return (
     <ThemeContainer bgColor={"white"}>
       <GestureHandlerRootView style={{ flex: 1 }}>
@@ -185,7 +235,12 @@ const Home = () => {
               />
             </TouchableOpacity>
           </View>
-          <ProfileInfo unit={totalUnitDonated} nextDonation={nextDonation} />
+          <ProfileInfo
+            unit={totalUnitDonated}
+            nextDonation={nextDonation}
+            _profile={imageSource}
+            onPress={setProfile}
+          />
           {loading ? (
             <View className="mt-10 p-4 flex items-center justify-center">
               <ActivityIndicator size={30} color={"red"} />

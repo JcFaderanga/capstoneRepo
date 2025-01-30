@@ -12,6 +12,7 @@ import Elevated from "../elevated";
 import { ToTitleCase } from "../../constant/textFormat";
 import Octicons from "@expo/vector-icons/Octicons";
 import * as Clipboard from "expo-clipboard";
+import { getUserImageSrc } from "../../services/imageServices";
 const _layout = () => {
   return (
     <AuthProvider>
@@ -20,7 +21,8 @@ const _layout = () => {
   );
 };
 
-const ProfileInfo = ({ setProfile, unit, nextDonation }) => {
+const ProfileInfo = ({ onPress, unit, nextDonation, _profile }) => {
+  //console.log("_profile", _profile);
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
@@ -58,6 +60,7 @@ const ProfileInfo = ({ setProfile, unit, nextDonation }) => {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
   return (
     <>
       <View className="w-full flex bg-primary_red h-52 rounded-b-2xl ">
@@ -69,15 +72,15 @@ const ProfileInfo = ({ setProfile, unit, nextDonation }) => {
           <View className=" h-[130px] flex-row items-center justify-center ">
             <View className="">
               <Image
-                source={profile[user?.gender]}
+                source={_profile}
                 style={styles.profileImage}
                 className="border"
                 resizeMethod="retain"
               />
-              {/* <Pressable
+              <Pressable
                 style={{ elevation: 5 }}
                 className="w-8 h-8 rounded-full bg-white absolute bottom-0 right-1 flex items-center justify-center"
-                onPress={setProfile}
+                onPress={onPress}
               >
                 <Image
                   source={require("../../assets/icon/editPen.png")}
@@ -85,7 +88,7 @@ const ProfileInfo = ({ setProfile, unit, nextDonation }) => {
                   className="w-4"
                   style={{ elevation: 5, tintColor: "#3A3A3A" }}
                 />
-              </Pressable> */}
+              </Pressable>
             </View>
             <View className="float-left h-full ml-2 justify-center">
               <Text className="float-left text-2xl font-bold text-white">
