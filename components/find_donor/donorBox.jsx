@@ -11,7 +11,7 @@ import * as Animatable from "react-native-animatable";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { ToTitleCase } from "../../constant/textFormat";
 import useFetchAllRequest from "../../hooks/my_request_hooks/useFetchAllRequest";
-
+import { getUserImageSrc } from "../../services/imageServices";
 const DonorBox = ({ user_id, donor, index, onPress }) => {
   const [isPressed, setIsPressed] = useState(false);
   const { allRequest, error, loading, fetchAllRequest } = useFetchAllRequest();
@@ -74,10 +74,11 @@ const DonorBox = ({ user_id, donor, index, onPress }) => {
               source={
                 anonymous_donor
                   ? require("../../assets/icon/anonymouseIcon.png")
+                  : donor?.image
+                  ? getUserImageSrc(donor?.image)
                   : profile[gender]
               }
               className="w-12 h-12 rounded-full mx-3"
-              resizeMode="contain"
             />
             <View>
               <Text className="text-lg h-7 font-bold">

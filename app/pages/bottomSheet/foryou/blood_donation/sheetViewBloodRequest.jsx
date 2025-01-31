@@ -37,7 +37,7 @@ import { ShowCompatibility } from "../../../../../hooks/blood_validation/useBloo
 import PreRegister from "../../donationDrvie/sheetPreRegister";
 import { router } from "expo-router";
 import { ToTitleCase } from "../../../../../constant/textFormat";
-
+import { getUserImageSrc } from "../../../../../services/imageServices";
 const SheetViewRequest = forwardRef(({ request_data }, ref) => {
   const [isDonate, setDonate] = useState(false);
   const [isBloodCompatible, setBloodCompatible] = useState(null);
@@ -334,9 +334,10 @@ const Preview = ({ request_data, isBloodCompatible }) => {
             source={
               request_data?.anonymous
                 ? require("../../../../../assets/icon/anonymouseIcon.png")
+                : user?.image
+                ? getUserImageSrc(user?.image)
                 : profile[user?.gender]
             }
-            resizeMode="contain"
             className="h-32 w-32 rounded-full border-2 border-white"
           />
         </Animatable.View>

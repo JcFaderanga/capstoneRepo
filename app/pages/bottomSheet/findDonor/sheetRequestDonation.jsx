@@ -20,6 +20,7 @@ import * as Animatable from "react-native-animatable";
 import { createPublicRequest } from "../../../../services/requestServices";
 import { createNotification } from "../../../../services/notificationServices";
 import useCreateNotification from "../../../../hooks/notification/useCreateNotification";
+import { getUserImageSrc } from "../../../../services/imageServices";
 const sheetRequestDonation = forwardRef(({ donor_data }, ref) => {
   const [isBloodCompatible, setBloodCompatible] = useState(null);
   const [isRequestSubmit, setRequestSubmit] = useState(false);
@@ -111,10 +112,11 @@ const sheetRequestDonation = forwardRef(({ donor_data }, ref) => {
             source={
               selectedDonor?.anonymous_donor
                 ? require("../../../../assets/icon/anonymouseIcon.png")
+                : selectedDonor?.image
+                ? getUserImageSrc(selectedDonor?.image)
                 : profile[selectedDonor?.gender] || null
             }
             className="w-44 h-44 rounded-full"
-            resizeMode="contain"
           />
         </View>
       );

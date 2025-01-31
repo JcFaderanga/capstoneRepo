@@ -19,7 +19,7 @@ const ProfileList = ({
   const [refreshing, setRefreshing] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const ViewRequestBottomSheetRef = useRef(null);
-  // console.log("requestList", JSON.stringify(requestList, null, 2));
+  //console.log("requestList", JSON.stringify(requestList, null, 2));
   const getRequestList = async (limit) => {
     try {
       const requests = await fetchRequests(
@@ -101,6 +101,7 @@ const ProfileList = ({
             anonymous={item.anonymous}
             timePosted={TimeAgo(item.created_at)}
             gender={item.profile.gender}
+            profileImage={item.profile.image}
             onPress={() => viewSelectedRequest(item)}
           />
         )}

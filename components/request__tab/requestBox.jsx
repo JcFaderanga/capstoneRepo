@@ -5,6 +5,7 @@ import { homeIcons } from "../../constant";
 import * as Animatable from "react-native-animatable";
 import { color } from "@rneui/themed/dist/config";
 import { ToTitleCase } from "../../constant/textFormat";
+import { getUserImageSrc } from "../../services/imageServices";
 const RequestBox = ({
   user,
   name,
@@ -17,7 +18,9 @@ const RequestBox = ({
   onPress,
   index,
   gender,
+  profileImage,
 }) => {
+  console.log("profileImage", profileImage);
   const profile = {
     Male: require("../../assets/icon/maleProfile.png"),
     Female: require("../../assets/icon/femaleProfile.png"),
@@ -39,10 +42,11 @@ const RequestBox = ({
                 source={
                   anonymous
                     ? require("../../assets/icon/anonymouseIcon.png")
+                    : profileImage
+                    ? getUserImageSrc(profileImage)
                     : profile[gender]
                 }
-                className="w-12 h-12 rounded-full mx-3"
-                resizeMode="contain"
+                className="w-14 h-14 rounded-full mx-3 "
               />
               <View>
                 <Text className="text-[16px] h-7 font-bold">

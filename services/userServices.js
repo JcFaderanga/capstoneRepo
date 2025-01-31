@@ -37,7 +37,7 @@ export const fetchRequests = async ({ bloodTypeFilterResult }, typeFilter, anony
     // Get data only if public and approved
     let query = supabase.from('blood_request').select(`
       *,profile(
-          first_name, last_name, gender
+          first_name, last_name, gender, image
         )
       `).eq('public_request', true); 
 
