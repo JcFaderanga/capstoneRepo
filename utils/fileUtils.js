@@ -1,46 +1,55 @@
 import * as DocumentPicker from 'expo-document-picker';
-import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import { supabase } from '../lib/supabase';
+
+// Function to convert Base64 to Uint8Array
+const base64ToArrayBuffer = (base64) => {
+  const binaryString = atob(base64);
+  const len = binaryString.length;
+  const bytes = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  return bytes;
+};
+
 export const pickDocument = async () => {
   const result = await DocumentPicker.getDocumentAsync({
-    type: '*/*', // Allows PDFs and images
+    type: '*/*', // Allows selection of any file
   });
 
-  if (result.canceled) return null;
+  if (result.canceled) return { error: 'No file selected' };
 
-  return result.assets[0]; // Returns file object
+  const file = result.assets[0];
+
+  // Get the file extension from the name
+  const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png'];
+  const fileExtension = file.name.split('.').pop().toLowerCase();
+
+  // Validate the file type
+  if (!allowedExtensions.includes(fileExtension)) {
+    return { error: 'Invalid file type. Please select a PDF or an image.' };
+  }
+
+  return file; // Return file object if valid
 };
 
-export const pickImage = async () => {
-  const result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    allowsEditing: true,
-    quality: 1,
-  });
-  
-
-  if (result.canceled) return null;
-
-  return result.assets[0]; // Returns image object
-};
-
-
-
-export const uploadFile = async (file, fileType) => {
-  if (!file) return;
+export const uploadFile = async (folderName, file, fileType) => {
+  if (!file) return null;
 
   try {
-    // Convert file to blob
+    // Read file as Base64 string
     const fileContent = await FileSystem.readAsStringAsync(file.uri, {
       encoding: FileSystem.EncodingType.Base64,
     });
-    const fileBlob = new Uint8Array(
-      Buffer.from(fileContent, 'base64').buffer
-    );
 
-    // Create a unique filename
-    const fileName = `${Date.now()}.${fileType === 'pdf' ? 'pdf' : 'jpg'}`;
+    // Convert Base64 to Uint8Array
+  
+    const fileBlob = base64ToArrayBuffer(fileContent);
+
+    // Ensure the file name is safe for URLs
+    const safeFileName = file.name.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9._-]/g, '');
+    const fileName = `${folderName}/${Date.now()}${safeFileName}`;
 
     // Upload to Supabase Storage
     const { data, error } = await supabase.storage
@@ -51,15 +60,9 @@ export const uploadFile = async (file, fileType) => {
 
     if (error) throw error;
 
-    // Get the file URL
-    const { data: publicURL } = supabase.storage
-      .from('uploads')
-      .getPublicUrl(fileName);
-
-    console.log('File uploaded successfully:', publicURL);
-    return publicURL;
+    return safeFileName;
   } catch (error) {
-    console.log('Upload failed:', error);
+    console.error('Upload failed:', error);
     return null;
   }
 };

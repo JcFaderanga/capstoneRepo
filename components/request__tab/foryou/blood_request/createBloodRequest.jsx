@@ -20,6 +20,7 @@ import {
 const createBloodRequest = ({ onPress, user }) => {
   const [requestUnits, setRequestUnits] = useState(1);
   const [isRequestAnonymous, setRequestAnonymous] = useState(false);
+  const [filePath, setFilePath] = useState(null);
   const [urgent, setUrgent] = useState(false);
 
   const handleSave = async () => {
@@ -33,25 +34,25 @@ const createBloodRequest = ({ onPress, user }) => {
       active: true,
       approve: false,
       urgent: urgent,
+      document: filePath,
     };
+    uploadFile(filePath);
     const reqData = await createPublicRequest(request);
 
     if (onPress) {
       onPress(reqData);
     }
   };
-  const handleUploadImage = async () => {
-    const file = await pickImage();
-    if (file) {
-      const url = await uploadFile(file, "image");
-      Alert.alert("Uploaded Image", url || "Upload failed");
-    }
-  };
+
   const handleUploadPDF = async () => {
     const file = await pickDocument();
-    if (file) {
-      const url = await uploadFile(file, "pdf");
-      Alert.alert("Uploaded PDF", url || "Upload failed");
+    console.log("file", file);
+
+    // Check if there's an error
+    if (file && file.error) {
+      Alert.alert("Invalid File", file.error);
+    } else {
+      setFilePath(file); // Proceed if there's no error
     }
   };
 
@@ -100,8 +101,14 @@ const createBloodRequest = ({ onPress, user }) => {
           className="w-full h-14 border border-[#DCDCDC] flex-row items-center justify-center px-4 rounded-xl bg-gray-100"
           onPress={handleUploadPDF}
         >
-          <FontAwesome6 name="add" size={18} color="black" />
-          <Text className="mx-2">Attach file here</Text>
+          {filePath ? (
+            <Text className="mx-2 text-nowrap">{filePath.name}</Text>
+          ) : (
+            <>
+              <FontAwesome6 name="add" size={18} color="black" />
+              <Text className="mx-2 text-nowrap">Attach file here</Text>
+            </>
+          )}
         </TouchableOpacity>
       </View>
       <View className="w-full h-16 border border-[#DCDCDC] flex-row items-center justify-between rounded-xl mb-4">
