@@ -93,43 +93,57 @@ const DonationSettings = () => {
 
   return (
     <View className="h-full w-full bg-white">
-      <View className="w-full h-28 bg-slate-100 px-6 my-1 flex-row items-center">
-        <View className="flex-1">
-          <Text className="font-bold text-lg">Available to Donate</Text>
-          <Text>Set your availability status for donations.</Text>
+      {!user?.verified && (
+        <View className="w-full py-10">
+          <Text className="text-center font-bold text-xl">
+            Get Verified to become a donor
+          </Text>
         </View>
-        <ToggleButton
-          AlertTitle="Available to Donate"
-          AlterDescription="Turning this on will display your profile in the donor list."
-          onPress={handleDonorAvailability}
-          status={availability}
-        />
-      </View>
+      )}
+      <View
+        className={`h-full w-full bg-white ${!user?.verified && "opacity-40"}`}
+      >
+        <View className="w-full h-28 bg-slate-100 px-6 my-1 flex-row items-center">
+          <View className="flex-1">
+            <Text className="font-bold text-lg">Available to Donate</Text>
+            <Text>Set your availability status for donations.</Text>
+          </View>
+          <ToggleButton
+            AlertTitle="Available to Donate"
+            AlterDescription="Turning this on will display your profile in the donor list."
+            onPress={handleDonorAvailability}
+            status={availability}
+            disable={!user?.verified ? true : false}
+          />
+        </View>
 
-      <View className="w-full h-28 bg-slate-100 px-6 my-1 flex-row items-center">
-        <View className="flex-1">
-          <Text className="font-bold text-lg">Show Contacts</Text>
-          <Text>Share your contact details with recipients.</Text>
+        <View className="w-full h-28 bg-slate-100 px-6 my-1 flex-row items-center">
+          <View className="flex-1">
+            <Text className="font-bold text-lg">Show Contacts</Text>
+            <Text>Share your contact details with recipients.</Text>
+          </View>
+          <ToggleButton
+            AlertTitle="Show Contact"
+            AlterDescription="Enabling 'Show Contact' will display your contact details in the donor list, allowing recipients to reach out to you directly."
+            onPress={handleContact}
+            status={contacts}
+            disable={!user?.verified ? true : false}
+          />
         </View>
-        <ToggleButton
-          AlertTitle="Show Contact"
-          AlterDescription="Enabling 'Show Contact' will display your contact details in the donor list, allowing recipients to reach out to you directly."
-          onPress={handleContact}
-          status={contacts}
-        />
-      </View>
 
-      <View className="w-full h-28 bg-slate-100 px-6 my-1 flex-row items-center">
-        <View className="flex-1">
-          <Text className="font-bold text-lg">Anonymous Donor</Text>
-          <Text>Donate without revealing your identity.</Text>
+        <View className="w-full h-28 bg-slate-100 px-6 my-1 flex-row items-center">
+          <View className="flex-1">
+            <Text className="font-bold text-lg">Anonymous Donor</Text>
+            <Text>Donate without revealing your identity.</Text>
+          </View>
+          <ToggleButton
+            AlertTitle="Anonymous Donor"
+            AlterDescription="Hide your name and profile in the donor list."
+            onPress={handleAnonymousDonor}
+            status={anonymous}
+            disable={!user?.verified ? true : false}
+          />
         </View>
-        <ToggleButton
-          AlertTitle="Anonymous Donor"
-          AlterDescription="Hide your name and profile in the donor list."
-          onPress={handleAnonymousDonor}
-          status={anonymous}
-        />
       </View>
     </View>
   );

@@ -176,6 +176,9 @@ const SheetViewRequest = forwardRef(({ request_data }, ref) => {
       className="bg-primary_red"
     >
       <BottomSheetView className="bg-primary_red h-full">
+        {/*    
+          isDonation   
+        */}
         {isDonate ? (
           <PreSreening onPress={handleCloseSheet} request_data={request_data} />
         ) : (
@@ -184,6 +187,9 @@ const SheetViewRequest = forwardRef(({ request_data }, ref) => {
             isBloodCompatible={isBloodCompatible}
           />
         )}
+        {/*    
+          if request is self 
+        */}
         {user?.id === request_data?.user_id ? (
           <TouchableOpacity
             onPress={viewMyRequest}
@@ -196,15 +202,35 @@ const SheetViewRequest = forwardRef(({ request_data }, ref) => {
             </Text>
           </TouchableOpacity>
         ) : (
+          /*    
+          if not self continue
+        */
           <Animatable.View
             animation="zoomIn"
             duration={200}
             easing={"ease-in-out"}
             delay={400}
           >
-            {new Date() < parsedDate.getTime() ||
-            age <= 18 ||
-            !isBloodCompatible ? (
+            {/*    
+          BUTTON 
+        */}
+            {!user?.verified || user?.blood_type === "--" ? (
+              <View>
+                <Text className="text-center text-white px-3">
+                  To ensure that your blood type is correct, we encourage you to
+                  submit proof stating your blood group to avoid any
+                  inconvenience for yourself and the recipients of your
+                  donation.
+                </Text>
+                <Pressable onPress={""}>
+                  <Text className="text-center py-2 text-white font-bold">
+                    -- Get Verified --
+                  </Text>
+                </Pressable>
+              </View>
+            ) : new Date() < parsedDate.getTime() ||
+              age <= 18 ||
+              !isBloodCompatible ? (
               <View>
                 <TouchableOpacity
                   accessible={true}
@@ -353,9 +379,13 @@ const Preview = ({ request_data, isBloodCompatible }) => {
           delay={200}
           className="text-white px-4 text-base text-center font-bold mt-2"
         >
-          Your blood type {currentUser?.blood_type}{" "}
-          {isBloodCompatible ? "is" : "in not"} compatible with this patients
-          having a {request_data?.blood_type} blood type.
+          {!currentUser?.verified || currentUser?.blood_type == "--"
+            ? "Your blood group is currently not verified."
+            : `Your blood type ${currentUser?.blood_type} ${
+                isBloodCompatible ? "is" : "in not"
+              } compatible with this patients having a ${
+                request_data?.blood_type
+              } blood type.`}
         </Animatable.Text>
       </View>
       <RequestStatus request_data={request_data} />
