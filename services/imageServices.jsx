@@ -4,15 +4,17 @@ import { decode } from "base64-arraybuffer";
 import { homeIcons } from "../constant";
 import { supabaseUrl } from "../lib/supabase";
 // Helper function to get image source
-export const getUserImageSrc = (imagePath) => {
+export const getUserImageSrc = (imagePath, gender) => {
   //return console.log("image services ==== ", getSupabaseFileUrl())
   //console.log("imagePath", imagePath);
+  const profile = {
+    Male: require("../assets/icon/maleProfile.png"),
+    Female: require("../assets/icon/femaleProfile.png"),
+  };
   if (imagePath) {
     return getSupabaseFileUrl(imagePath);
   } else {
-    return {
-      uri: "https://reactnative.dev/img/tiny_logo.png",
-    };
+    return profile[gender];
   }
 };
 // Generate Supabase public URL

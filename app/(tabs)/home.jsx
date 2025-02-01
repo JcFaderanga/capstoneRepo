@@ -195,7 +195,7 @@ const Home = () => {
   let imageSource =
     profileImage && typeof profileImage == "object"
       ? profileImage.uri
-      : getUserImageSrc(user?.image);
+      : getUserImageSrc(user?.image, user?.GestureHandlerRootView);
   // console.log("imageSource", imageSource);
 
   if (!user) {

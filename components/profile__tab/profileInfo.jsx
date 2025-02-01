@@ -22,7 +22,7 @@ const _layout = () => {
 };
 
 const ProfileInfo = ({ onPress, unit, nextDonation, _profile }) => {
-  //console.log("_profile", _profile);
+  console.log("_profile", _profile);
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
@@ -72,7 +72,7 @@ const ProfileInfo = ({ onPress, unit, nextDonation, _profile }) => {
           <View className=" h-[130px] flex-row items-center justify-center ">
             <View className="">
               <Image
-                source={_profile}
+                source={_profile ? _profile : profile[user?.gender]}
                 style={styles.profileImage}
                 className="border"
                 resizeMethod="retain"
