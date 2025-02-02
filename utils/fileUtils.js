@@ -55,12 +55,12 @@ export const uploadFile = async (folderName, file, fileType) => {
     const { data, error } = await supabase.storage
       .from('uploads') // Your Supabase Storage bucket
       .upload(fileName, fileBlob, {
-        contentType: fileType === 'pdf' ? 'application/pdf' : 'image/jpeg',
+        contentType: fileType.startsWith('application/pdf') ? 'application/pdf' : 'image/jpeg',
       });
 
     if (error) throw error;
 
-    return safeFileName;
+    return fileName;
   } catch (error) {
     console.error('Upload failed:', error);
     return null;

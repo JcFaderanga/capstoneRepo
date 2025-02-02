@@ -25,6 +25,9 @@ const createBloodRequest = ({ onPress, user }) => {
 
   const handleSave = async () => {
     const { id, blood_type } = user;
+
+    const fileName = await uploadFile("request", filePath, filePath.mimeType);
+
     let request = {
       user_id: id,
       blood_type: blood_type,
@@ -34,9 +37,9 @@ const createBloodRequest = ({ onPress, user }) => {
       active: true,
       approve: false,
       urgent: urgent,
-      document: filePath,
+      document: fileName,
     };
-    uploadFile(filePath);
+
     const reqData = await createPublicRequest(request);
 
     if (onPress) {
