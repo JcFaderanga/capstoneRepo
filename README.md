@@ -96,3 +96,6 @@
 
 - `npm install react-copy-to-clipboard`
 - `expo install expo-clipboard`
+
+
+testing
