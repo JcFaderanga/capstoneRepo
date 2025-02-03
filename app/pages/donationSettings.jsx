@@ -3,12 +3,14 @@ import React, { useEffect, useState } from "react";
 import ToggleButton from "../../components/UI/button/toggleBtn";
 import { useAuth } from "../../context/authContext";
 import { supabase } from "../../lib/supabase";
-
+import ThemeButton from "../../components/UI/button/themeButton";
+import ModalVerify from "../../components/Modals/modalVerify";
 const DonationSettings = () => {
   const [availability, setAvailability] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
   const [contacts, setContacts] = useState(false);
   const [loading, setLoading] = useState(true); // New loading state
+  const [isModalVerify, setModalVerify] = useState(false);
   const { user } = useAuth();
 
   // Fetch data when component loads or user changes
@@ -98,6 +100,10 @@ const DonationSettings = () => {
           <Text className="text-center font-bold text-xl">
             Get Verified to become a donor
           </Text>
+          <ThemeButton
+            title={"Verify now"}
+            onPress={() => setModalVerify(true)}
+          />
         </View>
       )}
       <View
@@ -145,6 +151,11 @@ const DonationSettings = () => {
           />
         </View>
       </View>
+      <ModalVerify
+        userId={user?.id}
+        visible={isModalVerify}
+        onRequestClose={() => setModalVerify(false)}
+      />
     </View>
   );
 };

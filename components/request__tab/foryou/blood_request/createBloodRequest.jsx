@@ -49,7 +49,7 @@ const createBloodRequest = ({ onPress, user }) => {
 
   const handleUploadPDF = async () => {
     const file = await pickDocument();
-    console.log("file", file);
+    //console.log("file", file);
 
     // Check if there's an error
     if (file && file.error) {
@@ -65,7 +65,7 @@ const createBloodRequest = ({ onPress, user }) => {
         <Text className="text-lg py-1">How many unit do you need?</Text>
         <View className="w-full h-14 border border-[#DCDCDC] flex-row items-center justify-between px-4 rounded-xl">
           <View>
-            <Text className="text-xl font-bold text-customgray">
+            <Text className="text-xl font-bold text-primary_gray">
               {requestUnits} <Text className="font-normal">unit(s)</Text>
             </Text>
           </View>

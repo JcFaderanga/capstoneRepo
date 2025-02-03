@@ -190,7 +190,7 @@ const Home = () => {
       }
     }
   };
-  console.log(user);
+
   //console.log(" profileImage.uri", profileImage);
   let imageSource =
     profileImage && typeof profileImage == "object"
@@ -400,7 +400,7 @@ const UpComingDonation = ({ upComingDonation }) => {
               onPress={setDonation}
             >
               <Text className="text-center text-white font-bold">
-                Set Up Your Donation
+                Set Up Your Appointment
               </Text>
             </Pressable>
           </View>

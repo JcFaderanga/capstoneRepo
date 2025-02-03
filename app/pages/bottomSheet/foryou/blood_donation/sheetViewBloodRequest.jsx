@@ -38,12 +38,14 @@ import PreRegister from "../../donationDrvie/sheetPreRegister";
 import { router } from "expo-router";
 import { ToTitleCase } from "../../../../../constant/textFormat";
 import { getUserImageSrc } from "../../../../../services/imageServices";
+import ModalVerify from "../../../../../components/Modals/modalVerify";
 const SheetViewRequest = forwardRef(({ request_data }, ref) => {
   const [isDonate, setDonate] = useState(false);
   const [isBloodCompatible, setBloodCompatible] = useState(null);
   const { user } = useAuth();
   const { nextDonation, FetchNextDonation } = UseFetchNextDonation();
   const { donationData, loading, FetchDonation } = UseFetchDonation({});
+  const [isModalVerify, setModalVerify] = useState(false);
   if (request_data) {
     console.log("request_data", request_data);
   }
@@ -175,6 +177,11 @@ const SheetViewRequest = forwardRef(({ request_data }, ref) => {
       onChange={onSheetChange}
       className="bg-primary_red"
     >
+      <ModalVerify
+        userId={user?.id}
+        visible={isModalVerify}
+        onRequestClose={() => setModalVerify(false)}
+      />
       <BottomSheetView className="bg-primary_red h-full">
         {/*    
           isDonation   
@@ -222,7 +229,7 @@ const SheetViewRequest = forwardRef(({ request_data }, ref) => {
                   inconvenience for yourself and the recipients of your
                   donation.
                 </Text>
-                <Pressable onPress={""}>
+                <Pressable onPress={() => setModalVerify(true)}>
                   <Text className="text-center py-2 text-white font-bold">
                     -- Get Verified --
                   </Text>

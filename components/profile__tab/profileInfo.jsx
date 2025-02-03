@@ -22,7 +22,6 @@ const _layout = () => {
 };
 
 const ProfileInfo = ({ onPress, unit, nextDonation, _profile }) => {
-  console.log("_profile", _profile);
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
