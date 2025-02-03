@@ -1,42 +1,52 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useEffect } from 'react'
-import { FetchAllRequest } from '../../hooks/my_request_hooks'
-import { useAuth } from '../../context/authContext'
-import MostRecentRequest from '../../components/request__tab/myrequest/requestBox'
-import { FlatList } from 'react-native-gesture-handler'
-import { useRouter } from 'expo-router';
+import { StyleSheet, Text, View } from "react-native";
+import React, { useEffect } from "react";
+import { FetchAllRequest } from "../../hooks/my_request_hooks";
+import { useAuth } from "../../context/authContext";
+import MostRecentRequest from "../../components/request__tab/myrequest/requestBox";
+import { FlatList } from "react-native-gesture-handler";
+import { useRouter } from "expo-router";
 const Request_list = () => {
-    const {user} = useAuth();
-    const {allRequest, fetchAllRequest} = FetchAllRequest();
-    const router = useRouter();
-    useEffect(()=>{
-        fetchAllRequest(user?.id);
-    },[user]);
+  const { user } = useAuth();
+  const { allRequest, fetchAllRequest } = FetchAllRequest();
+  const router = useRouter();
+  useEffect(() => {
+    fetchAllRequest(user?.id);
+  }, [user]);
 
-   // console.log(allRequest)
-    const handleViewRequest = (request_data)=>{
-        router.push({
-            pathname: './viewRequest',
-            params: { request_data: JSON.stringify(request_data) },
-        });
-    }
+  // console.log(allRequest)
+  const handleViewRequest = (request_data) => {
+    router.push({
+      pathname: "./viewRequest",
+      params: { request_data: JSON.stringify(request_data) },
+    });
+  };
+
+  if (!allRequest) {
+    return (
+      <View>
+        <Text className="text-xl font-bold text-center py-10 text-gray-500">
+          No Request yet
+        </Text>
+      </View>
+    );
+  }
   return (
-    <View className="bg-slate-100">
-        <FlatList
-            className=""
-            data={allRequest}
-            keyExtractor={(item)=> item.blood_request_id.toString()}
-            renderItem={({item, index})=>(
-                <MostRecentRequest 
-                    recentRequest={item}
-                    onPress={()=>handleViewRequest(item)}
-                />
-            )}
-        />
+    <View className="bg-slate-50">
+      <FlatList
+        className=""
+        data={allRequest}
+        keyExtractor={(item) => item.blood_request_id.toString()}
+        renderItem={({ item, index }) => (
+          <MostRecentRequest
+            recentRequest={item}
+            onPress={() => handleViewRequest(item)}
+          />
+        )}
+      />
     </View>
-  )
-}
+  );
+};
 
-export default Request_list
+export default Request_list;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

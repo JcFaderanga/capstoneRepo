@@ -14,26 +14,42 @@ import { pickDocument, pickImage, uploadFile } from "../../utils/fileUtils";
 import Verification from "../../hooks/blood_validation/insertVerification";
 import useFetchVerification from "../../hooks/blood_validation/useFetchVerification";
 import { use } from "react";
+import { supabase } from "../../lib/supabase";
 const ModalVerify = ({ visible, onRequestClose, userId }) => {
   const [filePath, setFilePath] = useState(null);
   const [onSubmit, setOnSubmit] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [statusReject, setStatusReject] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const { verificationData, error, loading, InsertVerification } =
     Verification();
   const { verificationData: fetchData, FetchVerification } =
     useFetchVerification();
-
+  console.log("userId", userId);
   useEffect(() => {
     if (userId) {
       FetchVerification(userId);
     }
-  }, [userId]);
+    setRefresh(false);
+  }, [userId, refresh]);
   useEffect(() => {
     if (fetchData?.status === "pending") {
       setSubmitSuccess(true);
     }
+    if (fetchData?.status === "reject") {
+      setSubmitSuccess(false);
+      setStatusReject(true);
+    }
   }, [fetchData]);
 
+  const handleResubmit = async () => {
+    const { error } = await supabase
+      .from("verification")
+      .delete()
+      .eq("verification_id", fetchData?.verification_id);
+    setStatusReject(false);
+    setRefresh(true);
+  };
   const handleSubmit = async () => {
     setOnSubmit(true);
     const fileName = await uploadFile(
@@ -97,7 +113,40 @@ const ModalVerify = ({ visible, onRequestClose, userId }) => {
       </View>
     );
   }
-
+  if (statusReject) {
+    return (
+      <View>
+        <Modal
+          transparent={true}
+          visible={visible}
+          animationType="fade"
+          onRequestClose={onRequestClose}
+        >
+          <Pressable
+            className="flex-1 justify-end  bg-black/30"
+            onPress={onRequestClose}
+          >
+            <Pressable onPress={(e) => e.stopPropagation()}>
+              <View className="bg-white px-2 py-10 rounded-t-3xl">
+                <Text className="font-bold text-red-600 text-center text-xl">
+                  Verification Unsuccessful
+                </Text>
+                <Text className="text-center py-4">
+                  {fetchData?.reject_notes}
+                </Text>
+                <Text className="text-center font-bold">
+                  Verification Id:{" "}
+                  {verificationData?.verification_id ||
+                    fetchData?.verification_id}
+                </Text>
+                <ThemeButton title={"Resubmit"} onPress={handleResubmit} />
+              </View>
+            </Pressable>
+          </Pressable>
+        </Modal>
+      </View>
+    );
+  }
   return (
     <View>
       <Modal

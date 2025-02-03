@@ -1,5 +1,12 @@
-import { StyleSheet, Text, View, Button, Pressable } from "react-native";
-import React, { useEffect, useMemo } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  Pressable,
+  ScrollView,
+} from "react-native";
+import React, { useEffect, useMemo, useState } from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
@@ -12,6 +19,9 @@ import {
 import { useAuth } from "../../../context/authContext";
 import { router } from "expo-router";
 import ThemeButton from "../../../components/UI/button/themeButton";
+import { supabase } from "../../../lib/supabase";
+import useFetchRequest from "../../../hooks/my_request_hooks/useFetchRequest";
+
 const Myrequest = () => {
   const { user } = useAuth();
   const {
@@ -32,6 +42,7 @@ const Myrequest = () => {
     fetchUnitRecieved(user?.id);
   }, []);
 
+  const [requestForMe, setRequestForMe] = useState([]);
   const snapPoints = useMemo(() => ["79%", "95%"], []);
   const renderCustomHandle = () => (
     <View className="p-4 rounded-t-lg">
@@ -40,8 +51,24 @@ const Myrequest = () => {
       </Text>
     </View>
   );
+
+  useEffect(() => {
+    const fetchAllRequest = async () => {
+      const { data, error } = await supabase
+        .from("blood_request")
+        .select("*, profile(*)")
+        .eq("requested_to", user?.id);
+
+      if (error) console.log("error", error);
+      setRequestForMe(data);
+    };
+    fetchAllRequest();
+  }, [user?.id]);
+
+  console.log("requestForMe", requestForMe);
+
   return (
-    <View className="w-full h-full bg-white">
+    <ScrollView className="w-full h-full bg-white">
       <View className="w-full h-36 bg-slate-100 flex-row items-center justify-evenly px-2">
         <View className="w-36 h-24 bg-slate-400 rounded-3xl mx-1 py-4 px-6">
           <Text className="text-white ">Unit received</Text>
@@ -64,24 +91,46 @@ const Myrequest = () => {
           />
         </Pressable>
       </View>
-      {/* <View className="p-4 mt-2 bg-slate-100">
-        <Text className="text-xl font-bold text-center">
-          <Text className="text-primary_red">Urgent: </Text>Someone needs your
-          help!{" "}
+      <Text className="font-bold text-xl py-4 px-4 text-primary_gray">
+        Request For Me
+      </Text>
+      {requestForMe.length > 0 ? (
+        <View className="">
+          <View className="w-full bg-slate-100">
+            {requestForMe?.map((r, index) => (
+              <View key={index} className="px-4 py-4 flex-row justify-between">
+                <View>
+                  <Text className="text-xl font-bold">
+                    {r?.profile?.first_name} {r?.profile?.last_name}
+                  </Text>
+                  <Text className="text-base font-bold text-primary_red">
+                    Blood Group: {r?.profile?.blood_type}{" "}
+                    {r?.urgent ? "| URGENT" : ""}
+                  </Text>
+                </View>
+                <View className="flex-row items-center">
+                  <Pressable className="w-20 h-10 bg-white border border-slate-200 rounded-2xl flex justify-center items-center mx-1">
+                    <Text>Accept</Text>
+                  </Pressable>
+                  <Pressable className="w-20 h-10 bg-white border border-slate-200 rounded-2xl flex justify-center items-center mx-1">
+                    <Text>Decline</Text>
+                  </Pressable>
+                </View>
+              </View>
+            ))}
+          </View>
+        </View>
+      ) : (
+        <Text className="font-bold text-xl py-4 px-4 text-gray-400 text-center">
+          No Requests for you at the moment.
         </Text>
-        <Text className="text-lg pt-4 pb-5 border-b border-gray-300 text-center">
-          2 individuals need your blood donation.{" "}
-        </Text>
-        <Text className="text-base text-gray-500 text-center">
-          Your generosity can save lives. Consider donating blood and making a
-          difference today.
-        </Text>
-        <ThemeButton title={"Donate Now"} />
-      </View> */}
+      )}
+
       <View className="p-4 mt-2">
         <View className="w-full h-40 rounded-3xl"></View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
+
 export default Myrequest;

@@ -50,6 +50,7 @@ import {
 } from "../../services/imageServices";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import useFetchUser from "../../hooks/user/useFetchUser";
 const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
@@ -63,7 +64,7 @@ const Home = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const bottomSheetRef = useRef(null);
   const modalRef = useRef(null);
-
+  const { user: currentUser, fetchUser } = useFetchUser();
   //get screen height
   const screenHeight = Dimensions.get("window").height;
   const calcHeight = (h) => h * screenHeight;
@@ -89,11 +90,12 @@ const Home = () => {
       FetchUnitCount(user?.id);
       FetchNextDonation(user?.id);
       FetchDonation(user?.id);
+      fetchUser(user?.id);
     }
   }, [user]);
   const onRefresh = async () => {
     setIsRefreshing(true);
-
+    fetchUser(user?.id);
     FetchDonation(user?.id);
     setTimeout(() => {
       FetchUnitCount(user?.id);
@@ -221,7 +223,7 @@ const Home = () => {
             <View className="px-4">
               <Text className="text-white font-bold">
                 Blood Group: {user?.blood_type}{" "}
-                {user?.verified ? `(Verified)` : `(Unverified)`}
+                {currentUser?.verified ? `(Verified)` : `(Unverified)`}
               </Text>
             </View>
             <TouchableOpacity

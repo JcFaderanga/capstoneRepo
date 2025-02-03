@@ -5,6 +5,7 @@ import { useAuth } from "../../context/authContext";
 import { supabase } from "../../lib/supabase";
 import ThemeButton from "../../components/UI/button/themeButton";
 import ModalVerify from "../../components/Modals/modalVerify";
+import useFetchUser from "../../hooks/user/useFetchUser";
 const DonationSettings = () => {
   const [availability, setAvailability] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
@@ -12,8 +13,12 @@ const DonationSettings = () => {
   const [loading, setLoading] = useState(true); // New loading state
   const [isModalVerify, setModalVerify] = useState(false);
   const { user } = useAuth();
-
+  const { user: currentUser, fetchUser } = useFetchUser();
   // Fetch data when component loads or user changes
+
+  useEffect(() => {
+    fetchUser(user?.id);
+  }, [user]);
   useEffect(() => {
     if (user) {
       const fetchData = async () => {
@@ -95,7 +100,7 @@ const DonationSettings = () => {
 
   return (
     <View className="h-full w-full bg-white">
-      {!user?.verified && (
+      {!currentUser?.verified && (
         <View className="w-full py-10">
           <Text className="text-center font-bold text-xl">
             Get Verified to become a donor
@@ -107,7 +112,9 @@ const DonationSettings = () => {
         </View>
       )}
       <View
-        className={`h-full w-full bg-white ${!user?.verified && "opacity-40"}`}
+        className={`h-full w-full bg-white ${
+          !currentUser?.verified && "opacity-40"
+        }`}
       >
         <View className="w-full h-28 bg-slate-100 px-6 my-1 flex-row items-center">
           <View className="flex-1">
@@ -119,7 +126,7 @@ const DonationSettings = () => {
             AlterDescription="Turning this on will display your profile in the donor list."
             onPress={handleDonorAvailability}
             status={availability}
-            disable={!user?.verified ? true : false}
+            disable={!currentUser?.verified ? true : false}
           />
         </View>
 
@@ -133,7 +140,7 @@ const DonationSettings = () => {
             AlterDescription="Enabling 'Show Contact' will display your contact details in the donor list, allowing recipients to reach out to you directly."
             onPress={handleContact}
             status={contacts}
-            disable={!user?.verified ? true : false}
+            disable={!currentUser?.verified ? true : false}
           />
         </View>
 
@@ -147,7 +154,7 @@ const DonationSettings = () => {
             AlterDescription="Hide your name and profile in the donor list."
             onPress={handleAnonymousDonor}
             status={anonymous}
-            disable={!user?.verified ? true : false}
+            disable={!currentUser?.verified ? true : false}
           />
         </View>
       </View>

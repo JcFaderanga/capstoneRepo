@@ -3,25 +3,17 @@ import {
   Text,
   View,
   ScrollView,
-  FlatList,
   ActivityIndicator,
   RefreshControl,
   Pressable,
 } from "react-native";
-import React, {
-  useEffect,
-  useState,
-  useRef,
-  useMemo,
-  useCallback,
-} from "react";
+import React, { useState, useRef, useCallback } from "react";
 import Unavailable from "../../components/unavailable";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import DonationDriveBox from "../../components/donationDrive";
 import PreRegister from "./bottomSheet/donationDrvie/sheetPreRegister";
 import useDonationDrive from "../../hooks/donation_drive/fetchDonationDrive";
 import { useAuth } from "../../context/authContext";
-import { CalculateAge } from "../../constant/timeStamp";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { router } from "expo-router";
@@ -30,7 +22,6 @@ import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetModal,
 } from "@gorhom/bottom-sheet";
-import { ToTitleCase } from "../../constant/textFormat";
 import ThemeContainer from "../../components/UI/themeContainer";
 
 const DonationDrive = () => {
@@ -46,6 +37,7 @@ const DonationDrive = () => {
     setSelectedDrive(data);
     expandRegistrationFormRef.current?.present();
   };
+
   const handleRefresh = async () => {
     setRefreshing(true);
     await fetchDonationDrive();
@@ -55,6 +47,7 @@ const DonationDrive = () => {
   const onFilterPressed = useCallback(() => {
     modalRef.current?.present();
   }, []);
+
   const modalRef = useRef(null);
   const modalBackDrop = useCallback(
     (props) => (
@@ -66,11 +59,13 @@ const DonationDrive = () => {
     ),
     []
   );
+
   const renderCustomHandle = () => (
     <View className="py-4 rounded-t-lg">
       <Text className="text-center text-lg font-bold">Filter By</Text>
     </View>
   );
+
   return (
     <ThemeContainer>
       <View className="w-full bg-primary_red h-16 flex-row items-center justify-between px-4 shadow-md">
@@ -110,18 +105,22 @@ const DonationDrive = () => {
           }
         >
           <View className="h-full w-full lg:flex-row lg:flex-wrap lg:justify-center">
-            {/* <View className="py-4">
-          <DonationDriveBox
-            details={donationDriveDetails}
-            user={user}
-            onPress={() => viewPreRegisterForm(donationDriveDetails)}
-          />
-        </View> */}
-
             {loading ? (
               <View className="flex-1 justify-center items-center">
                 <ActivityIndicator size="large" color="red" />
                 <Text className="text-gray-500 mt-4">Loading list...</Text>
+              </View>
+            ) : error ? (
+              <View className="flex-1 justify-center items-center">
+                <Text className="text-red-500">
+                  Error loading donation drives. Please try again.
+                </Text>
+              </View>
+            ) : donationDrive.length === 0 ? (
+              <View className="flex-1 justify-center items-center py-6">
+                <Text className="font-bold text-lg text-gray-400">
+                  No Donation Drive Available
+                </Text>
               </View>
             ) : (
               donationDrive.map((item, index) => (
@@ -135,11 +134,6 @@ const DonationDrive = () => {
                 </View>
               ))
             )}
-            <View>
-              {/* <Text className="text-center py-10 font-bold text-gray-400">
-          No more donation drive available.
-        </Text> */}
-            </View>
             <PreRegister
               ref={expandRegistrationFormRef}
               props={selectedDrive}
@@ -153,7 +147,7 @@ const DonationDrive = () => {
         >
           <BottomSheetView>
             <Pressable
-              className="px-4 py-4 "
+              className="px-4 py-4"
               onPress={() => {
                 setFilter("timePosted");
                 modalRef.current?.close();
@@ -162,7 +156,7 @@ const DonationDrive = () => {
               <Text className="text-lg">Time Posted</Text>
             </Pressable>
             <Pressable
-              className="px-4 py-4 "
+              className="px-4 py-4"
               onPress={() => {
                 setFilter("donationDate");
                 modalRef.current?.close();

@@ -1,5 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { supabase } from "../../lib/supabase";
 
 const useFetchVerification = () => {
@@ -8,6 +7,7 @@ const useFetchVerification = () => {
   const [verificationData, setVerificationData] = useState(null);
 
   const FetchVerification = async (userId) => {
+    if (!userId) return;
     setLoading(true);
     try {
       const { data: fetchData, error: fetchError } = await supabase
@@ -21,9 +21,14 @@ const useFetchVerification = () => {
         throw fetchError;
       }
 
+      if (!fetchData) {
+        setError("No verification data found for the given user.");
+        setVerificationData(null);
+        return;
+      }
+
       setVerificationData(fetchData);
     } catch (e) {
-      console.error("Error fetching verification", e);
       setError("An error occurred while fetching the data.");
     } finally {
       setLoading(false);
