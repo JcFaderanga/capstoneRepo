@@ -6,6 +6,7 @@ import { supabase } from "../../lib/supabase";
 import ThemeButton from "../../components/UI/button/themeButton";
 import ModalVerify from "../../components/Modals/modalVerify";
 import useFetchUser from "../../hooks/user/useFetchUser";
+import UseFetchNextDonation from "../../hooks/blood_donation/fetchNextDonationDays";
 const DonationSettings = () => {
   const [availability, setAvailability] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
@@ -15,8 +16,12 @@ const DonationSettings = () => {
   const { user } = useAuth();
   const { user: currentUser, fetchUser } = useFetchUser();
   // Fetch data when component loads or user changes
+  const { nextDonation, FetchNextDonation } = UseFetchNextDonation();
+
+  console.log(nextDonation);
 
   useEffect(() => {
+    FetchNextDonation(user?.id);
     fetchUser(user?.id);
   }, [user]);
   useEffect(() => {
@@ -111,9 +116,12 @@ const DonationSettings = () => {
           />
         </View>
       )}
+
+      {}
       <View
         className={`h-full w-full bg-white ${
-          !currentUser?.verified && "opacity-40"
+          (!currentUser?.verified && "opacity-40") ||
+          (nextDonation !== "--" && "opacity-40")
         }`}
       >
         <View className="w-full h-28 bg-slate-100 px-6 my-1 flex-row items-center">
@@ -126,7 +134,13 @@ const DonationSettings = () => {
             AlterDescription="Turning this on will display your profile in the donor list."
             onPress={handleDonorAvailability}
             status={availability}
-            disable={!currentUser?.verified ? true : false}
+            disable={
+              !currentUser?.verified
+                ? true
+                : false || nextDonation !== "--"
+                ? true
+                : false
+            }
           />
         </View>
 
@@ -140,7 +154,13 @@ const DonationSettings = () => {
             AlterDescription="Enabling 'Show Contact' will display your contact details in the donor list, allowing recipients to reach out to you directly."
             onPress={handleContact}
             status={contacts}
-            disable={!currentUser?.verified ? true : false}
+            disable={
+              !currentUser?.verified
+                ? true
+                : false || nextDonation !== "--"
+                ? true
+                : false
+            }
           />
         </View>
 
@@ -154,10 +174,17 @@ const DonationSettings = () => {
             AlterDescription="Hide your name and profile in the donor list."
             onPress={handleAnonymousDonor}
             status={anonymous}
-            disable={!currentUser?.verified ? true : false}
+            disable={
+              !currentUser?.verified
+                ? true
+                : false || nextDonation !== "--"
+                ? true
+                : false
+            }
           />
         </View>
       </View>
+
       <ModalVerify
         userId={user?.id}
         visible={isModalVerify}

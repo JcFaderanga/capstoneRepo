@@ -72,7 +72,7 @@ const FindDonor = () => {
 
   return (
     <ThemeContainer>
-      <View className="h-full w-full bg-white pb-16">
+      <View className="h-full w-full bg-white">
         <View className="w-full flex-row border border-transparent my-4">
           <DropDown
             placeholder="Type"

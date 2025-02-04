@@ -27,6 +27,7 @@ import ThemeButton from "../../components/UI/button/themeButton";
 import { ToTitleCase } from "../../constant/textFormat";
 import { ProfileInfo } from "../../components/profile__tab";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import BottomSheet, {
   BottomSheetView,
   BottomSheetBackdrop,
@@ -48,11 +49,13 @@ import {
   uploadFile,
   getSupabaseFileUrl,
 } from "../../services/imageServices";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useFetchUser from "../../hooks/user/useFetchUser";
+import ModalDonorCard from "../../components/Modals/modalDonorCard";
 const Home = () => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [isModalDonorCard, setModalDonorCard] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
   const { user, setUserData } = useAuth();
   const { totalUnitDonated, FetchUnitCount } = UseFetchDonationCount();
@@ -148,13 +151,20 @@ const Home = () => {
     []
   );
 
+  const onModalRefClose = () => {
+    return modalRef.current?.close();
+  };
   const handleEdit = () => {
     router.push("../pages/profile__tab/editProfile");
-    modalRef.current?.close();
+    onModalRefClose();
   };
   const handleWebViewAdmin = () => {
     router.push("../pages/webViewAdmin");
-    modalRef.current?.close();
+    onModalRefClose();
+  };
+  const handlePrescreening = () => {
+    router.push("../pages/prescreening2");
+    onModalRefClose();
   };
 
   const setProfile = async () => {
@@ -210,6 +220,11 @@ const Home = () => {
   return (
     <ThemeContainer bgColor={"white"}>
       <GestureHandlerRootView style={{ flex: 1 }}>
+        <ModalDonorCard
+          user={user}
+          visible={isModalDonorCard}
+          onRequestClose={() => setModalDonorCard(false)}
+        />
         <ScrollView
           refreshControl={
             <RefreshControl
@@ -312,6 +327,25 @@ const Home = () => {
             >
               <Feather name="edit" size={24} color="black" />
               <Text className="font-bold text-lg ml-5">Edit</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              className=" flex-row items-center w-full h-20 border-b-2 border-[#F2F2F2] px-5"
+              onPress={() => {
+                setModalDonorCard(true);
+                modalRef.current?.close();
+              }}
+            >
+              <AntDesign name="idcard" size={25} color="black" />
+              <Text className="font-bold text-lg ml-5">Donor card</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              className=" flex-row items-center w-full h-20 border-b-2 border-[#F2F2F2] px-5"
+              onPress={handlePrescreening}
+            >
+              <FontAwesome5 name="clipboard" size={25} color="black" />
+              <Text className="font-bold text-lg ml-5">Pre-Screening</Text>
             </TouchableOpacity>
 
             <TouchableOpacity

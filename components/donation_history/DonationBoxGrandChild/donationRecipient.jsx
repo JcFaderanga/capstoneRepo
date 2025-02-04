@@ -35,6 +35,8 @@ const DonationRecipient = ({ item, onPress, index }) => {
             units_donated={item?.units_donated}
             schedule_date={item?.schedule_date}
             donation_status={item?.status}
+            donation_number={item?.donation_number}
+            time_completed={item?.time_completed}
             blood_type={donationRecipient?.blood_type}
             onPress={onPress}
           />

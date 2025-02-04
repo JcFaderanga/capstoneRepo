@@ -12,7 +12,7 @@ const UseFetchNextDonation = () => {
     try {
       const { data, error } = await supabase
         .from("blood_donation")
-        .select("created_at")
+        .select("time_completed")
         .eq("donor", donor_id)
         .eq("status", "complete")
         .order("created_at", { ascending: false })
@@ -23,12 +23,13 @@ const UseFetchNextDonation = () => {
       } else {
         if (data.length > 0) {
           // Get the most recent donation date
-          const lastDonationDate = new Date(data[0].created_at);
+
+          const lastDonationDate = new Date(data[0].time_completed);
 
           // Add 56 days to the last donation date to get the next donation date
           const nextDonation = new Date(lastDonationDate);
           nextDonation.setDate(lastDonationDate.getDate() + 56); // Add 56 days
-
+          console.log("lastDonationDate", lastDonationDate);
           // Format the next donation date
           const formattedDate = nextDonation.toLocaleDateString(); // Format the date to a readable format
 

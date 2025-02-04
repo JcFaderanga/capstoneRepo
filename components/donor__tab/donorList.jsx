@@ -14,10 +14,10 @@ const DonorList = ({ user_id, donor, onRefreshDonors, refreshing }) => {
   };
 
   return (
-    <View>
+    <View className="pb-44">
       {donor?.length > 0 ? (
         <FlatList
-          className="h-full w-full"
+          className="w-full "
           data={donor}
           keyExtractor={(item) => item?.user_id?.toString() || `${item.index}`}
           renderItem={({ item, index }) => (

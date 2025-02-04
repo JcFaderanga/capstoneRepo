@@ -1,10 +1,17 @@
-import { ScrollView, StyleSheet, Text, TextInput, View, RefreshControl } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { useAuth } from '../../../context/authContext';
-import ThemeButton from '../../../components/UI/button/themeButton';
-import { supabase } from '../../../lib/supabase';
-import { getUserData } from '../../../services/userServices';
-import { useRouter } from 'expo-router';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  RefreshControl,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../../../context/authContext";
+import ThemeButton from "../../../components/UI/button/themeButton";
+import { supabase } from "../../../lib/supabase";
+import { getUserData } from "../../../services/userServices";
+import { useRouter } from "expo-router";
 const TextBoxBetween = ({ text, detail, onChangeText, value }) => {
   return (
     <View className="w-full h-16 flex-row justify-between items-center border-b border-b-[#F0F0F0]">
@@ -21,89 +28,90 @@ const TextBoxBetween = ({ text, detail, onChangeText, value }) => {
 
 const EditProfileInfo = () => {
   const [refreshing, setRefreshing] = useState(false);
-  const { user ,setUserData } = useAuth();
+  const { user, setUserData } = useAuth();
   const router = useRouter();
   const [profile, setProfile] = useState({
-    email: '',
-    first_name: '',
-    middle_name: '',
-    last_name: '',
+    email: "",
+    first_name: "",
+    middle_name: "",
+    last_name: "",
     address: {
-      street: '',
-      region: '',
-      province: '',
-      city: '',
-      barangay: '',
+      street: "",
+      region: "",
+      province: "",
+      city: "",
+      barangay: "",
     },
-    birth_date: '',
-    gender: '',
-    blood_type: '',
-    phone_number: ''
+    birth_date: "",
+    gender: "",
+    blood_type: "",
+    phone_number: "",
   });
-
 
   function validateAddress(address) {
     // Check if address is a string
-    if (typeof address === 'string') {
+    if (typeof address === "string") {
       try {
         // Try parsing the string as JSON
         const parsedAddress = JSON.parse(address);
-        
+
         // Check if the parsed result is an object
-        if (typeof parsedAddress === 'object' && parsedAddress !== null) {
+        if (typeof parsedAddress === "object" && parsedAddress !== null) {
           return parsedAddress; // Valid stringified JSON
         }
       } catch (error) {
-        console.error('Invalid JSON string:', error.message);
+        console.error("Invalid JSON string:", error.message);
         return null; // Invalid JSON
       }
-    } else if (typeof address === 'object' && address !== null) {
+    } else if (typeof address === "object" && address !== null) {
       // Address is already an object
       return address;
     }
   }
 
   const parsedAddress = validateAddress(user.address);
-  
+
   useEffect(() => {
     if (user) {
       setProfile({
-        email: user.email || '',
-        first_name: user.first_name || '',
-        middle_name: user.middle_name || '',
-        last_name: user.last_name || '',
+        email: user.email || "",
+        first_name: user.first_name || "",
+        middle_name: user.middle_name || "",
+        last_name: user.last_name || "",
         address: {
-          street: parsedAddress?.street || '',
-          region: parsedAddress?.region || '',
-          province: parsedAddress?.province || '',
-          city: parsedAddress?.city || '',
-          barangay: parsedAddress?.barangay || '',
+          street: parsedAddress?.street || "",
+          region: parsedAddress?.region || "",
+          province: parsedAddress?.province || "",
+          city: parsedAddress?.city || "",
+          barangay: parsedAddress?.barangay || "",
         },
-        birth_date: user.birth_date || '',
-        gender: user.gender || '',
-        blood_type: user.blood_type || '',
-        phone_number: user.phone_number || ''
+        birth_date: user.birth_date || "",
+        gender: user.gender || "",
+        blood_type: user.blood_type || "",
+        phone_number: user.phone_number || "",
       });
     }
   }, [user]);
-  console.log(parsedAddress?.street)
-  console.log(user.address)
-  console.log(profile.address)
-  console.log('street',profile.address?.street)
-
+  console.log(parsedAddress?.street);
+  console.log(user.address);
+  console.log(profile.address);
+  console.log("street", profile.address?.street);
 
   const updateProfile = async () => {
-    let userData = {...profile};
+    let userData = { ...profile };
     const { error } = await supabase
-      .from('profile')
+      .from("profile")
       .update(profile)
-      .eq('id', user.id);
+      .eq("id", user.id);
 
     if (error) {
-      console.log('Error updating profile:', error);
+      console.log("Error updating profile:", error);
     } else {
-      console.log('Profile updated successfully',JSON.stringify(profile, null,2));
-      setUserData({...user,...userData});
+      console.log(
+        "Profile updated successfully",
+        JSON.stringify(profile, null, 2)
+      );
+      setUserData({ ...user, ...userData });
       router.back();
     }
   };
@@ -111,17 +119,19 @@ const EditProfileInfo = () => {
   const onRefresh = async () => {
     setRefreshing(true);
     if (user?.id) {
-      user
+      user;
     }
     setRefreshing(false);
   };
-  
+
   const formatDate = (date) => {
-    return date ? date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    }) : 'Select Date';
+    return date
+      ? date.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })
+      : "Select Date";
   };
   const DOB = new Date(user.birth_date);
   //console.log("editProfile check date format:",formatDate(DOB))
@@ -130,13 +140,19 @@ const EditProfileInfo = () => {
     if (!str) return "";
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   }
-  
+
   return (
     <View className="w-full h-full bg-[#f0f0f0]">
-      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         {/* Name Section */}
         <View className="px-5 mb-3 bg-white" style={{ elevation: 1 }}>
-          <Text className="text-primary_red font-bold text-base mt-4">Your name</Text>
+          <Text className="text-primary_red font-bold text-base mt-4">
+            Your name
+          </Text>
           <TextBoxBetween
             detail="First name"
             value={profile.first_name}
@@ -156,7 +172,9 @@ const EditProfileInfo = () => {
 
         {/* Contact Section */}
         <View className="px-5 mb-3 bg-white" style={{ elevation: 1 }}>
-          <Text className="text-primary_red font-bold text-base mt-4">Your contact</Text>
+          <Text className="text-primary_red font-bold text-base mt-4">
+            Your contact
+          </Text>
           <TextBoxBetween
             detail="Email"
             value={capitalizeFirstLetter(profile.email)}
@@ -165,25 +183,36 @@ const EditProfileInfo = () => {
           <TextBoxBetween
             detail="Phone"
             value={profile.phone_number}
-            onChangeText={(val) => setProfile({ ...profile, phone_number: val })}
+            onChangeText={(val) =>
+              setProfile({ ...profile, phone_number: val })
+            }
           />
         </View>
-        <Text className="px-4 mx-auto mb-4 font-bold text-gray-400">NOTE: 
-          <Text className="font-normal"> Updating the email in your contact information will not change your email username.</Text>
+        <Text className="px-4 mx-auto mb-4 font-bold text-gray-400">
+          NOTE:
+          <Text className="font-normal">
+            {" "}
+            Updating the email in your contact information will not change your
+            email username.
+          </Text>
         </Text>
         {/* Birthday Section */}
         <View className="px-5 mb-3 bg-white" style={{ elevation: 1 }}>
-          <Text className="text-primary_red font-bold text-base mt-4">Your birthday</Text>
+          <Text className="text-primary_red font-bold text-base mt-4">
+            Your birthday
+          </Text>
           <TextBoxBetween
             detail="Date of birth"
-            value={formatDate(DOB)}
+            value={profile.birth_date}
             onChangeText={(val) => setProfile({ ...profile, birth_date: val })}
           />
         </View>
 
         {/* Gender Section */}
         <View className="px-5 mb-3 bg-white" style={{ elevation: 1 }}>
-          <Text className="text-primary_red font-bold text-base mt-4">Your gender</Text>
+          <Text className="text-primary_red font-bold text-base mt-4">
+            Your gender
+          </Text>
           <TextBoxBetween
             detail="Gender"
             value={profile.gender}
@@ -193,7 +222,9 @@ const EditProfileInfo = () => {
 
         {/* Blood Group Section */}
         <View className="px-5 mb-3 bg-white" style={{ elevation: 1 }}>
-          <Text className="text-primary_red font-bold text-base mt-4">Your Blood Group</Text>
+          <Text className="text-primary_red font-bold text-base mt-4">
+            Your Blood Group
+          </Text>
           <TextBoxBetween
             detail="Blood Type"
             value={profile.blood_type}
@@ -203,46 +234,58 @@ const EditProfileInfo = () => {
 
         {/* Address Section */}
         <View className="px-5 mb-3 bg-white" style={{ elevation: 1 }}>
-          <Text className="text-primary_red font-bold text-base mt-4">Your address</Text>
+          <Text className="text-primary_red font-bold text-base mt-4">
+            Your address
+          </Text>
           <TextBoxBetween
             detail="Street"
             value={profile.address.street}
-            onChangeText={(val) => setProfile({
-              ...profile,
-              address: { ...profile.address, street: val }
-            })}
+            onChangeText={(val) =>
+              setProfile({
+                ...profile,
+                address: { ...profile.address, street: val },
+              })
+            }
           />
           <TextBoxBetween
             detail="Region"
             value={profile.address.region}
-            onChangeText={(val) => setProfile({
-              ...profile,
-              address: { ...profile.address, region: val }
-            })}
+            onChangeText={(val) =>
+              setProfile({
+                ...profile,
+                address: { ...profile.address, region: val },
+              })
+            }
           />
           <TextBoxBetween
             detail="Province"
             value={profile.address.province}
-            onChangeText={(val) => setProfile({
-              ...profile,
-              address: { ...profile.address, province: val }
-            })}
+            onChangeText={(val) =>
+              setProfile({
+                ...profile,
+                address: { ...profile.address, province: val },
+              })
+            }
           />
           <TextBoxBetween
             detail="City"
             value={profile.address.city}
-            onChangeText={(val) => setProfile({
-              ...profile,
-              address: { ...profile.address, city: val }
-            })}
+            onChangeText={(val) =>
+              setProfile({
+                ...profile,
+                address: { ...profile.address, city: val },
+              })
+            }
           />
           <TextBoxBetween
             detail="Barangay"
             value={profile.address.barangay}
-            onChangeText={(val) => setProfile({
-              ...profile,
-              address: { ...profile.address, barangay: val }
-            })}
+            onChangeText={(val) =>
+              setProfile({
+                ...profile,
+                address: { ...profile.address, barangay: val },
+              })
+            }
           />
         </View>
 

@@ -1,12 +1,15 @@
 import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import React from "react";
 import Elevated from "../elevated";
+import { DateTimeFormat } from "../../constant/timeStamp";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 const DonationBox = ({
   recipient,
   units_donated,
   schedule_date,
   donation_status,
+  time_completed,
+  donation_number,
   blood_type,
   onPress,
 }) => {
@@ -15,8 +18,7 @@ const DonationBox = ({
   const statusTag = {
     complete: (
       <Text className="font-bold text-base pt-1 text-green-700 bg-green-100">
-        {/* {"  Complete"} */}
-        Thursday, January 28 - 9:21AM
+        {DateTimeFormat(time_completed)}
       </Text>
     ),
     missed: (
@@ -104,7 +106,7 @@ const DonationBox = ({
                 resizeMode="contain"
               />{1555-096542-3} */}
             <Text className="font-bold text-lg mx-1">
-              {donation_status === "pending" ? "N/A" : "1555-096542-3"}
+              {donation_status === "pending" ? "N/A" : donation_number}
             </Text>
           </View>
           <Pressable className="p-1 rounded-lg bg-slate-100" onPress={onPress}>
