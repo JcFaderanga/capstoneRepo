@@ -39,7 +39,7 @@ export const fetchRequests = async ({ bloodTypeFilterResult }, typeFilter, anony
       *,profile(
           first_name, last_name, gender, image
         )
-      `).eq('public_request', true); 
+      `).eq('public_request', true).eq('approve', true); 
 
     if (bloodTypeFilterResult && bloodTypeFilterResult.length > 0) {
       query = query.in('blood_type', bloodTypeFilterResult);

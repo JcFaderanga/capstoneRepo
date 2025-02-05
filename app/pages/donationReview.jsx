@@ -21,7 +21,7 @@ import { TimeAgo, DayAndDate } from "../../constant/timeStamp";
 import useFetchSelectedDrive from "../../hooks/donation_drive/fetchSelectedDrive";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { supabase } from "../../lib/supabase";
-
+import { DateTimeFormat } from "../../constant/timeStamp";
 import BottomSheet, {
   BottomSheetView,
   BottomSheetBackdrop,
@@ -229,9 +229,15 @@ const DonationReview = () => {
               <Pressable
                 onPress={() => router.replace("./FAQsPages/beforeDonation")}
               >
-                <Text className="text-center font-bold text-primary_red text-lg py-4">
-                  What to do day before donation?
-                </Text>
+                {donationData?.status === "complete" ? (
+                  <Text className="text-center font-bold text-green-600 text-lg py-4">
+                    Complete {DateTimeFormat(donationData?.time_completed)}
+                  </Text>
+                ) : (
+                  <Text className="text-center font-bold text-primary_red text-lg py-4">
+                    What to do day before donation?
+                  </Text>
+                )}
               </Pressable>
               <ThemeButton title="Done" onPress={() => router.back()} />
             </View>

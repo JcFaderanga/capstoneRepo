@@ -30,7 +30,7 @@ const ViewAppointment = () => {
     activeSched: true,
   });
   if (user && donationData) {
-    //console.log(JSON.stringify(donationData, null, 2));
+    console.log(JSON.stringify(donationData, null, 2));
   }
 
   useEffect(() => {

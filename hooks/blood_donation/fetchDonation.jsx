@@ -16,6 +16,7 @@ const UseFetchDonation = ({ recentDonation = false, activeSched = false }) => {
         .from("blood_donation")
         .select(`*, profile(first_name, last_name)`)
         .eq("donor", user_id)
+
         .order("schedule_date", { ascending: true });
 
       // Apply limit for recent donations if required
@@ -23,7 +24,9 @@ const UseFetchDonation = ({ recentDonation = false, activeSched = false }) => {
         query = query.limit(1);
       }
       if (activeSched) {
-        query = query.gte("schedule_date", today.toISOString());
+        query = query
+          .gte("schedule_date", today.toISOString())
+          .eq("status", "pending");
       }
 
       const { data, error } = await query;

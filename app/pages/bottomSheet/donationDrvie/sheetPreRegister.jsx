@@ -19,7 +19,7 @@ import { DayAndDate, CalculateAge } from "../../../../constant/timeStamp";
 import { useAuth } from "../../../../context/authContext";
 import useSaveDonation from "../../../../hooks/blood_donation/useSaveDonation";
 import UseFetchDonation from "../../../../hooks/blood_donation/fetchDonation";
-
+import UseFetchNextDonation from "../../../../hooks/blood_donation/fetchNextDonationDays";
 const PreRegister = forwardRef(({ props }, ref) => {
   const { user } = useAuth();
   const [isSubmitSuccess, setSubmitSuccess] = useState(false);
@@ -31,6 +31,16 @@ const PreRegister = forwardRef(({ props }, ref) => {
   const { error, InsertDoation } = useSaveDonation();
   const { donationData, loading, FetchDonation } = UseFetchDonation({});
 
+  const { nextDonation, FetchNextDonation } = UseFetchNextDonation();
+  useEffect(() => {
+    FetchNextDonation(user?.id);
+  }, [props]);
+
+  const [month, day, year] = nextDonation.split("/").map(Number);
+  const parsedDate =
+    nextDonation !== "--" ? new Date(year, month - 1, day) : new Date();
+
+  console.log("nextDonation", parsedDate > new Date());
   useEffect(() => {
     FetchDonation(user?.id);
   }, [props, isSubmitSuccess]);
@@ -212,11 +222,18 @@ const PreRegister = forwardRef(({ props }, ref) => {
                   not misleading.
                 </Text>
               </View>
-              <ThemeButton
-                title="Submit"
-                onPress={submitPreRegistration}
-                disable={!condition || isDrivePending}
-              />
+              {parsedDate > new Date() ? (
+                <Text className="text-center py-6 font-bold text-xl">
+                  {" "}
+                  Next Donation {nextDonation}
+                </Text>
+              ) : (
+                <ThemeButton
+                  title="Submit"
+                  onPress={submitPreRegistration}
+                  disable={!condition || isDrivePending}
+                />
+              )}
             </View>
           )}
         </View>

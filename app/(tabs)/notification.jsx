@@ -49,7 +49,7 @@ const Notification = () => {
       >
         {notification.length > 0 ? (
           <Text className="text-xl font-bold text-primary_gray py-4 px-4">
-            Today
+            Most Recent
           </Text>
         ) : (
           ""

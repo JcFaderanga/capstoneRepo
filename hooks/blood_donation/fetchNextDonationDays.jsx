@@ -15,7 +15,7 @@ const UseFetchNextDonation = () => {
         .select("time_completed")
         .eq("donor", donor_id)
         .eq("status", "complete")
-        .order("created_at", { ascending: false })
+        .order("time_completed", { ascending: false })
         .limit(1);
 
       if (error) {

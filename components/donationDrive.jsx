@@ -14,9 +14,14 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Elevated from "./elevated";
 import PreRegister from "../app/pages/bottomSheet/donationDrvie/sheetPreRegister";
 import { TimeAgo, DayAndDate, CalculateAge } from "../constant/timeStamp";
-
+import UseFetchNextDonation from "../hooks/blood_donation/fetchNextDonationDays";
 const screenWidth = Dimensions.get("window").width;
 const DonationDrive = ({ details, onPress, user }) => {
+  const { nextDonation, error, loading, FetchNextDonation } =
+    UseFetchNextDonation();
+  useEffect(() => {
+    FetchNextDonation(user?.id);
+  }, [details]);
   return (
     <>
       <View className="px-3 lg:max-w-96 lg:m-2">

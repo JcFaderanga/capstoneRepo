@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import React, {
   useState,
   useEffect,
@@ -21,11 +21,14 @@ import { createPublicRequest } from "../../../../services/requestServices";
 import { createNotification } from "../../../../services/notificationServices";
 import useCreateNotification from "../../../../hooks/notification/useCreateNotification";
 import { getUserImageSrc } from "../../../../services/imageServices";
+import ModalVerify from "../../../../components/Modals/modalVerify";
 const sheetRequestDonation = forwardRef(({ donor_data }, ref) => {
   const [isBloodCompatible, setBloodCompatible] = useState(null);
   const [isRequestSubmit, setRequestSubmit] = useState(false);
   const [isRequestAnonymous, setRequestAnonymous] = useState(false);
+  const [isModalVerify, setModalVerify] = useState(false);
   const { error, loading, insertNotif } = useCreateNotification();
+  const { user } = useAuth();
   const [urgent, setUrgent] = useState(false);
   const { user: currentUser } = useAuth();
   if (!donor_data) return null;
@@ -246,18 +249,41 @@ const sheetRequestDonation = forwardRef(({ donor_data }, ref) => {
                   </View>
                 </View>
                 {/* Action Button */}
-                <View className="mt-6">
-                  <ThemeButton
-                    disable={!isBloodCompatible ? true : false}
-                    title="Send Request"
-                    onPress={handleSubmitRequest}
-                  />
+                <View>
+                  {user?.verified ? (
+                    <View className="mt-5">
+                      <ThemeButton
+                        disable={!isBloodCompatible ? true : false}
+                        title="Send Request"
+                        onPress={handleSubmitRequest}
+                      />
+                    </View>
+                  ) : (
+                    <View>
+                      <Text className="text-center px-3">
+                        To ensure that your blood type is correct, we encourage
+                        you to submit proof stating your blood group to avoid
+                        any inconvenience for yourself and the recipients of
+                        your donation.
+                      </Text>
+                      <Pressable onPress={() => setModalVerify(true)}>
+                        <Text className="text-center py-2 text-primary_red font-bold">
+                          -- Get Verified --
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
                 </View>
               </>
             )}
           </View>
         )}
       </BottomSheetView>
+      <ModalVerify
+        userId={user?.id}
+        visible={isModalVerify}
+        onRequestClose={() => setModalVerify(false)}
+      />
     </BottomSheetModal>
   );
 });

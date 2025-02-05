@@ -94,7 +94,7 @@ const Myrequest = () => {
       <Text className="font-bold text-xl py-4 px-4 text-primary_gray">
         Request For Me
       </Text>
-      {requestForMe.length > 0 ? (
+      {requestForMe?.length > 0 ? (
         <View className="">
           <View className="w-full bg-slate-100">
             {requestForMe?.map((r, index) => (
